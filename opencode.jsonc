@@ -61,7 +61,17 @@
                                           "enabled":  true,
                                           "oauth":  {}
                                       },
-                "cloudflare-observability":  {
+                 "vmware-desktop":  {
+                                        "type":  "local",
+                                        "command":  [
+                                                        "C:\\tools\\desktop-hypervisor-mcp\\desktop-hypervisor-mcp.exe"
+                                                    ],
+                                        "enabled":  true,
+                                        "env":  {
+                                                    "PATH":  "F:\\Program Files (x86)\\VMware\\VMware Workstation;"
+                                                }
+                                    },
+                 "cloudflare-observability":  {
                                                  "type":  "remote",
                                                  "url":  "https://observability.mcp.cloudflare.com/mcp",
                                                  "enabled":  true,

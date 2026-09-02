@@ -125,7 +125,54 @@ tool name exposed by the active harness.
 - Markdown processing → `remark`, `unified`, `markdown-it`
 - Image optimization → `sharp`, `imagemin`
 
-## Integration Points
+### UI Effects & Motion
+- Curves/paths → Figma + AI pen tool, Figma plugins (Curved Arrows), AE trim paths
+- Page transition/morph → View Transitions API (Chrome native, zero bug), GSAP MorphSVG
+- Particle dissolve/reassemble → Three.js + shader (visual ceiling), tsParticles (config-driven), Canvas 2D (fallback)
+- 3D/spatial → Three.js, Spline, Blender (pre-rendered)
+- Desktop shell → Electron (Web tech + Node.js: capturePage, fs, FFmpeg)
+- Replicable output → For lightweight components: copy CSS + HTML; for heavy effects: copy self-contained HTML with `<script type="importmap">` locking CDN versions
+
+### DevOps / Deployment
+- CI/CD → GitHub Actions, GitLab CI, Jenkins
+- Containers → Docker, Docker Compose, Podman
+- Orchestration → Kubernetes, Helm, Kustomize
+- IaC → Terraform, Pulumi
+- Monitoring → Prometheus, Grafana, Datadog, SigNoz
+- Chaos engineering → Chaos Monkey, Litmus Chaos
+- Network ops → Netmiko, BGP diagnostics, config validation
+
+### Frontend Frameworks
+- React → `react`, Next.js, Vite
+- Vue → `vue`, Nuxt
+- Angular → `@angular/*`
+- Mobile Web → React Native, Flutter, Compose Multiplatform
+- iOS/macOS → SwiftUI, Liquid Glass design
+
+### Backend Frameworks
+- Python → FastAPI, Django, Flask
+- Java → Spring Boot, Quarkus
+- Node.js → Express, NestJS
+- PHP → Laravel
+- .NET → ASP.NET Core, Entity Framework
+- Go → Gin, Echo
+
+### Database / ORM
+- PostgreSQL → Supabase patterns, pgvector
+- MySQL / MariaDB → InnoDB, replication
+- Oracle → PL/SQL, partitioning
+- ORM → Prisma, Drizzle, SQLAlchemy, Exposed, JPA/Hibernate
+- Analytics → ClickHouse
+- Cache / KV → Redis, Valkey, SQLite, D1, KV
+
+### Testing / E2E
+- E2E → Playwright, Cypress, Selenium
+- Unit → Jest, Vitest, pytest, JUnit, Go test
+- Performance → k6, Artillery, Lighthouse
+- TDD → `tdd-workflow`, `test-driven-development`
+- Benchmark → `benchmark`, `benchmark-optimization-loop`
+
+### Integration Points
 
 ### With planner agent
 The planner should invoke researcher before Phase 1 (Architecture Review):
