@@ -63,6 +63,31 @@ Do not use this skill as the primary source for:
 - Add complexity only when required
 - Start simple, refactor when needed
 
+## Icons & Emoji (MANDATORY)
+
+**Never use emoji as icons in UI. Reject emoji icons everywhere.**
+
+- Emoji icons are rejected across all UI: render with SVG, CSS, or a real icon library instead.
+- Reason: emoji render inconsistently across platforms/fonts, look unprofessional, cannot be themed/colored to match the design system, and add visual noise.
+
+```tsx
+// PASS: GOOD - SVG / icon library / CSS
+import { Trash2 } from 'lucide-react'
+<button aria-label="删除"><Trash2 /></button>
+
+// FAIL: BAD - emoji as icon
+<button title="删除">🗑</button>        // BAD
+<button title="测试连接">🔌</button>    // BAD
+<span>{isView ? '◱' : '▦'}</span>       // BAD (emoji/dingbat-as-icon)
+<MenuItem icon="📝" />                  // BAD
+```
+
+### Menu / Tree / Button icon guidelines
+
+- Use real icon components (SVG-based) or text labels — never emoji/dingbat for decoration.
+- One exception: an emoji may appear only inside **user-authored content** that the user themselves typed (e.g. chat messages), never in application chrome, menus, trees, toasts, or empty states.
+- When migrating existing code, replace emoji/dingbat icons (🗑🔌📝📊🔄✏️📋◱▦ etc.) with SVG icons or plain text, and keep `aria-label`/`title` for accessibility.
+
 ## TypeScript/JavaScript Standards
 
 ### Variable Naming
