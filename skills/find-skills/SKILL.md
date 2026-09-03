@@ -82,6 +82,32 @@ npx skills add <owner/repo@skill> -g -y
 | Design | ui, ux, design-system, accessibility |
 | Productivity | workflow, automation, git |
 
-## When No Skills Are Found
+## Local Skill Discovery
+
+Before falling back to external sources, check the locally installed skill set.
+
+### Search local skills by keyword/trigger
+```bash
+# list all installed skill names (triggers included)
+ls -R ~/.config/opencode/skills/ | grep SKILL.md
+
+# keyword scan for relevant skills
+grep -rl "triggers:" ~/.config/opencode/skills/*/SKILL.md
+# example keyword lookup
+rg -il "z-index|overflow|portal|clipping" ~/.config/opencode/skills/
+```
+
+### Common local mappings
+| Problem phrase | Local skill to invoke |
+|---|---|
+| z-index / stacking-context conflict | `/layout-guardrails` |
+| dropdown/menu bleed outside parent | `/layout-guardrails` |
+| portal / teleport clipped by parent | `/layout-guardrails` |
+| CSS / layout pixel polish | `make-interfaces-feel-better` |
+| frontend design / aesthetic direction | `frontend-design` |
+| need a reusable design system | `create-design-system` |
+| K8s / DevOps ops questions | `k8s-knowledge` |
+
+> Tip: local skills take priority over external lookups when no extra installation is required.
 
 If no relevant skills exist, acknowledge the result and offer to help directly or suggest creating a skill with `npx skills init`.

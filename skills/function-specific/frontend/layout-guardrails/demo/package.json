@@ -1,0 +1,15 @@
+{
+  "name": "layout-guardrails-demo",
+  "private": true,
+  "scripts": { "dev": "vite", "build": "vite build", "preview": "vite preview" },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-dom/client": "^18.2.0",
+    "flying": "^0.0.0-experimental-5a97d7d-20220627"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.0",
+    "vite": "^4.4.0"
+  }
+}

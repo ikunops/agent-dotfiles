@@ -20,6 +20,7 @@
 ## [Skills 调用规范]
 
 - 前端设计/视觉优化 → frontend-design / make-interfaces-feel-better
+- 前端布局/层级防穿模 → layout-guardrails (z-index / stacking-context / overflow-clip / portal restack)
 - 线框/原型 → wireframe / interactive-prototype
 - 设计系统 → create-design-system / opendesign
 - 演示文稿 → make-a-deck

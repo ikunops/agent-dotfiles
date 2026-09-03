@@ -51,6 +51,29 @@ description: 通用排障与复用方法论。当用户报告某个操作"没反
 
 ---
 
+## Part C —— 完整根因闭环（委派给 systematic-debugging）
+
+Part A 解决的是「点了没反应」这类**外在症状的快速判断**。当问题复杂、涉及多层组件、或已尝试 2 次以上修复无果时，应进入更严谓的**根因闭环**：
+
+> `debug-and-refactor` 专注**「判断定位」**；`systematic-debugging` 专注**「验证复现 + 最小试验 + 归档测试」**。
+
+复用 `systematic-debugging`（位于 `function-specific/misc/superpowers/systematic-debugging`）的 4 个阶段：
+
+1. **Root Cause Investigation** — 读完整错误信息、反复复现、查最近改动、多组件时在每层加日志埋点。
+2. **Pattern Analysis** — 找工作的同类对照，详读参考实现，列出全部差异。
+3. **Hypothesis and Testing** — 表单单假设、最小化改动、一次一变量、不能盖过再上。
+4. **Implementation** — 先写 **failing test** 再修；单一变更；验证后才收工。
+   - 若 **3 次以上**修复均失败 → **停止并审视架构**（而非继续猜修）。
+
+**进入 Part C 的触发条件：** 问题非单次点击加删，而是多组件串联 / 多次试验 / 环境差等。
+
+- 触发时直接调用：`/systematic-debugging`
+- 参考：`superpowers:test-driven-development` 写回归测试；`superpowers:verification-before-completion` 收尾验证。
+
+> 真实场景联动：`debug-and-refactor` Part A 「事件层 vs 样式层二分 + 最小对比」，在判断为「事件层」后，可直呼 `systematic-debugging` Phase 2「找同类对照并比较差异」作为深入；判断为「样式层」后，本身已包含最小对比，无需额外闭环。
+
+---
+
 ## 快速检查清单
 
 动手前 / 收尾前过一遍：
@@ -58,6 +81,7 @@ description: 通用排障与复用方法论。当用户报告某个操作"没反
 - [ ] 症状类 bug：先判**事件层还是样式层**？
 - [ ] 是否建立了**能 vs 不能**的最小对比？
 - [ ] 改前是否**确认了根因**（而非试样式）？
+- [ ] 非单次点击就能解决吗？**否则触发 Part C → systematic-debugging**。
 - [ ] 是否 `grep` 过**同类重复**（≥2 就考虑抽公共）？
 - [ ] 修完是否**横向覆盖**了所有同类点？
 - [ ] 是否**只剩一份**公共定义（删除重复）？
@@ -66,6 +90,6 @@ description: 通用排障与复用方法论。当用户报告某个操作"没反
 
 ## 使用方式
 
-- 用户报症状类 bug → 按 Part A 流程排查。
+- 用户报症状类 bug → 按 Part A 快速判断；复杂/多次失败 → Part C 交付 `systematic-debugging` 闭环。
 - 改动 / 新增代码 → 按 Part B 主动识别重复并复用。
 - 收尾前跑一遍"快速检查清单"。
