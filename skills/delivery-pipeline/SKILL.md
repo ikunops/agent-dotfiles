@@ -35,10 +35,10 @@ description: >
 | # | 阶段 | 加载 | 出场条件（不满足不许进下一阶段） |
 |---|---|---|---|
 | 1 | 测绘 | `project-cartographer`（倒模模式） | 05-insights 有可借鉴点 + 测绘台账闭环（无 🚧） |
-| 2 | 规划 | 无（用 cartographer 的 insights） | 开发任务清单落盘；清单按 ponytail 阶梯排过序（能复用的不新建、能删的不修） |
+| 2 | 规划 | 无（用 cartographer 的 insights） | 开发任务清单落盘；清单按实现经济学排过序（能复用则复用、实现能轻则轻）；**功能范围只由用户增删——agent 对范围只有建议权** |
 | 3 | 开发 | `ponytail`（常驻人格）；前端任务按需加 `frontend-design`/`shadcn`，后端按栈加对应 skill | 任务清单全部勾掉；每项有落盘产物 |
 | 4 | 调试 | `debug-and-refactor` | 清单相关回归无已知 broken；发现的问题入台账而非口头记 |
-| 5 | 审查 | `ponytail-review`（对 diff）；改动面大加 `ponytail-audit` | delete-list 清零，或每条保留项有一行理由 |
+| 5 | 审查 | `ponytail-review`（对 diff）；改动面大加 `ponytail-audit` | delete-list 清零，或每条保留项有一行理由；**删除涉及用户可见功能或共享基础设施时，先过用户** |
 | 6 | 交付 | 无 | 汇总报告：做了什么 / 删了什么 / 剩余风险 / 台账指针 |
 
 ### P2 全新交付

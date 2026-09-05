@@ -31,15 +31,17 @@ Switch: `/ponytail lite|full|ultra`.
 
 ## The ladder
 
-Stop at the first rung that holds:
+存在性判定权归用户，实现经济学归 agent。Stop at the first rung that holds:
 
-1. **Does this need to exist at all?** Speculative need = skip it, say so in one line. (YAGNI)
+1. **功能存在性 = 用户的权力，不是你的。** 不因 YAGNI 拒绝、缩水或悄悄省略用户要的功能。怀疑某个需求是投机的 → 一行提出疑问，等用户拍板，然后照做。唯一例外：用户明示"你觉得不需要就可以砍"。
 2. **Already in this codebase?** A helper, util, type, or pattern that already lives here → reuse it. Look before you write; re-implementing what's a few files over is the most common slop.
 3. **Stdlib does it?** Use it.
 4. **Native platform feature covers it?** `<input type="date">` over a picker lib, CSS over JS, DB constraint over app code.
 5. **Already-installed dependency solves it?** Use it. Never add a new one for what a few lines can do.
 6. **Can it be one line?** One line.
-7. **Only then:** the minimum code that works.
+7. **Only then:** the minimum code that works——受两条硬约束：
+   - **联动保护**：最小实现不得破坏与其他功能的联动、一致性或契约。看似臃肿的代码若服务于功能之外（跨功能复用、平台一致性、预留联动点），按基础设施对待，不是可削减的脂肪。
+   - **引用面判定**：判一处"臃肿"该不该减，看它被几个功能引用——只服务当前功能 = 实现脂肪，可减；被多处共享或明确是联动点 = 基础设施，保留。查引用面用 grep 或项目地图（如 `docs/project-map/`），拿不到证据就问用户，不拍脑袋。
 
 The ladder is a reflex, not a research project — but it runs *after* you
 understand the problem, not instead of it. Read the task and the code it
@@ -59,7 +61,7 @@ every sibling caller still broken. Fix it once, where all callers route through.
 - No boilerplate, no scaffolding "for later", later can scaffold for itself.
 - Deletion over addition. Boring over clever, clever is what someone decodes at 3am.
 - Fewest files possible. Shortest working diff wins — but only once you understand the problem. The smallest change in the wrong place isn't lazy, it's a second bug.
-- Complex request? Ship the lazy version and question it in the same response, "Did X; Y covers it. Need full X? Say so." Never stall on an answer you can default.
+- Complex request? Ship what was asked, in full. 认为存在更轻的等价实现 → 在同一回复里一行提出替代方案，由用户拍板，下次生效——**不得先斩后奏地缩水交付**（"我给你 Y 因为 Y 够了"是越权）。
 - Two stdlib options, same size? Take the one that's correct on edge cases. Lazy means writing less code, not picking the flimsier algorithm.
 - Mark deliberate simplifications that cut a real corner with a known ceiling (global lock, O(n²) scan, naive heuristic) with a `ponytail:` comment naming the ceiling and upgrade path (`# ponytail: global lock, per-account locks if throughput matters`).
 
@@ -80,7 +82,7 @@ Pattern: `[code] → skipped: [X], add when [Y].`
 |-------|------------|
 | **lite** | Build what's asked, but name the lazier alternative in one line. User picks. |
 | **full** | The ladder enforced. Stdlib and native first. Shortest diff, shortest explanation. Default. |
-| **ultra** | YAGNI extremist. Deletion before addition. Ship the one-liner and challenge the rest of the requirement in the same breath. |
+| **ultra** | YAGNI extremist. Deletion before addition. 仅在用户显式选择本档时激活；可以激进挑战实现和依赖，但**不静默砍用户要的功能**——挑战写进交付说明，砍什么列出来由用户追认。 |
 
 Example: "Add a cache for these API responses."
 - lite: "Done, cache added. FYI: `functools.lru_cache` covers this in one line if you'd rather not own a cache class."
