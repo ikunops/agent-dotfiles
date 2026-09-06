@@ -97,6 +97,21 @@ grep -rl "triggers:" ~/.config/opencode/skills/*/SKILL.md
 rg -il "z-index|overflow|portal|clipping" ~/.config/opencode/skills/
 ```
 
+### 本仓库已下沉技能路由表（活跃层瘦身，先查这里）
+
+以下 skill 已从活跃层下沉到库层分类目录——不在自动触发名单里。命中下表场景时，**先直接按路径读它们的 SKILL.md**（或拷回顶层激活），无需 npx 安装：
+
+| 触发场景 | skill | 库层路径 |
+|---|---|---|
+| Cloudflare Workers/Pages/KV/R2/D1 开发部署 | `cloudflare` `wrangler` `workers-best-practices` `durable-objects` | function-specific/cloud/ |
+| Cloudflare Zero Trust / One 套件 | `cloudflare-one` `cloudflare-one-migrations` | function-specific/cloud/ |
+| Cloudflare 邮件（Email Routing/Worker 收发） | `cloudflare-email-service` | function-specific/cloud/ |
+| Cloudflare Agents SDK（AI Agent 部署上边缘） | `agents-sdk` | function-specific/cloud/ |
+| OpenCode 沙箱环境搭建/迁移/稳定版 | `sandbox-next` `sandbox-stable` `sandbox-migrate-to-next` | function-specific/development-workflow/ |
+| K8s / DevOps 运维问题 | `k8s-knowledge` | function-specific/devops/k8s-knowledge |
+
+取回方式：`git mv function-specific/<类>/<名> <名>` 移回顶层即重新激活；单次使用可直接读其 SKILL.md。
+
 ### Common local mappings
 | Problem phrase | Local skill to invoke |
 |---|---|

@@ -38,7 +38,7 @@
 
 `opencode-skill-creator`（造 skill）· `turnstile-spin`（?）
 
-## ⑦ 库层候选（平台专属，评估下沉）
+## ⑦ 已下沉库层（2026-09-06，路由见 find-skills/SKILL.md）
 
 `cloudflare` · `cloudflare-one` · `cloudflare-one-migrations` · `cloudflare-email-service` · `wrangler` · `workers-best-practices` · `durable-objects` · `agents-sdk`（Cloudflare 全家桶 8 个）· `sandbox-next` · `sandbox-stable` · `sandbox-migrate-to-next`（沙箱 3 个）· `k8s-knowledge`
 
