@@ -96,6 +96,37 @@ opscore 已有探测接口，直接全走 1。
   能力接口，空数组=平铺）；探测时机=连接展开时一次并缓存
 - 自检通过：换任何引擎，"探测非空出层级、空则平铺"依然成立
 
+## 案例档案二：单元格/行/列 详情卡片（证据，2026-09 实测）
+
+**问题**：我们的单元格详情只有"列名+原始值"两行；dbx 是结构卡片：
+列名 / 行号 / 类型 / 长度 / 注释 / 值，且右键另有列详情、行详情。
+
+**四锚点实录**：
+1. 身份：`grep -rln "cellDetail\|CellDetail"` → `components/grid/DataGridCellDetailDialog.vue`
+   + `lib/dataGrid/dataGridDetail.ts`（类型与构建器分文件——UI 与数据解耦）
+2. 分发：DataGrid 内右键项 setDetail/setRowDetail/setColumnDetail → 同一 Dialog 组件按 detail 类型渲染
+3. 契约（本案例的核心发现）：`DataGridCellDetail` 接口 15 个字段，
+   三个构建函数共用一个原子构建器：
+   - `buildDataGridCellDetail(行,列)` → 单格信息
+   - `buildDataGridRowDetail` = 每列各 build 一次 → fields 数组
+   - `buildDataGridColumnDetail` = 同列每行 build 一次 → fields 数组
+   **详情不是三套实现，是一个原子构建器的三种聚合方向。**
+4. 回退/元数据来源（零后端调用）：
+   - 类型 = `typeByColumn(表元数据优先) ?? resultColumnTypes(结果集推断兜底)`
+   - 注释 = `commentByColumn`，无则显示"暂无注释"
+   - **长度 = `String(value).length`——是值的长度不是列定义长度**，
+     猜"要查 information_schema"就会去加后端接口，看了源码才知道是纯前端
+   - 值分层: raw/display/preview(12000 截断)/formattedJson(美化开关)/图片预览/二进制下载
+
+**移植到 opscore 的裁决**：
+- 不变量照抄：原子构建器 `buildCellInfo(r,c)` + 三种聚合；元数据分层
+  （describe 优先/结果集兜底）；"暂无注释"占位；行/列详情带过滤与
+  复制 JSON/TSV；复制列名进底部操作区
+- 细节重写：Dialog→轻量 portal 卡片（无 reka-ui）；JSON 美化/图片/二进制
+  预览暂不做（YAGNI，等有真实需求）
+- 关键实现路径：DataPanel 原本就调了 describeTable 却只留 type 字符串——
+  完整 ColumnInfo（注释/可空/键）本来就在手里，只是没人去接
+
 ## 验尸记录（防再犯）
 
 - feature-matrix.md 早记了"⚠️ 缺 schema 层"缺口，但没记参考项目的实现方式，
