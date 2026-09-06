@@ -34,7 +34,7 @@ description: >
 
 | # | 阶段 | 加载 | 出场条件（不满足不许进下一阶段） |
 |---|---|---|---|
-| 1 | 测绘 | `project-cartographer`（倒模模式） | 05-insights 有可借鉴点 + 测绘台账闭环（无 🚧） |
+| 1 | 测绘 | `project-cartographer`（倒模模式） | 05-insights 有可借鉴点 + 测绘台账闭环（无 🚧）；**参考项目的结构维度（层级/分组/步骤/级别）已做"真结构 vs 装饰"判定并记入 insights** |
 | 2 | 规划 | 无（用 cartographer 的 insights） | 开发任务清单落盘；清单按实现经济学排过序（能复用则复用、实现能轻则轻）；**功能范围只由用户增删——agent 对范围只有建议权** |
 | 3 | 开发 | `ponytail`（常驻人格）；前端任务按需加 `frontend-design`/`shadcn`，后端按栈加对应 skill | 任务清单全部勾掉；每项有落盘产物 |
 | 4 | 调试 | `debug-and-refactor` | 清单相关回归无已知 broken；发现的问题入台账而非口头记 |
