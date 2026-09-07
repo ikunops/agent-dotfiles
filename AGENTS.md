@@ -47,6 +47,7 @@
 - K8s/运维 → `k8s-knowledge`
 - 排障/复用 → `debug-and-refactor`
 - 技能发现 → `find-skills`
+- 项目测绘/结构探索 → `project-cartographer`（用户说"倒模""参考某项目来规划""帮我看看项目结构""有没有缺口/功能不全会用；含测绘、梳理前后端、检查前后端闭环）
 - 项目记忆沉淀/经验固化 → `project-memory-sculptor`
 
 三层降级策略：
