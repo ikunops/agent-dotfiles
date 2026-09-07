@@ -42,6 +42,17 @@ grep -oE 'flex-(col|row)|grid-cols-[0-9]' Surface.vue | sort | uniq -c | sort -r
 
 读法：`flex-col` 占优 = 纵向分区（工具栏在上/内容在下）；Splitpanes = 可调分栏工作台；`grid-cols` 多 = 卡片矩阵。
 
+**3.5 布局缺口探查（grid/flex 子控件可收缩性）** —— 布局骨架要说"能放得下"，不只"分成了几块"：
+
+```bash
+# 裸 1fr 与 minmax(0,…) 混用 = 溢出高危（裸 1fr 等价 minmax(auto,1fr), 子项最小宽度=内容/全局 min-width, 弹窗/卡片里撑爆）
+grep -rnE "gridTemplateColumns|grid-template-columns" Surface.vue
+# 全局是否压了 min-width 在子控件上（如 .input { min-width: 9.375rem }）, 让 minmax(0) 大概率失效
+grep -rn "min-width"  全局样式.css
+```
+
+读法：容器（弹窗/卡片/动态行）内出现 `1fr` 而没配 `minmax(0,…)`、或子控件被全局 `min-width` 顶住且无容器级 `.container > .input { min-width: 0 }` → 形态存在"放不下/溢出/截断"风险，形态牌记入 `🚧 布局缺口`。这是「新模式掺旧写法」的高发点：同类容器一半用 `minmax(0)` 一半用裸 `1fr`，多半是倒模时落笔那几行沿用了旧约定。
+
 **4. 形态指纹** —— 前三步的量化画像归入性格类（按主导交互定名，不按视觉喜好）：
 
 | 指纹 | 特征 | 典型 |
