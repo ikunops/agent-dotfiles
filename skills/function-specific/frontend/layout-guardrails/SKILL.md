@@ -34,3 +34,8 @@ Without depth-aware rules, menus render behind parents, portals get clipped by `
 ## Use
 Trigger on any surface whose parent tree > 2 levels deep, or when a dropdown/modal/portal is created.
 Hand off to `make-interfaces-feel-better` once positioning is **correct**, not just **pretty**.
+
+## Sizing (尺寸核算)
+Layout must satisfy "content needs ≤ container capacity" arithmetically, not visually.
+Any element using `w-fit`/fit-content inside a fixed-width parent can overflow by max-content width —
+sizing decisions and the rect-based overlap check live in [`checklist.md`](./checklist.md) §几何核算.
