@@ -199,6 +199,14 @@ Part A 定位"症状在哪一层"、Part C 走完整根因闭环，但很多看�
 症状：本地某目录文件"提交不进去"或"大量未跟踪"。
 规则：`src/` 不带 `/` 会在任意层级匹配（`web/src`、`third_party/.../src` 全被忽略）；要精确锚定目录写 `/src/`。用 `git check-ignore -v 路径` 验证是哪条规则命中。
 
+**E8. flex 高度链断裂 → 内容落到外层滚动容器（"底栏按钮看不见/内容被截"）**
+症状：区域底部按钮或内容被推出视口，滑块却在页面而不是区域里。
+规则：查完整祖先链的 flex 三要素：`flex:1 / min-height:0 / overflow` 每层齐不齐；容器 `overflow:hidden` + 固定段 `flex:none` + 可滚段 `flex:1; min-height:0`，底栏按钮放可滚段之后即常驻。→ 完整方法：`references/ui-layout-debug-method.md`
+
+**E9. 按钮/控件缩小后四周留白不对称（压缩未连带行高/老样式残留）**
+症状：按钮变小了，周围空着一圈，离上下距离不一致。
+规则：几何量化（`getBoundingClientRect` 量 top gap vs bottom gap）→ 样式考古（同一选择器历史多段定义逐块比对属性，老块 `margin-bottom/padding` 残活是隐形根因）→ 统一按钮定高（`height+line-height` 等宽），容器 `padding` 双端等值单点控留白。→ 完整方法：`references/ui-layout-debug-method.md`
+
 ---
 
 ## Part C —— 完整根因闭环（委派给 systematic-debugging）

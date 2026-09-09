@@ -99,6 +99,8 @@ description: 项目测绘师：对任意代码项目做全覆盖探索，产出"
 
 **数据层顺带做僵尸核对**：水流走到任何 schema/结构体字段时，顺带确认三条边完备——有写点、有读点、读点砸到真副作用（IO 或渲染分支）。字段若被"搬运给下一个结构体"而已，不算消费，继续追直到 IO 或回显。核对方法见 `references/sweep-strategy.md`。这不用单独开一条流，但在台账节点指示牌的"出口/死胡同"里要给数据字段落账，否则数据模型成了地图的盲区——`log_sources.follow` 那种"schema 自洽但消费缺失"的假功能就漏了。
 
+UI 布局类问题（出视口/留白不对称/未贴合），用户指出具体现象后按 `references/ui-layout-debug-method.md` 四招必达（高度链/几何量化/样式考古/统一度量），现象→路径映射表在文首。
+
 **锚点因生态而异**。每种语言/框架都有三类显眼标记可顺藤摸瓜：注册表标记（路由/菜单/命令注册处，列出全部入口）、流转标记（emit/dispatch/channel/inject，把链走通）、终止标记（fetch/sql/exec/FFI，见到底了）。目标项目是什么生态，先读 `references/trace-markers.md` 选对该锚点再放水——Vue 的 `@click/emit`、React 的 `onClick/dispatch`、Spring 的 `@GetMapping`、Go 的 `r.GET`、Rust 的 `#[tauri::command]`、gRPC 的 `rpc`，本质是同一件事：**顺着语言自己暴露的钩子逐节点探查**。
 
 ### Step 3 — 双向映射
