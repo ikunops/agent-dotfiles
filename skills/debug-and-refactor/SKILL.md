@@ -185,16 +185,6 @@ Part A 定位"症状在哪一层"、Part C 走完整根因闭环，但很多看�
 - **无扩展名二进制 + `/` 前缀**：PowerShell 不认无 `.exe` 的命令、`/cmd` 是 Linux 写法 → 复制出 `.exe` 用完整路径。
 - **端口被占**：服务起不来/连不上 → `netstat -ano` 找监听 PID → 反查进程名（可能是输入法/浏览器等无关程序占了端口）→ 释放或换端口。
 
-**E8. 重叠/溢出：先量矩形数字，再猜原因（视觉验证"测量不目测"）**
-症状：表单输入框互相叠压 / 字段被盖 / 下拉压住后续控件；"看着是贴在一起"。
-规则：凡是"疑似重叠/溢出"的布局症状，先取矩形数字判定，再谈根因——
-用 `getBoundingClientRect()` 两两求交：`ox = min(a.right,b.right)-max(a.left,b.left)`、`oy = min(a.bottom,b.bottom)-max(a.top,b.top)`，`ox>4 && oy>4` 即真重叠（阈值 4px 滤掉边框/阴影噪声）；用数字反推"谁溢出了多少"再定位到具体元素。
-必查的四个高发模式：
-- **定宽容器 + `w-fit`/inline-block 子元素**：fit-content 在 inline-block 上取 max-content 尺寸，不收缩 —— 内容宽 > 容器宽时溢出压住后续兄弟（真实案例：`div.w-40` 包 HostSelect trigger，w-40=10rem 受根字号缩放、trigger 内容 159px > 容器 126px，溢出 26px 覆盖下一输入框；修法 trigger 改 `w-full`）。判定公式：`容器宽 ≥ 子元素内容 max-content 宽` 不成立即溢出。
-- **rem 陷阱**：`w-40` 类固定 rem 宽度会随根字号缩放；同一布局在不同设备（16px vs 缩放根字号）表现不同 —— "标准机器不复发"不等于没 bug。排查时必须量 `getComputedStyle(document.documentElement).fontSize`。
-- **flex-wrap 掩盖**：`flex-wrap` 让溢出行换行，视觉无害；一旦容器加宽/减少字段使行不再换行，被掩盖的溢出立即暴露。改布局尺寸后要反查"之前被换行掩盖的行"。
-- **环境敏感必查**：根字号、视口宽度、缩放（`devicePixelRatio`/`zoom`）三者差异足以让同一个 bug 只在特定机器出现。
-收尾纪律：布局/表单改动验证 = 几何测量（脚本跑两两相交检查），不是看截图"觉得没问题"；同类表单弹窗全跑一遍同一检测。
 **E7. `.gitignore` 目录规则不锚定会误吞源码**
 症状：本地某目录文件"提交不进去"或"大量未跟踪"。
 规则：`src/` 不带 `/` 会在任意层级匹配（`web/src`、`third_party/.../src` 全被忽略）；要精确锚定目录写 `/src/`。用 `git check-ignore -v 路径` 验证是哪条规则命中。
@@ -206,6 +196,18 @@ Part A 定位"症状在哪一层"、Part C 走完整根因闭环，但很多看�
 **E9. 按钮/控件缩小后四周留白不对称（压缩未连带行高/老样式残留）**
 症状：按钮变小了，周围空着一圈，离上下距离不一致。
 规则：几何量化（`getBoundingClientRect` 量 top gap vs bottom gap）→ 样式考古（同一选择器历史多段定义逐块比对属性，老块 `margin-bottom/padding` 残活是隐形根因）→ 统一按钮定高（`height+line-height` 等宽），容器 `padding` 双端等值单点控留白。→ 完整方法：`references/ui-layout-debug-method.md`
+
+**E10. 重叠/溢出与尺寸核算：先量矩形数字，再猜原因（视觉验证"测量不目测"）**
+症状：表单输入框互相叠压 / 字段被盖 / 下拉压住后续控件；"看着是贴在一起"。
+规则：凡是"疑似重叠/溢出"的布局症状，先取矩形数字判定，再谈根因——
+用 `getBoundingClientRect()` 两两求交：`ox = min(a.right,b.right)-max(a.left,b.left)`、`oy = min(a.bottom,b.bottom)-max(a.top,b.top)`，`ox>4 && oy>4` 即真重叠（阈值 4px 滤掉边框/阴影噪声）；用数字反推"谁溢出了多少"再定位到具体元素。
+必查的四个高发模式：
+- **定宽容器 + `w-fit`/inline-block 子元素**：fit-content 在 inline-block 上取 max-content 尺寸，不收缩 —— 内容宽 > 容器宽时溢出压住后续兄弟（真实案例：`div.w-40` 包 HostSelect trigger，w-40=10rem 受根字号缩放、trigger 内容 159px > 容器 126px，溢出 26px 覆盖下一输入框；修法 trigger 改 `w-full`）。判定公式：`容器宽 ≥ 子元素内容 max-content 宽` 不成立即溢出。
+- **rem 陷阱**：`w-40` 类固定 rem 宽度会随根字号缩放；同一布局在不同设备（16px vs 缩放根字号）表现不同 —— "标准机器不复发"不等于没 bug。排查时必须量 `getComputedStyle(document.documentElement).fontSize`。
+- **flex-wrap 掩盖**：`flex-wrap` 让溢出行换行，视觉无害；一旦容器加宽/减少字段使行不再换行，被掩盖的溢出立即暴露。改布局尺寸后要反查"之前被换行掩盖的行"。
+- **环境敏感必查**：根字号、视口宽度、缩放（`devicePixelRatio`/`zoom`）三者差异足以让同一个 bug 只在特定机器出现。
+收尾纪律：布局/表单改动验证 = 几何测量（脚本跑两两相交检查），不是看截图"觉得没问题"；同类表单弹窗全跑一遍同一检测。
+→ 与 E8/E9 同族；延伸方法：`skills/project-cartographer/references/ui-layout-debug-method.md`（几何量化/统一度量）
 
 ---
 
