@@ -32,9 +32,9 @@ The Skills CLI (`npx skills`) is the package manager for the open agent skills e
 
 ## 本地已装清单优先（查生态之前先查这里）
 
-找 skill 的顺序：**本地 → 生态**。本地共 56 个（dotfiles skills/ 顶层平铺）：
+找 skill 的顺序：**本地 → 生态**。本地共 57 个（dotfiles skills/ 顶层平铺）：
 
-- 测绘/调试/流水线/前端工艺/ponytail 家族：见 `INDEX.md` 分类导航
+- 测绘/调试/流水线/前端工艺/ponytail 家族：见 `INDEX.md` 分类导航（组合审查用 `frontend-review-squad` 前端审查小分队）
 - **ZCode 官方镜像 16 个**：文档工艺（docx/pdf/pptx/xlsx）、设备自动化（android-dev/ios-dev/computer-use/control-browser/web-gui-tester）、ZCode 自诊断（zcode-configuration-guide + diagnagnosing-* 五件）、skill-creator
 - 库存层 315 个：`framework/` `function-specific/` `platform-specific/` 三分类
 
