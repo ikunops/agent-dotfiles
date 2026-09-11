@@ -107,6 +107,10 @@ grep -rl "triggers:" ~/.config/opencode/skills/*/SKILL.md
 rg -il "z-index|overflow|portal|clipping" ~/.config/opencode/skills/
 ```
 
+### A0. ZCode 官方插件镜像（16 个已本地化，清单见 INDEX ⑦b）
+
+文档工艺 `docx/pdf/pptx/xlsx` · 设备自动化 `android-dev/ios-dev/computer-use/control-browser/web-gui-tester` · ZCode 自诊断 `zcode-configuration-guide` + `diagnosing-skills/-commands/-hooks/-mcp/-plugins` · 造 skill `skill-creator`。命中这些域直接本地调用，不装不查。
+
 ### 本仓库已下沉技能路由表（活跃层瘦身，先查这里）
 
 以下 skill 已从活跃层下沉到库层分类目录——不在自动触发名单里。命中下表场景时，**先直接按路径读它们的 SKILL.md**（或拷回顶层激活），无需 npx 安装：
