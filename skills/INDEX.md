@@ -36,7 +36,7 @@
 
 ## ⑥ 元工具
 
-`opencode-skill-creator`（造 skill）· `turnstile-spin`（?）
+`opencode-skill-creator`（OpenCode 生态 skill 评测/基准/打包）· `skill-creator`（官方版：起草→试跑→迭代造 skill，2026-09-11 入库自 zcode plugin cache）· `turnstile-spin`（Turnstile 接入）
 
 ## ⑦ 已下沉库层（2026-09-06，路由见 find-skills/SKILL.md）
 
