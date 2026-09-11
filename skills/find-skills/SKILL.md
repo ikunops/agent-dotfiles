@@ -32,11 +32,12 @@ The Skills CLI (`npx skills`) is the package manager for the open agent skills e
 
 ## 本地已装清单优先（查生态之前先查这里）
 
-找 skill 的顺序：**本地 → 生态**。本地共 57 个（dotfiles skills/ 顶层平铺）：
+找 skill 的顺序：**本地 → 生态**。本地共 52 个活跃层（dotfiles skills/ 顶层平铺）；库层 344 个在 `function-specific/` `framework-specific/` `platform-specific/` 三分类里，用 `find-skills` 取用：
 
 - 测绘/调试/流水线/前端工艺/ponytail 家族：见 `INDEX.md` 分类导航（组合审查用 `frontend-review-squad` 前端审查小分队）
 - **ZCode 官方镜像 16 个**：文档工艺（docx/pdf/pptx/xlsx）、设备自动化（android-dev/ios-dev/computer-use/control-browser/web-gui-tester）、ZCode 自诊断（zcode-configuration-guide + diagnagnosing-* 五件）、skill-creator
-- 库存层 315 个：`framework/` `function-specific/` `platform-specific/` 三分类
+- **2026-09-12 收编前端技能 14 个**：动画 gsap 家族（core/frameworks/performance/timeline/scrolltrigger/plugins/utils 7 个）· 设计语言 ui-ux-pro-max/hallmark/claude-design/pencilplaybook/cinematic-ui · 交互 `interaction-design` · 落地页 `landing-page-generator`（⚠️ SKILL.md 空壳待补全）。路径均在 `function-specific/frontend/`，见 INDEX ③b
+- 库存层 344 个：`framework/` `function-specific/` `platform-specific/` 三分类
 
 判定"本地已有"就不必 `npx skills` 安装——直接调用并告知用户来源。仅当本地确实没有才进入下面的生态搜索流程。
 
@@ -136,6 +137,13 @@ rg -il "z-index|overflow|portal|clipping" ~/.config/opencode/skills/
 | frontend design / aesthetic direction | `frontend-design` |
 | need a reusable design system | `create-design-system` |
 | K8s / DevOps ops questions | `k8s-knowledge` |
+| UI/UX 设计规范 / 设计系统参考 | `ui-ux-pro-max` |
+| 设计标杆 / 惯例库 / 看大厂案例 | `hallmark` |
+| Anthropic 设计规范 / Claude 界面参考 | `claude-design` |
+| 铅笔原型 / 手绘风设计 | `pencilplaybook` |
+| GSAP 动画 / ScrollTrigger / 时间线 | `gsap-core` `gsap-scrolltrigger` `gsap-timeline` 等（gsap 家族 7 个） |
+| 交互设计模式 / 微交互 | `interaction-design` |
+| 落地页设计参考 | `landing-page-generator`（⚠️ SKILL.md 空，先补内容再用） |
 
 > Tip: local skills take priority over external lookups when no extra installation is required.
 
