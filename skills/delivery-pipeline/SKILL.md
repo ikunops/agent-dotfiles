@@ -72,6 +72,7 @@ description: >
 ## 编排纪律
 
 - **一次只推进一个阶段**；阶段内你可以完全自主，**阶段之间必须核验出场条件**——"感觉差不多"不是核验。
+- **官方镜像路由**（交付物/设备类阶段按需加载）：文档交付 → `docx/pdf/pptx/xlsx`；移动端验证 → `android-dev`/`ios-dev`；浏览器/桌面自动化验证 → `control-browser`/`computer-use`；ZCode 资源装载异常 → `zcode-configuration-guide` + 对应 `diagnosing-*`；写新 skill → `skill-creator`。
 - 子 skill 的产出一律落盘（cartographer 的地图、review 的 delete-list、任务清单），你的台账只存指针，不复制内容。
 - **升级决策停下来问**：改架构、删用户没让删的东西、超出原始范围、P3 修出 P2 的规模——其余全部自己走。
 - **用户点名某个 skill 时绕过流水线**，直接执行点名诉求；路由器是默认路径，不是关卡。

@@ -42,6 +42,15 @@
 
 `cloudflare` · `cloudflare-one` · `cloudflare-one-migrations` · `cloudflare-email-service` · `wrangler` · `workers-best-practices` · `durable-objects` · `agents-sdk`（Cloudflare 全家桶 8 个）· `sandbox-next` · `sandbox-stable` · `sandbox-migrate-to-next`（沙箱 3 个）· `k8s-knowledge`
 
+## ⑦b ZCode 官方插件镜像（2026-09-09 收编, 源=插件缓存 zcode-plugins-official）
+
+> 16 个, 提升 Skill 版本随官方插件; 与插件本体同名时插件优先(先到先得)。更新法: 插件升级后从缓存重拷对应 skills/ 目录。
+
+**文档工艺**: `docx` · `pdf` · `pptx` · `xlsx`（document-skills 0.1.4 全套）
+**设备自动化**: `android-dev`（安卓模拟器）· `ios-dev`（iOS 模拟器）· `computer-use`（桌面控制）· `control-browser`/`web-gui-tester`（浏览器）
+**ZCode 自诊断**: `zcode-configuration-guide`（资源装载地图）· `diagnosing-skills/-commands/-hooks/-mcp/-plugins`（五类不通排查）
+**造 skill**: `skill-creator`（通用; OpenCode 专属流程仍走 `opencode-skill-creator`）
+
 ## ⑧ 设计线
 
 `opendesign` · `setup-opendesign` · `run-opendesign`

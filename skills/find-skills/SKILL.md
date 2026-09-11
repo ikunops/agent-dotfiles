@@ -5,88 +5,22 @@ description: Helps users discover and install agent skills when they ask questio
 
 # Find Skills
 
-两段式：**先查本地路由表**（本文件，零安装成本），命中即直接读对应 SKILL.md 干活；路由表匹配不到再走外部生态（skills.sh / `npx skills`）。
+This skill helps you discover and install skills from the open agent skills ecosystem.
 
-## 路由总则
+## When to Use This Skill
 
-1. **先精确匹配**：任务自然语言里的关键词命中下表【触发关键词】→ 直达该 skill，读它的 SKILL.md 后动手。
-2. **再模糊匹配**：关键词没命中但任务领域/意图与某条相近 → 取该条，开工前说明"按 X 匹配，理由 Y"，允许用户否决。
-3. **匹配不到不硬凑**：两轮都落空 → 明确输出「**无匹配，建议手写**」，然后直接自己干（可顺手 `npx skills find` 找生态补位，但不得把不相干的 skill 塞给用户）。
-4. **本地优先**：路由表能解决的，不做外部安装；`ponytail`/`debug-and-refactor` 这类常驻人格优先级高于一切单点 skill。
-5. 一条任务命中多条时，按用户意图的主要矛盾选一条主 skill，其余作为辅助并列（表中用 `+` 标注）。
+Use this skill when the user:
 
-## 精确路由表（任务自然语言 → skill）
+- Asks "how do I do X" where X might be a common task with an existing skill
+- Says "find a skill for X" or "is there a skill for X"
+- Asks "can you do X" where X is a specialized capability
+- Expresses interest in extending agent capabilities
+- Wants to search for tools, templates, or workflows
+- Mentions they wish they had help with a specific domain (design, testing, deployment, etc.)
 
-### A. 代码与交付（高频三件套置顶）
+## What is the Skills CLI?
 
-| 触发关键词（中 / 英） | skill | 适用边界（一句话） |
-|---|---|---|
-| 修 bug / 没反应 / 删不掉 / 不生效 / 改了没生效 / 数据重复 / 作用错对象 / 样式改动（尺寸·间距·行高·颜色·图标）/ 重构 · debug / fix / not working / refactor | `debug-and-refactor` | 先核查前提再归因代码；**样式改动必做同类项完整性核查**——横向枚举同布局全部同类项一起改，收尾交清单 |
-| 写代码 / 加功能 / 新需求 / 嫌臃肿 / 太绕 / 过度设计 / boilerplate · write code / add feature / over-engineering / bloat / be lazy / simplest | `ponytail` | 常驻人格，lite/full/ultra 三档（小改/默认/大砍）；功能存在性归用户拍板，实现经济学归它走七级阶梯 |
-| diff 里找可删的 · review diff | `ponytail-review` | 只审 diff、一行一条发现；全库级审计用 `ponytail-audit`，捷径补录 `ponytail-debt`，成效展示 `ponytail-gain`，速查 `ponytail-help` |
-| 端到端做成一件事 / 倒模 / 仿照某项目做个 X / 完整交付 / 走流水线 / 多 skill 协同 · end-to-end / full delivery / pipeline | `delivery-pipeline` | 跨测绘→开发→测试→审查三个以上阶段才进（P1 倒模/P2 全新/P3 修复/P4 增量）；单点小修直接 debug-and-refactor；**CI/CD 基础设施问题不归它**（见 D 组） |
-| 会话交接 / 交给别人接手 / 交给 Claude Code / handoff | `handoff-to-claude-code` | 产出自足交接包（spec README + zip）；跨工具/跨人交接用，普通会话总结不用 |
-
-### B. 前端与设计
-
-| 触发关键词（中 / 英） | skill | 适用边界（一句话） |
-|---|---|---|
-| 前端布局 / 新页面 / 视觉方向 / 审美太平庸 · frontend design / aesthetics | `frontend-design` | 无既有品牌系统时给 committed 的视觉方向；已有品牌要沉淀成规范 → 加 `create-design-system`（reusable design system / UI kit） |
-| 线框 / 多方案粗稿 / 先画几个方向 · wireframe / low-fi | `wireframe` | 探索阶段出 3–5 个结构不同方案；定了方向要能点 → `interactive-prototype`（可交互原型 / clickable prototype） |
-| 设计产物要开关/换色/改文案不重画 · toggle / variant / tweaks | `make-tweakable` | 给已成稿的设计产物加 Tweaks 面板；不是用来生成初稿 |
-| shadcn 组件 / 组件注册表 · shadcn / component registry | `shadcn` | shadcn/ui 项目的加件/修件/排版；非 shadcn 项目不用 |
-| 找图标 / 侧边栏/按钮/状态图标 · icon | `icon-finder` | 路由到合适图标库；生产 UI 禁用 Unicode 符号凑数 |
-| 架构图 / 时序图 / 数据流图 / 生命周期图 · architecture diagram | `archify` | 交互式 HTML 图（含验收与导出）；幻灯片走 `make-a-deck`（deck / slides / PPT） |
-| z-index / 层叠上下文 / 溢出裁剪 / portal 被裁 · stacking / bleed / clipped | `layout-guardrails`（下沉：function-specific/frontend/） | CSS 层叠与溢出专项；广义像素打磨 → `make-interfaces-feel-better`（同下沉路径） |
-
-### C. React 与 Web 性能
-
-| 触发关键词（中 / 英） | skill | 适用边界（一句话） |
-|---|---|---|
-| React / Next.js 写法规范 / 无谓 re-render / bundle 优化 / 数据获取模式 · best practices / re-render | `vercel-react-best-practices` | 写、审、重构 React/Next.js 代码时挂载的静态性能规范；要实测数据时配 `web-perf` |
-| 页面慢 / 白屏 / LCP / INP / CLS / FCP / 性能剖析 · slow page / Core Web Vitals / profile | `web-perf` | Chrome DevTools **实测**剖析与优化建议；静态写法规范用上行，深性能问题两个都上 |
-
-### D. 运维与基础设施
-
-| 触发关键词（中 / 英） | skill | 适用边界（一句话） |
-|---|---|---|
-| K8s / kubectl / 集群 / Pod / Deployment / Docker / Istio / 服务网络 / 集群搭建 · kubernetes / cluster | `k8s-knowledge`（顶层与 function-specific/devops/ 各一份） | 36 专题运维知识库检索（含 CI/CD、网络、存储、监控、安全）；问 K8s 先查它，不现场凭记忆答 |
-| CI/CD 基础设施 / 流水线搭建 / 发布策略 · CI pipeline / release strategy | 按 CI 所在平台取：K8s 语境 → `k8s-knowledge` CI/CD 专题；Cloudflare 部署 → 下沉层 cloudflare 系列（见 G） | "流水线"两义：基础设施搭建归这里；指多 skill 端到端交付流程才归 `delivery-pipeline`（A 组） |
-| Cloudflare Workers/Pages/KV/R2/D1 · wrangler / workers | `cloudflare` `wrangler` `workers-best-practices` `durable-objects`（下沉：function-specific/cloud/） | Cloudflare 边缘开发部署全家桶；Zero Trust → `cloudflare-one`；邮件 → `cloudflare-email-service`；Agents SDK → `agents-sdk` |
-| Turnstile 人机验证 / bot 校验 · captcha / turnstile | `turnstile-spin` | Turnstile 端到端接入（widget 创建+嵌入+服务端校验）；其他验证码不适用 |
-
-### E. 浏览器 / 视觉 / 数据
-
-| 触发关键词（中 / 英） | skill | 适用边界（一句话） |
-|---|---|---|
-| 浏览器自动化 / 操作网页 / 填表 / 点按钮 / 截图 / E2E 测试 · browser automation / e2e / fill form | `agent-browser` | CLI 语义化操作，**默认首选**；要 CDP 协议级直控或 agent-browser 不可用 → `browser-use`（direct CDP control） |
-| 网页抓取 / 爬数据 / scraping / crawl | `firecrawl`（下沉：firecrawl/skills/firecrawl-cli/） | 批量抓取与结构化提取；单页交互操作走 E 组浏览器 skill |
-| 看图 / 读截图 / 这张图里是什么 · look at image / describe screenshot | `vision-eyes` | 文本模型借 GLM-4v 免费视觉 API 得眼睛；配套工具集 `vision-tools` |
-
-### F. 思维与元工具
-
-| 触发关键词（中 / 英） | skill | 适用边界（一句话） |
-|---|---|---|
-| 需求拷问 / 方案评审 / 压力测试这个计划 / 帮我把把关 · grill me / stress-test this plan | `grill-me` | 对**计划/设计**逐分支拷问到达成共识；代码层面的删减审查是 `ponytail-review`，别混 |
-| 项目测绘 / 摸清这个项目结构 / 竞品倒模 / 给项目做体检 · map the codebase / reverse-engineer | `project-cartographer` | 产出闭环结构地图（后端层级+前端层级+双向映射矩阵）；倒模场景配 `delivery-pipeline` P1 使用 |
-| 沉淀经验 / 记住这个坑 / 写进项目规则 · remember this / project memory | `project-memory-sculptor` | [待确认]→[已生效] 工作流维护 AGENTS.md；节制使用，不是每个任务都值得沉淀 |
-| 真正理解 X / 第一性原理 / 费曼技巧 · understand deeply / first principles | `understanding-anything` | 思维框架教练，非代码专属 |
-| 造新 skill / 写 SKILL.md / 把重复流程固化成 skill · create a skill | `skill-creator`（官方版，本次入库） | 起草→试跑→迭代循环；OpenCode 生态的 skill 评测/基准/打包 → `opencode-skill-creator` |
-| 有没有 skill 能做 X / find a skill for X | `find-skills`（本文件） | 路由表落空后走下方外部生态查找 |
-
-## 本地检索命令（路由表没覆盖时的兜底）
-
-```bash
-# 两库位置：活跃层 + dotfiles 库
-ls ~/.zcode/skills/ ; ls C:/Users/30849/opencode-dotfiles/skills/
-
-# 关键词扫描（含下沉层）
-rg -il "关键词" C:/Users/30849/opencode-dotfiles/skills/ --glob "SKILL.md"
-```
-
-下沉层取回：`git mv function-specific/<类>/<名> <名>` 移回顶层即重新激活；单次使用直接读其 SKILL.md。
-
-## 外部生态查找（本地无匹配才走）
+The Skills CLI (`npx skills`) is the package manager for the open agent skills ecosystem. Skills are modular packages that extend agent capabilities with specialized knowledge, workflows, and tools.
 
 **Key commands:**
 
@@ -96,6 +30,109 @@ rg -il "关键词" C:/Users/30849/opencode-dotfiles/skills/ --glob "SKILL.md"
 
 **Browse skills at:** https://skills.sh/
 
-Quality bar before recommending: 1K+ installs、可信来源（`vercel-labs` / `anthropics` / `microsoft`）、仓库 star 数正常。推荐时给：名称 + 一句话用途 + 安装量 + 安装命令，装前征得同意。
+## 本地已装清单优先（查生态之前先查这里）
 
-落空收尾：本地路由表无匹配、生态也没有 → 输出「无匹配，建议手写」并直接动手做任务本身，可建议 `npx skills init` 造一个。
+找 skill 的顺序：**本地 → 生态**。本地共 56 个（dotfiles skills/ 顶层平铺）：
+
+- 测绘/调试/流水线/前端工艺/ponytail 家族：见 `INDEX.md` 分类导航
+- **ZCode 官方镜像 16 个**：文档工艺（docx/pdf/pptx/xlsx）、设备自动化（android-dev/ios-dev/computer-use/control-browser/web-gui-tester）、ZCode 自诊断（zcode-configuration-guide + diagnagnosing-* 五件）、skill-creator
+- 库存层 315 个：`framework/` `function-specific/` `platform-specific/` 三分类
+
+判定"本地已有"就不必 `npx skills` 安装——直接调用并告知用户来源。仅当本地确实没有才进入下面的生态搜索流程。
+
+## How to Help Users Find Skills
+
+### Step 1: Understand What They Need
+
+When a user asks for help with something, identify:
+1. The domain (e.g., React, testing, design, deployment)
+2. The specific task (e.g., writing tests, creating animations, reviewing PRs)
+3. Whether this is a common enough task that a skill likely exists
+
+### Step 2: Check the Leaderboard First
+
+Before running a CLI search, check the [skills.sh leaderboard](https://skills.sh/) to see if a well-known skill already exists for the domain.
+
+### Step 3: Search for Skills
+
+```bash
+npx skills find [query] [--owner <owner>]
+```
+
+Examples:
+- `npx skills find react performance`
+- `npx skills find pr review`
+- `npx skills find changelog`
+
+### Step 4: Verify Quality Before Recommending
+
+1. **Install count** — Prefer skills with 1K+ installs
+2. **Source reputation** — Official sources (`vercel-labs`, `anthropics`, `microsoft`) are more trustworthy
+3. **GitHub stars** — Check the source repository
+
+### Step 5: Present Options to the User
+
+Share the skill name, description, install count, and the install command.
+
+### Step 6: Offer to Install
+
+```bash
+npx skills add <owner/repo@skill> -g -y
+```
+
+## Common Skill Categories
+
+| Category | Example Queries |
+|----------|----------------|
+| Web Development | react, nextjs, typescript, css, tailwind |
+| Testing | testing, jest, playwright, e2e |
+| DevOps | deploy, docker, kubernetes, ci-cd |
+| Documentation | docs, readme, changelog, api-docs |
+| Code Quality | review, lint, refactor, best-practices |
+| Design | ui, ux, design-system, accessibility |
+| Productivity | workflow, automation, git |
+
+## Local Skill Discovery
+
+Before falling back to external sources, check the locally installed skill set.
+
+### Search local skills by keyword/trigger
+```bash
+# list all installed skill names (triggers included)
+ls -R ~/.config/opencode/skills/ | grep SKILL.md
+
+# keyword scan for relevant skills
+grep -rl "triggers:" ~/.config/opencode/skills/*/SKILL.md
+# example keyword lookup
+rg -il "z-index|overflow|portal|clipping" ~/.config/opencode/skills/
+```
+
+### 本仓库已下沉技能路由表（活跃层瘦身，先查这里）
+
+以下 skill 已从活跃层下沉到库层分类目录——不在自动触发名单里。命中下表场景时，**先直接按路径读它们的 SKILL.md**（或拷回顶层激活），无需 npx 安装：
+
+| 触发场景 | skill | 库层路径 |
+|---|---|---|
+| Cloudflare Workers/Pages/KV/R2/D1 开发部署 | `cloudflare` `wrangler` `workers-best-practices` `durable-objects` | function-specific/cloud/ |
+| Cloudflare Zero Trust / One 套件 | `cloudflare-one` `cloudflare-one-migrations` | function-specific/cloud/ |
+| Cloudflare 邮件（Email Routing/Worker 收发） | `cloudflare-email-service` | function-specific/cloud/ |
+| Cloudflare Agents SDK（AI Agent 部署上边缘） | `agents-sdk` | function-specific/cloud/ |
+| OpenCode 沙箱环境搭建/迁移/稳定版 | `sandbox-next` `sandbox-stable` `sandbox-migrate-to-next` | function-specific/development-workflow/ |
+| K8s / DevOps 运维问题 | `k8s-knowledge` | function-specific/devops/k8s-knowledge |
+
+取回方式：`git mv function-specific/<类>/<名> <名>` 移回顶层即重新激活；单次使用可直接读其 SKILL.md。
+
+### Common local mappings
+| Problem phrase | Local skill to invoke |
+|---|---|
+| z-index / stacking-context conflict | `/layout-guardrails` |
+| dropdown/menu bleed outside parent | `/layout-guardrails` |
+| portal / teleport clipped by parent | `/layout-guardrails` |
+| CSS / layout pixel polish | `make-interfaces-feel-better` |
+| frontend design / aesthetic direction | `frontend-design` |
+| need a reusable design system | `create-design-system` |
+| K8s / DevOps ops questions | `k8s-knowledge` |
+
+> Tip: local skills take priority over external lookups when no extra installation is required.
+
+If no relevant skills exist, acknowledge the result and offer to help directly or suggest creating a skill with `npx skills init`.
