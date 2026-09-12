@@ -16,7 +16,7 @@ description: 前端审查小分队：九个 skill 组成的设计审查编队，
 | 1 | `project-cartographer` | 侦察兵 + 闭环测绘 | 交互点→后端函数水流；双向映射（🕳️ 后端有前端没接 / 🪝 前端调了后端没有）；孤儿 API 反查；形态牌（morphology-probe） |
 | 2 | `debug-and-refactor` | 前提核查 + 工程体检 | **D1 部署物漂移（审查对象=运行产物还是源码？）**；D0 乱码注释/编码事故；重复定义与死代码（CSS/TSX）；复用审计（Part B：同构写法 ≥2 就该抽公共）；高频根因速查（Part E） |
 | 3 | `workbench-layout` | 工作台布局硬规则 | z-index 预算（工具层 10 / 浮层 ≥150 / 全屏遮罩 ≥200）；sticky 表头单滚动容器；右键菜单 flip；split-view 收缩抖动 |
-| 4 | `layout-guardrails` | 溢出守门 | grid/flex 子控件可收缩性（裸 `1fr` / 全局 min-width 顶开 / flex-shrink 穿透）＋ **塌缩盲区：flex-basis:0 在 grid 行高 auto 时压塌行高→内容被 overflow 裁掉=「压缩饼干」症状；flex-basis: auto 才是等高安全默认**；触区尺寸；**运行几何核验：等高块必须用 boundingBox 量 clientHeight vs scrollHeight，不能只读 CSS** |
+| 4 | `layout-guardrails` | 溢出守门 | grid/flex 子控件可收缩性（裸 `1fr` / 全局 min-width 顶开 / flex-shrink 穿透）＋ **塌缩盲区：flex-basis:0 在 grid 行高 auto 时压塌行高→内容被 overflow 裁掉=「压缩饼干」症状；flex-basis: auto 才是等高安全默认**；触区尺寸；**运行几何核验：等高块必须用 boundingBox 量 clientHeight vs scrollHeight，不能只读 CSS**；等高失效（grid 行高 auto 时 flex-basis:0 压塌→内容被裁） |
 | 5 | `design-taste-frontend` | 设计刻度 | 字号模数档位；圆角同心体系；间距节奏；色彩承诺（语义 token vs 硬编码色） |
 | 6 | `make-interfaces-feel-better` | 手感 | 动效时长一致性；阴影/边框光学；hover 反馈覆盖；过渡范围 |
 | 7 | `ui-ux-pro-max` | UX/无障碍对账 | 按其 P1→P10 优先级表：对比度 4.5:1、触区 44px、焦点环补偿、`prefers-reduced-motion`、表单标签、图表可达性 |
