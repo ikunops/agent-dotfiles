@@ -34,6 +34,7 @@
 - 浏览器操作禁止调用 browser_close / browser_restart（只允许只读和点击）
 
 ## Skills 调用规范
+**任务第一步＝先路由（铁律）**：开始任何任务前，先扫 skill 清单找匹配当前任务类型的 skill / 部门，命中就整套加载再用——不要靠临场判断猜测，不要跳过侦查。布局/等高/塌缩相关一律先走 `layout-guardrails` 几何核验。
 遇到对应场景时必须加载对应 skill，不要手写：
 - 前端设计/视觉优化 → `frontend-design` / `make-interfaces-feel-better`
 - 前端布局/层级防穿模 → `layout-guardrails` (z-index / stacking-context / overflow-clip / portal restack)
