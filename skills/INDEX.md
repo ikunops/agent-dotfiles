@@ -24,7 +24,7 @@
 
 ## ③ 前端工艺
 
-`frontend-review-squad`（**前端审查小分队**：九 skill 编队组合审查——cartographer 闭环测绘 + debug-and-refactor 前提核查 + 布局/刻度/手感/UX/反AI味五件套，六步流程产出带证据的分级清单，2026-09-12 入库）· `frontend-design`（界面设计）· `shadcn`（组件体系）· `wireframe`（线框）· `interactive-prototype`（交互原型）· `create-design-system`（设计系统）· `icon-finder`（找图标）· `make-a-deck`（幻灯片）· `make-tweakable`（可调产物）· `web-perf`（性能）· `vercel-react-best-practices`（React 最佳实践）· `design-taste-frontend`（生产级设计审美：色彩承诺/字号阶梯/间距节奏/对比度/动效克制）· `interaction-design`（交互设计模式库，32KB）
+`frontend-review-squad`（**前端审查小分队**：九 skill 编队组合审查——cartographer 闭环测绘 + debug-and-refactor 前提核查 + 布局/刻度/手感/UX/反AI味五件套，六步流程产出带证据的分级清单，2026-09-12 入库）· `frontend-design`（界面设计）· `shadcn`（组件体系）· `wireframe`（线框）· `interactive-prototype`（交互原型）· `create-design-system`（设计系统）· `icon-finder`（找图标）· `make-a-deck`（幻灯片）· `make-tweakable`（可调产物）· `web-perf`（性能）· `vercel-react-best-practices`（React 最佳实践）· `design-taste-frontend`（生产级设计审美：色彩承诺/字号阶梯/间距节奏/对比度/动效克制）· `interaction-design`（交互设计模式库，32KB）· `ui-acceptance`（四层验收+硬阈值+众数一致性+失败二分+汇报三件套）
 
 ### ③b 前端工艺库层新增（2026-09-12 收编 14 个，均在 function-specific/frontend/，用 find-skills 取用）
 
