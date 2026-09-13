@@ -38,7 +38,7 @@ description: >
 | 2 | 规划 | 无（用 cartographer 的 insights） | 开发任务清单落盘；清单按实现经济学排过序（能复用则复用、实现能轻则轻）；**功能范围只由用户增删——agent 对范围只有建议权** |
 | 3 | 开发 | `ponytail`（常驻人格）；前端任务按需加 `frontend-design`/`shadcn`，后端按栈加对应 skill | 任务清单全部勾掉；每项有落盘产物 |
 | 4 | 调试 | `debug-and-refactor` | 清单相关回归无已知 broken；发现的问题入台账而非口头记 |
-| 5 | 审查 | `ponytail-review`（对 diff）；改动面大加 `ponytail-audit` | delete-list 清零，或每条保留项有一行理由；**删除涉及用户可见功能或共享基础设施时，先过用户** |
+| 5 | 审查 | `ponytail-review`（对 diff）；改动面大加 `ponytail-audit`；前端改动加 `frontend-review-squad`（含 cartographer 闭环测绘）；页面级验收走 `ui-acceptance` | delete-list 清零，或每条保留项有一行理由；**删除涉及用户可见功能或共享基础设施时，先过用户**；审查发现的问题入台账而非口头记 |
 | 6 | 交付 | 无 | 汇总报告：做了什么 / 删了什么 / 剩余风险 / 台账指针 |
 
 ### P2 全新交付
@@ -48,7 +48,7 @@ description: >
 `debug-and-refactor` 定位修复 → 相关回归 → 改动面大于一个文件时补 `ponytail-review` → 交付。不建全套台账，一个简短的"症状→根因→修复→验证"四行记录即可。
 
 ### P4 增量
-规划 → 开发（ponytail 常驻）→ 测试/审查（改动大才加）→ 交付。若项目已有 `docs/project-map/`，先读它定位改动影响面；没有且预计改动跨 3+ 模块，先问用户要不要走一次体检测绘。
+规划 → 开发（ponytail 常驻）→ 测试/审查（改动大才加：前端改动加 `frontend-review-squad`，页面级验收走 `ui-acceptance`）→ 交付。若项目已有 `docs/project-map/`，先读它定位改动影响面；没有且预计改动跨 3+ 模块，先问用户要不要走一次体检测绘。
 
 ## 流水线台账（状态外置）
 

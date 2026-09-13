@@ -54,6 +54,7 @@ L3 收尾沉淀（有条件 —— 雕刻师纪律：节制）
 | 写代码 / 加功能 / 新需求 / 嫌臃肿 / 太绕 / 过度设计 / boilerplate · write code / add feature / over-engineering / bloat / be lazy / simplest | `ponytail` | 常驻人格，lite/full/ultra 三档（小改/默认/大砍）；功能存在性归用户拍板，实现经济学归它走七级阶梯 |
 | diff 里找可删的 · review diff | `ponytail-review` | 只审 diff、一行一条发现；全库级审计用 `ponytail-audit`，捷径补录 `ponytail-debt`，成效展示 `ponytail-gain`，速查 `ponytail-help` |
 | 端到端做成一件事 / 倒模 / 仿照某项目做个 X / 完整交付 / 走流水线 / 多 skill 协同 · end-to-end / full delivery / pipeline | `delivery-pipeline` | 跨测绘→开发→测试→审查三个以上阶段才进（P1 倒模/P2 全新/P3 修复/P4 增量）；单点小修直接 debug-and-refactor；**CI/CD 基础设施问题不归它**（见 D 组） |
+| 项目收尾 / 交付前全面体检 / 检查项目完整性 / 给项目做体检 · final checkup / project review | `project-cartographer`（体检模式）+ `frontend-review-squad` + `ui-acceptance` | 三层各管一段按需取：cartographer 出前后端缺口清单（🕳️ 后端有前端没接 / 🪝 前端调了后端没有，按修补成本排序）、review-squad 查前端工艺九维、ui-acceptance 页面验收收口；不是每次全挂，按改动面选层 |
 | 会话交接 / 交给别人接手 / 交给 Claude Code / handoff | `handoff-to-claude-code` | 产出自足交接包（spec README + zip）；跨工具/跨人交接用，普通会话总结不用 |
 
 ### B. 前端与设计
