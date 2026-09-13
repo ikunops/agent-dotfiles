@@ -1,6 +1,6 @@
 # Skills INDEX — 活跃层导航
 
-> 活跃层 = 顶层平铺、自动触发的 skill。库存层（315 个）在 `framework/function/platform-specific/` 三分类里，用 find-skills 取用。
+> 活跃层 = 顶层平铺、自动触发的 skill。库存层（345 个）在 `framework/function/platform-specific/` 三分类里，用 find-skills 取用。
 > 维护规则：新增 skill 必须在此登记一行；连续两周未触发且属平台专属的，评估下沉到库层。
 
 ## ① 测绘与理解（系统怎么懂）

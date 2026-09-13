@@ -66,6 +66,9 @@ L3 收尾沉淀（有条件 —— 雕刻师纪律：节制）
 | shadcn 组件 / 组件注册表 · shadcn / component registry | `shadcn` | shadcn/ui 项目的加件/修件/排版；非 shadcn 项目不用 |
 | 找图标 / 侧边栏/按钮/状态图标 · icon | `icon-finder` | 路由到合适图标库；生产 UI 禁用 Unicode 符号凑数 |
 | 验收 / 验一下 / 检查页面 / 交付前检查 / 声称"做完了"之前 · acceptance / verify UI | `ui-acceptance` | 四层验收（源码/交互/渲染/视觉）+ 硬阈值 + 众数一致性 + 汇报三件套；性能指标实测归 `web-perf`，两者互补可并列 |
+| 前端整体审查 / 多维度组合检查 / 上线前把关 · frontend review squad | `frontend-review-squad` | 九 skill 编队组合审查（测绘+前提核查+布局/刻度/手感/UX/反AI味五件套），六步流程产出带证据的分级清单；单点问题走对应专项 skill |
+| 生产级设计审美 / 配色承诺 / 字号阶梯 / 间距节奏 · design taste | `design-taste-frontend` | 把平庸默认值推向生产级审美的具体标准；视觉方向选择归 `frontend-design` |
+| 交互设计模式 / 微交互 / 状态反馈 · interaction design | `interaction-design` | 交互模式库（32KB）；复杂动画编排归 H 组 gsap 家族 |
 | 架构图 / 时序图 / 数据流图 / 生命周期图 · architecture diagram | `archify` | 交互式 HTML 图（含验收与导出）；幻灯片走 `make-a-deck`（deck / slides / PPT） |
 | z-index / 层叠上下文 / 溢出裁剪 / portal 被裁 · stacking / bleed / clipped | `layout-guardrails`（下沉：function-specific/frontend/） | CSS 层叠与溢出专项；广义像素打磨 → `make-interfaces-feel-better`（同下沉路径） |
 
@@ -104,11 +107,27 @@ L3 收尾沉淀（有条件 —— 雕刻师纪律：节制）
 | 造新 skill / 写 SKILL.md / 把重复流程固化成 skill · create a skill | `skill-creator`（官方版，本次入库） | 起草→试跑→迭代循环；OpenCode 生态的 skill 评测/基准/打包 → `opencode-skill-creator` |
 | 有没有 skill 能做 X / find a skill for X | `find-skills`（本文件） | 路由表落空后走下方外部生态查找 |
 
+### G. ZCode 官方插件镜像（16 个，随官方插件更新；命中这些域直接本地调用，不装不查）
+
+文档工艺 `docx/pdf/pptx/xlsx` · 设备自动化 `android-dev/ios-dev/computer-use/control-browser/web-gui-tester` · ZCode 自诊断 `zcode-configuration-guide` + `diagnosing-skills/-commands/-hooks/-mcp/-plugins` · 造 skill `skill-creator`（见 F 组）。与插件本体同名时插件优先。
+
+### H. 前端工艺库层（下沉：function-specific/frontend/，2026-09-12 收编 14 个）
+
+| 触发关键词（中 / 英） | skill | 适用边界（一句话） |
+|---|---|---|
+| GSAP 动画 / ScrollTrigger / 时间线编排 / 滚动驱动 · gsap | `gsap-core` `gsap-frameworks` `gsap-performance` `gsap-timeline` `gsap-scrolltrigger` `gsap-plugins` `gsap-utils` | 按需取 1–2 个（先 core 再按场景），不整族加载；微交互 <300ms 归 `interaction-design` 不上 GSAP |
+| UI/UX 设计规范 / 设计系统参考 · ui ux patterns | `ui-ux-pro-max` | 3.4MB 知识库，设计语言主权威 |
+| 设计标杆 / 惯例库 / 看大厂案例 · hallmark | `hallmark` | 107 文件惯例库，找参照先这里 |
+| Anthropic 设计规范 / Claude 界面参考 · claude design | `claude-design` | 官方审美基准 |
+| 铅笔原型 / 手绘风 · pencil sketch | `pencilplaybook` | 手绘风格设计手册（6.7MB） |
+| 电影感 UI / 氛围素材 · cinematic | `cinematic-ui` | 素材库（6.5MB），主规范仍查 ui-ux-pro-max |
+| 落地页 / landing page | `landing-page-generator` | ⚠️ SKILL.md 为 0 字节空壳，先补全再用 |
+
 ## 本地检索命令（路由表没覆盖时的兜底）
 
 ```bash
-# 两库位置：活跃层 + dotfiles 库
-ls ~/.zcode/skills/ ; ls C:/Users/30849/opencode-dotfiles/skills/
+# 活跃层与库层在同一目录：~/.zcode/skills 是 dotfiles/skills 的 Junction，改这里即部署生效
+ls C:/Users/30849/opencode-dotfiles/skills/          # 活跃层 53 个 + 库层三分类
 
 # 关键词扫描（含下沉层）
 rg -il "关键词" C:/Users/30849/opencode-dotfiles/skills/ --glob "SKILL.md"
