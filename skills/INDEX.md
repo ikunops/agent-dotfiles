@@ -18,7 +18,7 @@
 |---|---|---|
 | `delivery-pipeline` | 交付流水线调度器（P1 倒模/P2 全新/P3 修复/P4 增量） | 端到端做成一件事、跨测绘/开发/测试/审查的多阶段任务 |
 | `debug-and-refactor` | 调试与重构 | 修 bug、行为不对 |
-| `find-skills` | 从生态里找/装 skill | "有没有 skill 能做 X" |
+| `find-skills` | 任务路由器：L0 项目记忆直达 → L1 路由表组链 → L2 外部生态 → L3 条件沉淀 | 每个任务开工时；"有没有 skill 能做 X" |
 | `grill-me` | 拷问式检验 | 被挑战论证 |
 | `handoff-to-claude-code` | 交接给 Claude Code | 跨工具交接 |
 
