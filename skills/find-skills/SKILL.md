@@ -82,6 +82,7 @@ AGENTS.md 缺失/为空但工作区有代码 → **不直接开工**，先建最
 | 设计产物要开关/换色/改文案不重画 · toggle / variant / tweaks | `make-tweakable` | 给已成稿的设计产物加 Tweaks 面板；不是用来生成初稿 |
 | shadcn 组件 / 组件注册表 · shadcn / component registry | `shadcn` | shadcn/ui 项目的加件/修件/排版；非 shadcn 项目不用 |
 | 找图标 / 侧边栏/按钮/状态图标 · icon | `icon-finder` | 路由到合适图标库；生产 UI 禁用 Unicode 符号凑数 |
+| 界面出现 emoji 图标 / 廉价 AI 感 / 图标跨平台渲染不一致 · emoji as icon | `no-emoji-ui` | 禁用规则 + 替代方案（内联 SVG/currentColor/文字/CSS 几何）+ 交付前 grep 清单；找图标库归 `icon-finder`，两者配合 |
 | 验收 / 验一下 / 检查页面 / 交付前检查 / 声称"做完了"之前 · acceptance / verify UI | `ui-acceptance` | 四层验收（源码/交互/渲染/视觉）+ 硬阈值 + 众数一致性 + 汇报三件套；性能指标实测归 `web-perf`，两者互补可并列 |
 | 前端整体审查 / 多维度组合检查 / 上线前把关 · frontend review squad | `frontend-review-squad` | 九 skill 编队组合审查（测绘+前提核查+布局/刻度/手感/UX/反AI味五件套），六步流程产出带证据的分级清单；单点问题走对应专项 skill |
 | 生产级设计审美 / 配色承诺 / 字号阶梯 / 间距节奏 · design taste | `design-taste-frontend` | 把平庸默认值推向生产级审美的具体标准；视觉方向选择归 `frontend-design` |
