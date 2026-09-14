@@ -1,6 +1,6 @@
 ---
 name: project-memory-sculptor
-description: 项目记忆雕刻师。Use when the user asks to 记忆/沉淀/固化/回顾经验, mentions AGENTS.md [待确认] [已生效] 区块, wants to 雕刻/审查/清理 项目记忆, or when a problem has just been solved and 经验值得写入项目规则。用只读方式先检查现有 AGENTS.md 结构，再追加差异提案。
+description: 项目记忆雕刻师。Use when the user asks to 记忆/沉淀/固化/回顾经验, mentions AGENTS.md [待确认] [已生效] 区块, wants to 雕刻/审查/清理 项目记忆, or when a problem has just been solved and 经验值得写入项目规则; also when 接手/继续旧项目/这是别人项目/没有项目记忆, or find-skills 检测到 AGENTS.md 缺失但工作区有代码（bootstrap 初始化）。用只读方式先检查现有 AGENTS.md 结构，再追加差异提案。
 ---
 
 # 项目记忆雕刻师（Project Memory Sculptor）
@@ -153,6 +153,23 @@ python <skill>/scripts/sculpt.py propose \
    - **修改** → `amend` 按用户意见改写后再放回 `[待确认]`
 4. 审查完成后汇报：确认 N 条 / 否决 M 条 / 待定 K 条
 
+## Bootstrap 模式（项目记忆初始化：接手/老项目冷启动）
+
+与日常 propose 的区别：propose 是**单条经验沉淀**，bootstrap 是**批量逆向初始化**——对象是"有项目成果但没有 AGENTS.md"的项目。核心原则：代码/测试/CI/git 历史是事实来源，记忆是逆向 + 验证出来的，不是凭空生成的。
+
+**流程**：
+
+1. **结构考古调 `project-cartographer` 体检模式**（不重复造轮子）：产出结构地图 + 缺口清单，落 `docs/project-map/`
+2. **只读扫描补齐运行面**：README/docs、包清单（package.json/pyproject.toml/go.mod/Cargo.toml）、Makefile/justfile/scripts、CI 配置、测试目录、入口/路由、.env.example、docker-compose、`git log --oneline -30`、TODO/FIXME/HACK
+3. **生成最小 AGENTS.md 草稿**（从 `templates/AGENTS.template.md` 复制），**全部 [待确认]**：项目概览 / 运行与测试 / 目录地图 / 高风险禁改 / 任务路由表候选链 / 已知坑 / Bootstrap 状态
+4. **问用户 3–5 个最小问题**：项目目标与验收标准？怎么安装/运行/测试？哪些区域不能改？当前任务的具体目标？已知坑/外部依赖/历史包袱？
+5. **验证驱动升格**（比"人工审查通过"更可操作的判据）：
+   - 命令实际跑通 → [已生效]（证据 = 命令原文 + 结果）
+   - 代码/配置里明确且无歧义的事实 → [已生效]
+   - README 声称但没验证 → [待确认]；推断/作者意图/口头传说 → [待确认]
+   - 信息冲突 → 记录冲突问用户，不擅自选一个
+6. **标记防循环**：AGENTS.md 写 `[已生效] bootstrap: done @ <日期>`，find-skills 检测到就不再触发；用户拒绝写入 → 记 `bootstrap: skipped`，**不阻塞任务**，但每次会话提醒"无项目记忆，将重新考古"
+
 ## 触发时机（自动判断，不需要用户显式要求）
 
 满足任一条件即主动提出"是否沉淀记忆"（一句话询问，不强行写入）：
@@ -161,6 +178,8 @@ python <skill>/scripts/sculpt.py propose \
 - 用户纠正了 AI 的错误做法
 - 用户表达了新的项目约束/红线
 - 同一问题在一周内出现第 2 次
+- find-skills 检测到 AGENTS.md 缺失且工作区有项目文件 → **bootstrap 模式**（显式触发，不等采纳信号——这是唯一不等收尾信号的入口）
+- AGENTS.md 仍缺失且上次标记 skipped → 每会话提醒一次，不纠缠
 
 ## 注意事项
 

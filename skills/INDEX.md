@@ -10,7 +10,7 @@
 | `project-cartographer` | 项目测绘师：闭环结构地图（A/B/C/D 四型 + 形态牌） | 倒模参考项目 / 体检自己项目 / 摸清任何代码库 |
 | `understanding-anything` | 思维框架教练（第一性原理/费曼/格栏…） | 想真正理解任何复杂事物，非代码专属 |
 | `archify` | 架构/时序/数据流图 → 交互 HTML（带验收） | 测绘收尾的摘要图、文档配图、美化 Mermaid |
-| `project-memory-sculptor` | 项目记忆塑形 | 沉淀项目长期记忆 |
+| `project-memory-sculptor` | 项目记忆塑形 | 沉淀项目长期记忆；bootstrap 初始化接手无记忆项目 |
 
 ## ② 任务路由与交付
 
