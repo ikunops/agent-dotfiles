@@ -141,11 +141,31 @@ AGENTS.md 缺失/为空但工作区有代码 → **不直接开工**，先建最
 | 电影感 UI / 氛围素材 · cinematic | `cinematic-ui` | 素材库（6.5MB），主规范仍查 ui-ux-pro-max |
 | 落地页 / landing page | `landing-page-generator` | ⚠️ SKILL.md 为 0 字节空壳，先补全再用 |
 
+### I. WorkBuddy 收编工具箱（2026-09-18，源 = ~/.workbuddy/skills 独有）
+
+| 触发关键词（中 / 英） | skill | 适用边界（一句话） |
+|---|---|---|
+| GitHub 操作 / 提 issue / 开 PR / 查 CI · gh cli | `github` | gh CLI 全操作；看热门趋势用下行 |
+| GitHub 趋势 / 热门项目 · trending repos | `github-trending-cn` | 按日/周/月抓 trending，自带零依赖脚本 |
+| 文档转 Markdown / Word/PPT/Excel 提取 · convert to md | `markitdown-skill` | 微软 MarkItDown，含 OCR 与音频转写 |
+| MCP 服务器管理 / 列出/配置/调用 MCP · mcp servers | `mcporter` | mcporter CLI 管理 MCP；配置排障归官方镜像 |
+| NotebookLM / 生成播客/视频摘要 · notebooklm | `notebooklm-studio` | 导入源 + 生成产物，需 Google 环境 |
+| 生成图片 / 改图 / AI 画图 · image generation | `nano-banana-pro` | Gemini 3 Pro 文生图/改图；看图描述归 vision-eyes |
+| 画草图 / Excalidraw 图 · diagram sketch | `excalidraw-diagram` | Excalidraw 源文件与渲染（.venv 已剔除，uv 同步重建）；交互 HTML 图归 archify |
+| 浏览器登录态 / 哪个 profile 登着 · browser profile session | `browser-profile-diag` | 只读定位 Chrome/Edge 活会话，不启动浏览器 |
+| HTML dashboard 回归 / 单文件页面测试 · dashboard regression | `html-dashboard-regression` | 单文件 SPA/管理面板专项；多页验收归 ui-acceptance |
+| 生成 PDF / 好看的 PDF / 填 PDF 表单 · pdf design | `minimax-pdf` | 设计感 PDF（生成/填表/重排版）；纯读写归官方 pdf |
+| 安卓原生开发 / Compose / Material 3 · android native | `android-native-dev` | 原生开发指南；模拟器设备自动化归官方 android-dev |
+| 优化 skill / 给 SKILL.md 评分 · skill optimizer | `darwin-skill` | 8 维自动评审；造 skill 归 skill-creator |
+| K8s 避坑 / probe 配置 / RBAC · k8s pitfalls | `k8s-pitfalls` | 常见坑速查；36 专题知识库归 k8s-knowledge，互补 |
+
+未收编（skillhub 同源重复，WorkBuddy 侧备份保留）：agent-browser-core、agent-team-orchestration__skillhub。存疑未动：frontend-dev、university-applications（名实不符，待用户处置）。
+
 ## 本地检索命令（路由表没覆盖时的兜底）
 
 ```bash
 # 活跃层与库层在同一目录：~/.zcode/skills 是 dotfiles/skills 的 Junction，改这里即部署生效
-ls C:/Users/30849/opencode-dotfiles/skills/          # 活跃层 53 个 + 库层三分类
+ls C:/Users/30849/opencode-dotfiles/skills/          # 顶层活跃 skill + 库层三分类（数量以 ls 为准）
 
 # 关键词扫描（含下沉层）
 rg -il "关键词" C:/Users/30849/opencode-dotfiles/skills/ --glob "SKILL.md"

@@ -59,3 +59,9 @@
 ## ⑧ 设计线
 
 `opendesign` · `setup-opendesign` · `run-opendesign`
+
+## ⑨ WorkBuddy skillhub 收编（2026-09-18，源 = ~/.workbuddy/skills 独有）
+
+`github`（gh CLI）· `github-trending-cn`（trending 监控）· `markitdown-skill`（文档转 MD）· `mcporter`（MCP 管理）· `notebooklm-studio`（NotebookLM 产物）· `nano-banana-pro`（Gemini 3 Pro 图像）· `excalidraw-diagram`（Excalidraw 图表，.venv 已剔除）· `browser-profile-diag`（浏览器登录态诊断）· `html-dashboard-regression`（单文件 dashboard 回归）· `minimax-pdf`（设计感 PDF）· `android-native-dev`（原生开发指南）· `darwin-skill`（skill 自动优化器）· `k8s-pitfalls`（K8s 避坑，原 k8s__skillhub 改名归一）
+
+> 未收编（skillhub 同源重复，备份保留在 WorkBuddy）：agent-browser-core · agent-team-orchestration__skillhub。存疑未动：frontend-dev · university-applications（名实不符，待用户处置）。路由见 find-skills I 组。
