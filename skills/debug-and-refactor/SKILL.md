@@ -377,6 +377,22 @@ git config maintenance.auto false && git config gc.auto 0 && git config maintena
 3. **破坏性提交前断言"staged 删除数 == 0"**，推送前再断言"与远端 diff 的删除数 == 0"。
 4. **动仓库前先整目录备份（含 `.git`）** —— 这次能无损恢复全靠它。
 
+**附：远程跟踪 ref（`refs/remotes/origin/*`）反复消失**
+
+现象：`git fetch` / `git push` 之后，`refs/remotes/origin/` **整个目录没了**，`git rev-parse origin/main` 直接报错
+（`fatal: Needed a single revision`），`git status` 显示 `[gone]` 或荒谬的 ahead 数字；而 `refs/heads/main` 一直正常。
+已排除的原因：`maintenance.auto` / `gc.auto` 已关、全局无 `maintenance.repo` 登记、陈旧 `packed-refs` 条目也已清掉 —— **都不是它**。
+
+- **判断**：这是**环境/文件系统层面**的问题，不是 git 配置问题（git 能写已有目录下的 ref，却维护不住这个目录）。
+- **影响**：**纯展示问题**。`HEAD`、`push`、工作区都正常；只是 `git status` 的 ahead/behind 不可信。
+- **修法（临时）**：
+  ```bash
+  mkdir -p .git/refs/remotes/origin
+  git rev-parse HEAD > .git/refs/remotes/origin/main     # 或写入远端真值
+  ```
+- **取真值的正确姿势**：`git ls-remote <remote> refs/heads/<branch>` —— **不要**用本地 ref 判断谁新（见坑 1）。
+- **根治方向**：新克隆一份对照；或检查杀软/云同步是否把 `.git` 纳入了实时扫描/同步（这类工具会干扰 git 的 ref 事务）。
+
 ---
 
 
