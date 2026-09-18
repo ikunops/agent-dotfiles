@@ -205,7 +205,8 @@ def remove_link(p: Path, apply: bool) -> None:
 
 
 def backup_dir(p: Path, apply: bool, backup_root: Path) -> Path:
-    dst = backup_root / (p.name + "-" + time.strftime("%Y%m%d-%H%M%S"))
+    client = p.parent.name.lstrip(".") or "client"
+    dst = backup_root / (time.strftime("%Y%m%d-%H%M%S") + "-" + client + "-" + p.name)
     print("      $ mv \"%s\" \"%s\"" % (p, dst))
     if apply:
         backup_root.mkdir(parents=True, exist_ok=True)
