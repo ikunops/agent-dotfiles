@@ -11,8 +11,8 @@ skills 库体检 —— 把账一次算清。
 
 检查项
 ------
-  A 空壳         SKILL.md 0 字节 / 顶层目录整个不是 skill
-  B frontmatter  无 frontmatter / 缺 name / 缺 description / name != 目录名
+  A 空壳         SKILL.md 0 字节 / 任何 0 字节文件（__init__.py 豁免）/ 顶层目录整个不是 skill
+  B frontmatter  活跃层：无 frontmatter / 缺 name / 缺 description / name != 目录名\n                 （库层同类问题只提示、不计入问题）
   C 重名         跨层同名 skill；逐对树哈希判「一致」/「仅行尾不同」/「已分叉」，
                  并按 INDEX.md 的登记层给出「正身应该在哪」
   D 嵌套         skill 内部又套了 skill（vendor 目录夹带的 .claude/skills 等）
@@ -181,7 +181,7 @@ def main() -> int:
     library = [d for d in rest if d.parent != SKILLS]
 
     idx_active, idx_library = index_layers()
-    findings = {"shell": [], "fm": [], "dup": [], "nested": [], "lang": [], "index": []}
+    findings = {"shell": [], "fm": [], "fm_info": [], "dup": [], "nested": [], "lang": [], "index": []}
 
     # ---------- A 空壳 ----------
     for d in all_skills:
@@ -201,21 +201,38 @@ def main() -> int:
                    % (len(deep[0].relative_to(p).parts), deep[0].relative_to(p))) if deep else "无 SKILL.md"
             findings["shell"].append({"path": name, "why": why})
 
+    # 全库 0 字节文件（__init__.py 空文件是合法的 Python 包标记，豁免）
+    for root, dirs, files in os.walk(SKILLS):
+        dirs[:] = [x for x in dirs if x not in PRUNE]
+        for f in files:
+            if f == "__init__.py":
+                continue
+            fp = Path(root) / f
+            try:
+                if fp.stat().st_size == 0:
+                    findings["shell"].append({"path": str(fp.relative_to(SKILLS)), "why": "0 字节文件"})
+            except OSError:
+                pass
+
     # ---------- B frontmatter ----------
+    # 活跃层必须规范（模型直接读它来触发）；库层多为上游原样，name 与目录名不一致属正常，
+    # 降级为提示、不当作问题 —— 改了反而跟上游分叉，下次重拷又回来。
+    active_set = set(active)
     info = {}
     for d in all_skills:
         name, desc, body = parse_fm(d / "SKILL.md")
         info[d] = (name, desc, body)
         rel = str(d.relative_to(SKILLS))
+        key = "fm" if d in active_set else "fm_info"
         if name is None and desc is None:
-            findings["fm"].append({"path": rel, "why": "无 frontmatter"})
+            findings[key].append({"path": rel, "why": "无 frontmatter"})
             continue
         if not name:
-            findings["fm"].append({"path": rel, "why": "缺 name"})
+            findings[key].append({"path": rel, "why": "缺 name"})
         if not desc:
-            findings["fm"].append({"path": rel, "why": "缺 description"})
+            findings[key].append({"path": rel, "why": "缺 description"})
         if name and name != d.name:
-            findings["fm"].append({"path": rel, "why": "name(%s) != 目录名(%s)" % (name, d.name)})
+            findings[key].append({"path": rel, "why": "name(%s) != 目录名(%s)" % (name, d.name)})
 
     # ---------- C 重名 ----------
     groups = {}
@@ -275,7 +292,7 @@ def main() -> int:
     for n in sorted({d.name for d in active} - idx_active - idx_library):
         findings["index"].append({"path": n, "why": "活跃层存在但 INDEX 未登记"})
 
-    total = sum(len(v) for v in findings.values())
+    total = sum(len(v) for k, v in findings.items() if k != "fm_info")
 
     if args.json:
         print(json.dumps({"scale": {"active": len(active), "library": len(library), "meta": len(meta)},
@@ -300,7 +317,11 @@ def main() -> int:
             print("   " + render(r))
 
     sec("A 空壳", "shell", lambda r: "X  %-50s %s" % (r["path"], r["why"]))
-    sec("B frontmatter", "fm", lambda r: "X  %-50s %s" % (r["path"], r["why"]))
+    sec("B frontmatter（活跃层）", "fm", lambda r: "X  %-50s %s" % (r["path"], r["why"]))
+    if findings["fm_info"]:
+        print("\n【B' 库层 frontmatter（提示，不计入问题）】%d 处" % len(findings["fm_info"]))
+        for r in findings["fm_info"]:
+            print("   .  %-50s %s" % (r["path"], r["why"]))
 
     rows = findings["dup"]
     print("\n【C 重名】%s" % ("OK 无问题" if not rows else "%d 组" % len(rows)))
