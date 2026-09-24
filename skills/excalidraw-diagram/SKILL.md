@@ -1,6 +1,6 @@
 ---
 name: excalidraw-diagram
-description: "Create Excalidraw diagrams for workflows, architectures, protocols, concepts, and system explanations. Use when a user wants a flowchart, architecture sketch, visual explanation, or diagram as a .excalidraw file plus PNG preview. Includes a local Playwright renderer for visual QA and reference files for palette, JSON structure, and reusable element patterns."
+description: "生成 Excalidraw 图解：流程图、架构草图、协议/概念/系统讲解，产出可编辑的 .excalidraw 文件 + PNG 预览，内置本地 Playwright 渲染器做视觉校验。当用户要流程图、架构图、可视化讲解、画张图，或需要可编辑的图表文件时使用。Triggers: flowchart, architecture sketch, diagram, visual explanation, excalidraw."
 description_zh: "Excalidraw 图解生成与渲染校验"
 description_en: "Generate Excalidraw diagrams with local rendering validation"
 homepage: https://github.com/coleam00/excalidraw-diagram-skill

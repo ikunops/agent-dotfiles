@@ -1,6 +1,6 @@
 ---
 name: icon-finder
-description: Use when the project needs icons — sidebar nav, buttons, status indicators, feature labels, empty states, or any UI element that needs a visual symbol. Routes to the best icon library for the job. Never use raw Unicode symbols (☰◎⚙▣◉◈) for production UI.
+description: "项目需要图标时使用 —— 侧边栏导航、按钮、状态指示、功能标签、空状态，或任何需要视觉符号的 UI 元素；按用途路由到最合适的图标库。生产 UI 禁止用 Unicode 符号凑数（☰◎⚙▣◉◈）。Triggers: icon, icons, icon library, find an icon, sidebar icons."
 ---
 
 # Icon Finder

@@ -1,6 +1,6 @@
 ---
 name: find-skills
-description: Helps users discover and install agent skills when they ask questions like "how do I do X", "find a skill for X", "is there a skill that can...", or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.
+description: "任务路由器：把任务的自然语言翻译成一条「当前任务的 skill 链」—— L0 项目记忆直达 → L1 路由表组链 → L2 执行收口 → L3 条件沉淀。当用户问「有没有 skill 能做 X」「这个怎么做」「帮我找个 skill」「能不能扩展个能力」，或任务需要跨测绘/开发/测试/审查多阶段协同、需要判断该挂哪些 skill 时使用。Triggers: find a skill, how do I do X, is there a skill that can, route this task."
 ---
 
 # Find Skills

@@ -1,6 +1,6 @@
 ---
 name: ziwei-doushu-master
-description: Perform source-traceable, structure-first Zi Wei Dou Shu chart analysis from a supplied chart or validated birth data. Use for full-chart, palace, relationship, career, wealth, migration, timing, and reflective consultation questions; do not treat it as deterministic prediction or medical, legal, or financial advice.
+description: "紫微斗数排盘解读 —— 结构优先，每条结论都可溯源到原始依据；支持全盘、宫位、感情、事业、财富、迁移、时机与反思型咨询。输入为已排好的盘或校验过的出生资料。定位是结构化解读而非确定性预测，也不构成医疗、法律或财务建议。Triggers: 紫微斗数, 排盘, 命盘, zi wei dou shu, chart analysis."
 metadata:
   short-description: Structure-first Zi Wei Dou Shu analysis with source citations
 ---
