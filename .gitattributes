@@ -6,3 +6,5 @@
 *.jsonc text eol=lf
 *.yaml text eol=lf
 *.yml text eol=lf
+# 钩子必须 LF —— CRLF 会破坏 shebang，钩子静默失效
+scripts/hooks/* text eol=lf
