@@ -31,7 +31,7 @@
 ### ③b 前端工艺库层新增（2026-09-12 收编 14 个，均在 function-specific/frontend/，用 find-skills 取用）
 
 - **动画（gsap 家族 7 个）**：`gsap-core`（基础/核心 → timeline）· `gsap-frameworks`（框架对接 React/Vue）· `gsap-performance`（性能）· `gsap-timeline`（时间线编排）· `gsap-scrolltrigger`（滚动触发）· `gsap-plugins`（插件库）· `gsap-utils`（工具）
-- **设计语言与参考**：`ui-ux-pro-max`（UI/UX 知识库 3.4MB）· `hallmark`（设计标杆/惯例库 107 文件）· `claude-design`（Anthropic 设计规范）· `pencilplaybook`（铅笔设计手册 6.7MB）· `cinematic-ui`（电影感 UI 素材 6.5MB；设计语言主用 ui-ux-pro-max）· `landing-page-generator`（落地页生成，⚠️ SKILL.md 为 0 字节空壳，需补全后再用）
+- **设计语言与参考**：`ui-ux-pro-max`（UI/UX 知识库 3.4MB）· `hallmark`（设计标杆/惯例库 107 文件）· `claude-design`（Anthropic 设计规范）· `pencilplaybook`（铅笔设计手册 6.7MB）· `cinematic-ui`（电影感 UI 素材 6.5MB；设计语言主用 ui-ux-pro-max）
 
 ## ④ 工程哲学（常驻人格）
 
@@ -39,7 +39,7 @@
 
 ## ⑤ 浏览器与视觉
 
-`agent-browser` · `browser-use`（浏览器自动化）· `browser-automation`（无头浏览器自检：console/网络/断言/截图）· `web-browser-verify`（本机真实渲染验证，浏览器下载不可用时的兜底）· `firecrawl-cli`（网页抓取；实际路径 `firecrawl/skills/firecrawl-cli/`，非顶层 SKILL.md）· `vision-eyes` · `vision-tools`（视觉能力）
+`agent-browser` · `browser-use`（浏览器自动化）· `browser-automation`（无头浏览器自检：console/网络/断言/截图）· `web-browser-verify`（本机真实渲染验证，浏览器下载不可用时的兜底）· `firecrawl`（网页抓取：全局 `firecrawl` CLI，认证见 `rules/install.md`）· `vision-eyes` · `vision-tools`（视觉能力）
 
 ## ⑥ 元工具
 

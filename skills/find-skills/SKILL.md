@@ -111,7 +111,7 @@ AGENTS.md 缺失/为空但工作区有代码 → **不直接开工**，先建最
 | 触发关键词（中 / 英） | skill | 适用边界（一句话） |
 |---|---|---|
 | 浏览器自动化 / 操作网页 / 填表 / 点按钮 / 截图 / E2E 测试 · browser automation / e2e / fill form | `agent-browser` | CLI 语义化操作，**默认首选**；要 CDP 协议级直控或 agent-browser 不可用 → `browser-use`（direct CDP control） |
-| 网页抓取 / 爬数据 / scraping / crawl | `firecrawl`（下沉：firecrawl/skills/firecrawl-cli/） | 批量抓取与结构化提取；单页交互操作走 E 组浏览器 skill |
+| 网页抓取 / 爬数据 / scraping / crawl | `firecrawl` | 批量抓取与结构化提取（全局 `firecrawl` CLI，认证见其 `rules/install.md`）；单页交互操作走 E 组浏览器 skill |
 | 看图 / 读截图 / 这张图里是什么 · look at image / describe screenshot | `vision-eyes` | 文本模型借 GLM-4v 免费视觉 API 得眼睛；配套工具集 `vision-tools` |
 
 ### F. 思维与元工具
@@ -139,7 +139,6 @@ AGENTS.md 缺失/为空但工作区有代码 → **不直接开工**，先建最
 | Anthropic 设计规范 / Claude 界面参考 · claude design | `claude-design` | 官方审美基准 |
 | 铅笔原型 / 手绘风 · pencil sketch | `pencilplaybook` | 手绘风格设计手册（6.7MB） |
 | 电影感 UI / 氛围素材 · cinematic | `cinematic-ui` | 素材库（6.5MB），主规范仍查 ui-ux-pro-max |
-| 落地页 / landing page | `landing-page-generator` | ⚠️ SKILL.md 为 0 字节空壳，先补全再用 |
 
 ### I. WorkBuddy 收编工具箱（2026-09-18，源 = ~/.workbuddy/skills 独有）
 
