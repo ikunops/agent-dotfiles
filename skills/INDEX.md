@@ -1,7 +1,8 @@
 # Skills INDEX — 活跃层导航
 
-> 活跃层 = 顶层平铺、自动触发的 skill。库存层（345 个）在 `framework/function/platform-specific/` 三分类里，用 find-skills 取用。
+> 活跃层 = 顶层平铺、自动触发的 skill。库存层（340 个）在 `framework/function/platform-specific/` 三分类里，用 find-skills 取用。
 > 维护规则：新增 skill 必须在此登记一行；连续两周未触发且属平台专属的，评估下沉到库层。
+> 下沉 = **移动**，不是复制（同一 skill 只应存在一份）；提交前跑 `python scripts/audit-skills.py --strict`。
 
 ## ① 测绘与理解（系统怎么懂）
 
@@ -11,6 +12,7 @@
 | `understanding-anything` | 思维框架教练（第一性原理/费曼/格栏…） | 想真正理解任何复杂事物，非代码专属 |
 | `archify` | 架构/时序/数据流图 → 交互 HTML（带验收） | 测绘收尾的摘要图、文档配图、美化 Mermaid |
 | `project-memory-sculptor` | 项目记忆塑形 | 沉淀项目长期记忆；bootstrap 初始化接手无记忆项目 |
+| `web-app-capability-mining` | Web 产品能力面挖掘（读 i18n 语言包 + 前端 chunk 名当权威词汇表） | 摸清某工具到底有哪些功能、竞品能力对比、避免只读文档导致大面积遗漏 |
 
 ## ② 任务路由与交付
 
@@ -24,7 +26,7 @@
 
 ## ③ 前端工艺
 
-`frontend-review-squad`（**前端审查小分队**：九 skill 编队组合审查——cartographer 闭环测绘 + debug-and-refactor 前提核查 + 布局/刻度/手感/UX/反AI味五件套，六步流程产出带证据的分级清单，2026-09-12 入库）· `frontend-design`（界面设计）· `shadcn`（组件体系）· `wireframe`（线框）· `interactive-prototype`（交互原型）· `create-design-system`（设计系统）· `icon-finder`（找图标）· `no-emoji-ui`（界面禁 emoji：SVG/文字/CSS 替代 + grep 清单）· `make-a-deck`（幻灯片）· `make-tweakable`（可调产物）· `web-perf`（性能）· `vercel-react-best-practices`（React 最佳实践）· `design-taste-frontend`（生产级设计审美：色彩承诺/字号阶梯/间距节奏/对比度/动效克制）· `interaction-design`（交互设计模式库，32KB）· `ui-acceptance`（四层验收+硬阈值+众数一致性+失败二分+汇报三件套）
+`frontend-review-squad`（**前端审查小分队**：九 skill 编队组合审查——cartographer 闭环测绘 + debug-and-refactor 前提核查 + 布局/刻度/手感/UX/反AI味五件套，六步流程产出带证据的分级清单，2026-09-12 入库）· `frontend-design`（界面设计）· `shadcn`（组件体系）· `wireframe`（线框）· `interactive-prototype`（交互原型）· `create-design-system`（设计系统）· `icon-finder`（找图标）· `no-emoji-ui`（界面禁 emoji：SVG/文字/CSS 替代 + grep 清单）· `make-a-deck`（幻灯片）· `make-tweakable`（可调产物）· `web-perf`（性能）· `vercel-react-best-practices`（React 最佳实践）· `design-taste-frontend`（生产级设计审美：色彩承诺/字号阶梯/间距节奏/对比度/动效克制）· `interaction-design`（交互设计模式库，32KB）· `ui-acceptance`（四层验收+硬阈值+众数一致性+失败二分+汇报三件套）· `frontend-ui-consistency`（前端 UI 相对一致性规范 + 一键审计脚本）
 
 ### ③b 前端工艺库层新增（2026-09-12 收编 14 个，均在 function-specific/frontend/，用 find-skills 取用）
 
@@ -37,7 +39,7 @@
 
 ## ⑤ 浏览器与视觉
 
-`agent-browser` · `browser-use`（浏览器自动化）· `firecrawl`（网页抓取）· `vision-eyes` · `vision-tools`（视觉能力）
+`agent-browser` · `browser-use`（浏览器自动化）· `browser-automation`（无头浏览器自检：console/网络/断言/截图）· `web-browser-verify`（本机真实渲染验证，浏览器下载不可用时的兜底）· `firecrawl-cli`（网页抓取；实际路径 `firecrawl/skills/firecrawl-cli/`，非顶层 SKILL.md）· `vision-eyes` · `vision-tools`（视觉能力）
 
 ## ⑥ 元工具
 
@@ -65,3 +67,9 @@
 `github`（gh CLI）· `github-trending-cn`（trending 监控）· `markitdown-skill`（文档转 MD）· `mcporter`（MCP 管理）· `notebooklm-studio`（NotebookLM 产物）· `nano-banana-pro`（Gemini 3 Pro 图像）· `excalidraw-diagram`（Excalidraw 图表，.venv 已剔除）· `browser-profile-diag`（浏览器登录态诊断）· `html-dashboard-regression`（单文件 dashboard 回归）· `minimax-pdf`（设计感 PDF）· `android-native-dev`（原生开发指南）· `darwin-skill`（skill 自动优化器）· `k8s-pitfalls`（K8s 避坑，原 k8s__skillhub 改名归一）
 
 > 未收编（skillhub 同源重复，备份保留在 WorkBuddy）：agent-browser-core · agent-team-orchestration__skillhub。存疑未动：frontend-dev · university-applications（名实不符，待用户处置）。路由见 find-skills I 组。
+
+## ⑩ 未归类（待归位）
+
+`game-development`（编辑器内启动/观察游戏与 mod：日志映射到工作区文件、截帧、RCON/按键驱动）· `ziwei-doushu-master`（紫微斗数：结构优先、可溯源的全盘/宫位/关系/事业/财富/迁移/时机解读）
+
+> 这两个不属于现有任何一组：`game-development` 是「编辑器自动化」，`ziwei-doushu-master` 是领域咨询。要么新建组，要么下沉库层 —— 待定。
