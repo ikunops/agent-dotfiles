@@ -29,3 +29,7 @@ __pycache__/
 # 自动生成的网关模型注册表 / 更新检查（机器写入，不纳入版本管理）
 opencode.json
 opencode-skill-creator-update-check.json
+# 客户端写进 skills/ 的运行时标记（非 skill，机器生成）
+skills/.disable_to_model_invocation_migration.json
+skills/.model_invocation_to_override_migration.json
+skills/.system/
