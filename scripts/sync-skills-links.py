@@ -52,6 +52,19 @@ import sys
 import time
 from pathlib import Path
 
+# ---------- 控制台编码兜底 ----------
+# Windows 默认 cp936/GBK 下，输出里的 emoji（✅/🔁/⚠️/📦）会抛 UnicodeEncodeError
+# 直接把脚本打断。这里统一把 stdout/stderr 切到 UTF-8；即便切换失败，
+# 也退化成 errors=replace，保证打印永远不会中断主流程。
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        try:
+            _stream.reconfigure(errors="replace")
+        except Exception:
+            pass
+
 # ---------- 客户端 skills 路径的候选形态（跨平台）----------
 CLIENT_GLOBS = [
     "*/skills",                          # ~/.zcode/skills、~/.workbuddy/skills、~/Doubao/skills
