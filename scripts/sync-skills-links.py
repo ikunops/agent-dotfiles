@@ -357,6 +357,30 @@ def main() -> int:
         print("      ⚠️  这类缺失最常见的原因：客户端自动更新时把 junction 抹掉了。")
         print("      → 加 --apply 重跑本脚本即可重建（下面【3】也会列出）。")
 
+    # 2b. 同源入口：多个入口指向同一份物理目录
+    # 「一份文件、多个入口」本身没错（这正是本脚本的目的）；但**只要某个客户端
+    # 同时扫其中两个入口**，它的技能索引就会翻倍。ZCode 就是这么踩的坑。
+    # 这段只做报告，帮你一眼看出嫌疑组合，不用去翻会话日志。
+    groups: dict[str, list[Path]] = {}
+    for p, tgt in clients.items():
+        if not tgt:
+            continue
+        try:
+            key = os.path.normcase(os.path.realpath(str(p)))
+        except Exception:
+            continue
+        groups.setdefault(key, []).append(p)
+    dup_groups = {k: v for k, v in groups.items() if len(v) > 1}
+    if dup_groups:
+        print("\n【2b】同源入口（多个入口 → 同一份物理目录）")
+        for _, v in sorted(dup_groups.items()):
+            real = str(Path(os.path.realpath(str(v[0])))).replace(str(home), "~")
+            print("   [%d 个入口] %s" % (len(v), real))
+            for p in sorted(v, key=str):
+                print("        " + str(p).replace(str(home), "~"))
+        print("   提示：只要某个客户端**同时扫**其中两个入口，它的技能索引就会翻倍。")
+        print("   已知：ZCode 扫 ~/.zcode/skills 与 ~/.agents/skills（见 MUST_NOT_LINK）。")
+
     # 3. 逐个客户端决策
     auth_names = skill_names(authority / "skills")
     print("\n【3】决策")
