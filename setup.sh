@@ -4,7 +4,9 @@
 
 REPO="https://github.com/ikunops/opencode-dotfiles.git"
 TARGET="$HOME/.config/opencode"
-TEMP="/tmp/opencode-sync"
+# 持久保存（不再放 /tmp、也不再删除）—— sync-skills-links.py 需要一份常驻副本当权威来源，
+# 各客户端的 skills 目录链接都指向它。删掉它 = 所有客户端失去技能。
+TEMP="$HOME/opencode-dotfiles"
 
 echo "🔄 开始同步 OpenCode 配置..."
 
@@ -64,11 +66,33 @@ cp "$TEMP/package.json" "$TARGET/"
 cp "$TEMP/package-lock.json" "$TARGET/"
 
 # 复制目录
-cp -r "$TEMP/skills" "$TARGET/"
-cp -r "$TEMP/plugins" "$TARGET/"
+# 已存在就跳过 —— cp -r 在「目标已存在」时会把源塞进目标里（skills/skills、plugin/plugin），
+# 而 $TARGET 本身可能就是指回本仓库的链接（那种情况下目标与源是同一份）。
+# skills 的最终形态由末尾的 sync-skills-links.py 统一成链接；这里只在缺失时兜底复制。
+if [ -e "$TARGET/skills" ]; then
+    echo "⏭  skills 已存在，跳过复制（末尾会统一成链接）"
+else
+    cp -r "$TEMP/skills" "$TARGET/"
+fi
+if [ -e "$TARGET/plugin" ]; then
+    echo "⏭  plugin 已存在，跳过复制"
+else
+    # 注：原写成 plugins/，仓库里实际是 plugin/ —— 顺手改正
+    cp -r "$TEMP/plugin" "$TARGET/"
+fi
 
-# 清理
-rm -rf "$TEMP"
+# 让各 AI 客户端共用同一份 skills（一份物理文件、多入口）
+# 脚本自带保护：遇到真实目录先备份、遇到「独有 skill」默认跳过，不会丢东西。
+SYNC="$TEMP/scripts/sync-skills-links.py"
+if [ -f "$SYNC" ]; then
+    PY="$(command -v python3 || command -v python)"
+    if [ -n "$PY" ]; then
+        echo "🔗 统一各客户端 skills 指向..."
+        "$PY" "$SYNC" --apply || echo "⚠️  skills 指向未全部完成，可稍后重跑: $PY $SYNC --apply"
+    else
+        echo "⚠️  未找到 python，跳过 skills 指向统一（可手动跑 scripts/sync-skills-links.py）"
+    fi
+fi
 
 echo "✅ 配置同步完成！"
 echo ""

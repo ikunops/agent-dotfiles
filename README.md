@@ -247,13 +247,17 @@ opencode mcp auth composio
 
 ```powershell
 # Windows
-git clone https://github.com/ikunops/opencode-dotfiles.git $env:TEMP\oc-config
-.\$env:TEMP\oc-config\setup.ps1
+git clone https://github.com/ikunops/opencode-dotfiles.git $env:TEMP\oc-bootstrap
+powershell -ExecutionPolicy Bypass -File $env:TEMP\oc-bootstrap\setup.ps1
 
 # Linux/macOS
-git clone https://github.com/ikunops/opencode-dotfiles.git /tmp/oc-config
-bash /tmp/oc-config/setup.sh
+git clone https://github.com/ikunops/opencode-dotfiles.git /tmp/oc-bootstrap
+bash /tmp/oc-bootstrap/setup.sh
 ```
+
+> 上面这步 clone 只是为了拿到脚本本身。脚本自己会把仓库克隆/更新到 **`~/opencode-dotfiles`**
+> 并**持久保留**（旧版是放临时目录、用完即删），再把配置同步到 `~/.config/opencode`，
+> 最后统一各 AI 客户端的 skills 指向。
 
 ### 同步后验证
 
@@ -261,6 +265,36 @@ bash /tmp/oc-config/setup.sh
 1. Skills 是否加载：输入 `/skills` 查看
 2. MCP 是否加载：运行 `opencode mcp list`
 3. 测试工具：问一句“看看系统内存”
+
+### skills 只有一份（多客户端共用）
+
+各 AI 客户端（Claude Code / Codex / Cursor / Gemini / Trae / WorkBuddy / Doubao …）的 skills 目录
+都会被建成**目录联接**，指向同一份 `~/opencode-dotfiles/skills` —— 物理上只有一份文件，
+改一处所有客户端同时生效。setup 脚本末尾会自动做这件事。
+
+```bash
+python ~/opencode-dotfiles/scripts/sync-skills-links.py            # 体检（不改动任何东西）
+python ~/opencode-dotfiles/scripts/sync-skills-links.py --apply    # 执行
+python ~/opencode-dotfiles/scripts/sync-skills-links.py --strict   # 有缺失/待处理项则 exit 1（给定时任务用）
+```
+
+脚本自带保护：遇到真实目录先**备份**（`~/.skills-link-backups/`）、遇到“客户端独有 skill”默认**跳过**。
+
+> ⚠️ **同一个客户端不要扫两个 skills 路径**，否则它的技能索引会翻倍（每轮白付一倍 token）。
+> 已知 ZCode 会同时扫 `~/.zcode/skills` 与 `~/.agents/skills`，所以 `~/.zcode/skills` 被刻意**不建**链接
+> （见脚本里的 `MUST_NOT_LINK`），保留通用的 `.agents/skills` 即可。
+> 脚本报告里的【2b】同源入口段落能一眼看出这类风险组合。
+
+### skills 瘦身与归档
+
+长期未调用的技能已移入 `skills-archive/`（**移动非删除**，随仓库版本化，是恢复用的安全网）。
+归档不参与技能索引，所以能直接降低每轮请求的 token。完整清单见 `skills-archive/_archived_list.json`。
+
+```bash
+# 恢复某个 skill：移回原位并在 skills/INDEX.md 重新登记
+mv ~/opencode-dotfiles/skills-archive/<名字> ~/opencode-dotfiles/skills/
+python ~/opencode-dotfiles/scripts/audit-skills.py --strict   # 校验登记一致性
+```
 
 ## 首次拉取后需要做的（每台机器只需一次）
 

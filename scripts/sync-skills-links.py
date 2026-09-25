@@ -242,8 +242,16 @@ def find_forbidden_links(home: Path) -> list[Path]:
 
 
 def find_dotfiles_copies(home: Path) -> list[Path]:
-    """含 skills/ 且（有 .git 或名字含 dotfiles）的目录。"""
+    """含 skills/ 的候选副本：home 下的 *dotfiles* 目录 + **脚本自己所在的仓库**。"""
     cands: list[Path] = []
+    # 脚本自己所在的仓库根（scripts/ 的上一级）天然就是一份 dotfiles 副本。
+    # 加这条：clone 目录名不含 "dotfiles" 时也能工作（此前会直接报「找不到权威副本」退出）。
+    try:
+        own = Path(__file__).resolve().parent.parent
+        if (own / "skills").is_dir():
+            cands.append(own)
+    except Exception:
+        pass
     for p in list(home.glob("*dotfiles*")) + list(home.glob("*/*dotfiles*")):
         if (p / "skills").is_dir():
             cands.append(p)

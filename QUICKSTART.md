@@ -38,14 +38,17 @@ opencode mcp list
 
 ```powershell
 # 一键同步（需要先装 Node.js 和 OpenCode）
-git clone https://github.com/ikunops/opencode-dotfiles.git C:\temp\oc-config
-.\C:\temp\oc-config\setup.ps1
+git clone https://github.com/ikunops/opencode-dotfiles.git $env:TEMP\oc-bootstrap
+powershell -ExecutionPolicy Bypass -File $env:TEMP\oc-bootstrap\setup.ps1
 ```
+
+脚本会把仓库**持久克隆到 `~/opencode-dotfiles`**，并把各 AI 客户端的 skills 目录都建成链接指向它
+（物理上只有一份文件，改一处所有客户端生效）。
 
 ## 更新配置
 
 ```powershell
-cd ~/.config/opencode
+cd ~/opencode-dotfiles
 git add .
 git commit -m "更新xxx"
 git push
