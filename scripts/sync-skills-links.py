@@ -33,6 +33,7 @@
     python sync-skills-links.py --apply          # 执行
     python sync-skills-links.py --apply --force  # 即使有独有 skill 也强制重定向
     python sync-skills-links.py --home /root     # 指定用户目录（默认自动取）
+    python sync-skills-links.py --strict         # 体检模式下：有缺失/待处理项就 exit 1（给定时任务用）
 
 跨平台
 ------
@@ -78,6 +79,30 @@ CLIENT_GLOBS = [
 # 注意：这里**故意不含 "cache"** —— 探测规则里有 `.cache/*/skills`，
 # 若把 cache 列为排除项，那条规则会永远命中不到（自相矛盾）。
 NOT_CLIENT_HINTS = ("dotfiles", "node_modules", ".git")
+
+# ---------- 已知客户端（白名单）----------
+# 为什么要白名单：find_client_skills() 是「glob 探测」——**目录不存在就探不到**。
+# 于是「客户端自动更新时把 skills 链接/junction 抹掉」这种事故会被静默跳过：
+# 现状表里连一行都不出现，脚本对这个故障等于瞎的。
+# （2026-09-25 实测：zcode 更新后 ~/.zcode/skills 消失，脚本毫无反应、也没重建。）
+# 白名单让这些路径即使不存在也能被点出来（MISSING），并可自动重建。
+# 维护：新增客户端时，把它相对 home 的 skills 路径加进来。
+KNOWN_CLIENTS = [
+    ".agents/skills",
+    ".claude/skills",
+    ".codebuddy/skills",
+    ".codex/skills",
+    ".config/opencode/skills",
+    ".copilot/skills",
+    ".cursor/skills",
+    ".gemini/skills",
+    ".trae/skills",
+    ".trae-cn/skills",
+    ".workbuddy/skills",
+    ".workbuddy-ai/skills",
+    ".zcode/skills",
+    "Doubao/skills",
+]
 
 
 def is_link(p: Path) -> bool:
@@ -167,6 +192,25 @@ def find_client_skills(home: Path) -> dict[Path, str | None]:
     return dict(sorted(found.items(), key=lambda kv: str(kv[0])))
 
 
+def find_missing_clients(home: Path, found: dict[Path, str | None]) -> list[Path]:
+    """白名单里「客户端本身在、但 skills 路径没了」的项。
+
+    只在**父目录存在**时报缺失——否则用户压根没装该客户端，报缺失只是噪音。
+    """
+    seen = {os.path.normcase(str(p)) for p in found}
+    missing: list[Path] = []
+    for rel in KNOWN_CLIENTS:
+        p = home / rel
+        if os.path.normcase(str(p)) in seen:
+            continue
+        if p.exists() or is_link(p):
+            continue
+        if not p.parent.is_dir():
+            continue        # 客户端未安装 → 不算缺失
+        missing.append(p)
+    return missing
+
+
 def find_dotfiles_copies(home: Path) -> list[Path]:
     """含 skills/ 且（有 .git 或名字含 dotfiles）的目录。"""
     cands: list[Path] = []
@@ -232,6 +276,8 @@ def main() -> int:
     ap.add_argument("--home", default=str(Path.home()), help="用户目录（默认自动）")
     ap.add_argument("--apply", action="store_true", help="真正执行（默认只体检）")
     ap.add_argument("--force", action="store_true", help="即使有独有 skill 也强制重定向")
+    ap.add_argument("--strict", action="store_true",
+                    help="体检模式（不加 --apply）下：有缺失链接或待处理客户端就 exit 1")
     args = ap.parse_args()
 
     home = Path(args.home)
@@ -241,6 +287,7 @@ def main() -> int:
 
     # 1. 现状
     clients = find_client_skills(home)
+    missing = find_missing_clients(home, clients)
     copies = find_dotfiles_copies(home)
     if not copies:
         print("\n!! 没找到任何 dotfiles 副本（含 skills/ 的 *dotfiles* 目录），无法确定权威来源。")
@@ -268,6 +315,11 @@ def main() -> int:
         shape = "链接" if tgt else "真实目录"
         info = (str(Path(tgt)).replace(str(home), "~") if tgt else "%d 项" % len(skill_names(p)))
         print("   %-46s %-10s %s" % (str(p).replace(str(home), "~"), shape, info))
+    for p in missing:
+        print("   %-46s %-10s %s" % (str(p).replace(str(home), "~"), "❌ 缺失", "客户端在，但 skills 目录/链接没了"))
+    if missing:
+        print("      ⚠️  这类缺失最常见的原因：客户端自动更新时把 junction 抹掉了。")
+        print("      → 加 --apply 重跑本脚本即可重建（下面【3】也会列出）。")
 
     # 3. 逐个客户端决策
     auth_names = skill_names(authority / "skills")
@@ -296,6 +348,13 @@ def main() -> int:
             todo.append("      备份: " + str(b).replace(str(home), "~"))
         make_link(p, authority / "skills", args.apply)
 
+    # 3b. 白名单里缺失的客户端 → 直接重建
+    for p in missing:
+        pp = str(p).replace(str(home), "~")
+        print("   🔁 %-44s 重建缺失链接" % pp)
+        todo.append(pp)
+        make_link(p, authority / "skills", args.apply)
+
     # 4. 旧副本处理
     stale = [c for _, c in ranked[1:]]
     if stale:
@@ -311,6 +370,10 @@ def main() -> int:
     else:
         print("以上为体检结果，未做任何改动。确认无误后加 --apply 执行。")
     print("=" * 78)
+
+    if args.strict and not args.apply and todo:
+        print("--strict：有 %d 项待处理（缺失链接 / 未指向权威副本）→ exit 1" % len(todo))
+        return 1
     return 0
 
 
