@@ -1,6 +1,7 @@
 # Skills INDEX — 活跃层导航
 
-> 活跃层 = 顶层平铺、自动触发的 skill。库存层（340 个）在 `framework/function/platform-specific/` 三分类里，用 find-skills 取用。
+> 活跃层 = 顶层平铺、自动触发的 skill。库存层（208 个）在 `framework/function/platform-specific/` 三分类里，用 find-skills 取用。
+> 2026-09-25 瘦身：147 个长期未调用的技能已移入 `skills-archive/`（移动非删除，不参与索引）。
 > 维护规则：新增 skill 必须在此登记一行；连续两周未触发且属平台专属的，评估下沉到库层。
 > 下沉 = **移动**，不是复制（同一 skill 只应存在一份）；提交前跑 `python scripts/audit-skills.py --strict`。
 
@@ -21,7 +22,6 @@
 | `delivery-pipeline` | 交付流水线调度器（P1 倒模/P2 全新/P3 修复/P4 增量） | 端到端做成一件事、跨测绘/开发/测试/审查的多阶段任务 |
 | `debug-and-refactor` | 调试与重构 | 修 bug、行为不对 |
 | `find-skills` | 任务路由器：L0 项目记忆直达 → L1 路由表组链 → L2 外部生态 → L3 条件沉淀 | 每个任务开工时；"有没有 skill 能做 X" |
-| `grill-me` | 拷问式检验 | 被挑战论证 |
 | `handoff-to-claude-code` | 交接给 Claude Code | 跨工具交接 |
 
 ## ③ 前端工艺
@@ -35,7 +35,7 @@
 
 ## ④ 工程哲学（常驻人格）
 
-`ponytail`（本体：懒惰资深开发 + 七级阶梯，lite/full/ultra）· `ponytail-review`（diff 审查）· `ponytail-audit`（全库过度工程审计）· `ponytail-debt`（捷径台账）· `ponytail-gain`（成效记分板）· `ponytail-help`（速查）
+（2026-09-25 已全部归档 → skills-archive/：ponytail 家族 6 个）
 
 ## ⑤ 浏览器与视觉
 
@@ -43,7 +43,7 @@
 
 ## ⑥ 元工具
 
-`opencode-skill-creator`（OpenCode 生态 skill 评测/基准/打包）· `skill-creator`（官方版：起草→试跑→迭代造 skill，2026-09-11 入库自 zcode plugin cache）· `turnstile-spin`（Turnstile 接入）
+`opencode-skill-creator`（OpenCode 生态 skill 评测/基准/打包）· `skill-creator`（官方版：起草→试跑→迭代造 skill，2026-09-11 入库自 zcode plugin cache）
 
 ## ⑦ 已下沉库层（2026-09-06，路由见 find-skills/SKILL.md）
 
@@ -54,7 +54,7 @@
 > 16 个, 提升 Skill 版本随官方插件; 与插件本体同名时插件优先(先到先得)。更新法: 插件升级后从缓存重拷对应 skills/ 目录。
 
 **文档工艺**: `docx` · `pdf` · `pptx` · `xlsx`（document-skills 0.1.4 全套）
-**设备自动化**: `android-dev`（安卓模拟器）· `ios-dev`（iOS 模拟器）· `computer-use`（桌面控制）· `control-browser`/`web-gui-tester`（浏览器）
+**设备自动化**: `computer-use`（桌面控制）· `control-browser`/`web-gui-tester`（浏览器）
 **ZCode 自诊断**: `zcode-configuration-guide`（资源装载地图）· `diagnosing-skills/-commands/-hooks/-mcp/-plugins`（五类不通排查）
 **造 skill**: `skill-creator`（通用; OpenCode 专属流程仍走 `opencode-skill-creator`）
 
@@ -64,12 +64,23 @@
 
 ## ⑨ WorkBuddy skillhub 收编（2026-09-18，源 = ~/.workbuddy/skills 独有）
 
-`github`（gh CLI）· `github-trending-cn`（trending 监控）· `markitdown-skill`（文档转 MD）· `mcporter`（MCP 管理）· `notebooklm-studio`（NotebookLM 产物）· `nano-banana-pro`（Gemini 3 Pro 图像）· `excalidraw-diagram`（Excalidraw 图表，.venv 已剔除）· `browser-profile-diag`（浏览器登录态诊断）· `html-dashboard-regression`（单文件 dashboard 回归）· `minimax-pdf`（设计感 PDF）· `android-native-dev`（原生开发指南）· `darwin-skill`（skill 自动优化器）· `k8s-pitfalls`（K8s 避坑，原 k8s__skillhub 改名归一）
+`github`（gh CLI）· `github-trending-cn`（trending 监控）· `markitdown-skill`（文档转 MD）· `mcporter`（MCP 管理）· `nano-banana-pro`（Gemini 3 Pro 图像）· `excalidraw-diagram`（Excalidraw 图表，.venv 已剔除）· `browser-profile-diag`（浏览器登录态诊断）· `html-dashboard-regression`（单文件 dashboard 回归）· `minimax-pdf`（设计感 PDF）· `k8s-pitfalls`（K8s 避坑，原 k8s__skillhub 改名归一）
 
 > 未收编（skillhub 同源重复，备份保留在 WorkBuddy）：agent-browser-core · agent-team-orchestration__skillhub。存疑未动：frontend-dev · university-applications（名实不符，待用户处置）。路由见 find-skills I 组。
 
 ## ⑩ 未归类（待归位）
 
-`game-development`（编辑器内启动/观察游戏与 mod：日志映射到工作区文件、截帧、RCON/按键驱动）· `ziwei-doushu-master`（紫微斗数：结构优先、可溯源的全盘/宫位/关系/事业/财富/迁移/时机解读）
+> 这两个原本不属于任何一组（一个是编辑器自动化，一个是领域咨询）；2026-09-25 一并归档。
 
-> 这两个不属于现有任何一组：`game-development` 是「编辑器自动化」，`ziwei-doushu-master` 是领域咨询。要么新建组，要么下沉库层 —— 待定。
+## 已归档（2026-09-25 瘦身，移入 skills-archive/，不参与索引）
+
+> 这些技能长期未被调用，白占每轮请求的技能索引 token。**移动不是删除**，随时可移回。
+
+本次共归档 147 个（顶层平铺 15 + 分类目录 132），完整清单见 skills-archive/_archived_list.json。
+
+顶层这 15 个：
+
+android-dev · android-native-dev · darwin-skill · game-development · grill-me · ios-dev · notebooklm-studio · ponytail · ponytail-audit · ponytail-debt · ponytail-gain · ponytail-help · ponytail-review · turnstile-spin · ziwei-doushu-master
+
+> 恢复：把 skills-archive/ 下对应目录移回 skills/ 原位（顶层放平铺位，其余放 function|framework|platform-specific/），
+> 并在本文件重新登记。校验：python scripts/audit-skills.py --strict
