@@ -104,6 +104,14 @@ KNOWN_CLIENTS = [
     "Doubao/skills",
 ]
 
+# ---------- 故意**不**建链接的路径 ----------
+# ZCode 的技能发现顺序里 ~/.zcode/skills 和 ~/.agents/skills **都会被扫**。
+# 两个 junction 指向同一份 dotfiles 时，索引里每条技能列两遍 —— 纯 token 浪费。
+# 保留通用的 ~/.agents/skills（ZCode 同样扫得到，其它工具也在用），
+# 所以 ~/.zcode/skills 列为「禁止存在」：脚本发现它会主动移除（仅 --apply）。
+# 2026-09-25 实测确认（两份 junction → 411 个技能各列两遍）。
+MUST_NOT_LINK = [".zcode/skills"]
+
 
 def is_link(p: Path) -> bool:
     try:
@@ -180,6 +188,14 @@ def skill_names(d: Path) -> set[str]:
 
 
 # ---------- 发现 ----------
+def rel_to_home(home: Path, p: Path) -> str:
+    """home 相对路径（POSIX 分隔符）；不在 home 下则返回空串。"""
+    try:
+        return p.relative_to(home).as_posix()
+    except ValueError:
+        return ""
+
+
 def find_client_skills(home: Path) -> dict[Path, str | None]:
     found: dict[Path, str | None] = {}
     for pat in CLIENT_GLOBS:
@@ -187,6 +203,8 @@ def find_client_skills(home: Path) -> dict[Path, str | None]:
             parts = set(part.lower() for part in p.parts)
             if any(h in " ".join(parts) for h in NOT_CLIENT_HINTS):
                 continue
+            if rel_to_home(home, p) in MUST_NOT_LINK:
+                continue        # 故意不建：会让 ZCode 索引翻倍（见 MUST_NOT_LINK）
             if p.is_dir() or is_link(p):
                 found[p] = link_target(p)
     return dict(sorted(found.items(), key=lambda kv: str(kv[0])))
@@ -200,6 +218,8 @@ def find_missing_clients(home: Path, found: dict[Path, str | None]) -> list[Path
     seen = {os.path.normcase(str(p)) for p in found}
     missing: list[Path] = []
     for rel in KNOWN_CLIENTS:
+        if rel in MUST_NOT_LINK:
+            continue        # 故意不建，当然不算缺失
         p = home / rel
         if os.path.normcase(str(p)) in seen:
             continue
@@ -209,6 +229,16 @@ def find_missing_clients(home: Path, found: dict[Path, str | None]) -> list[Path
             continue        # 客户端未安装 → 不算缺失
         missing.append(p)
     return missing
+
+
+def find_forbidden_links(home: Path) -> list[Path]:
+    """MUST_NOT_LINK 里实际存在的那些（重复扫描 → 索引翻倍的元凶）。"""
+    out: list[Path] = []
+    for rel in MUST_NOT_LINK:
+        p = home / rel
+        if p.exists() or is_link(p):
+            out.append(p)
+    return out
 
 
 def find_dotfiles_copies(home: Path) -> list[Path]:
@@ -288,6 +318,7 @@ def main() -> int:
     # 1. 现状
     clients = find_client_skills(home)
     missing = find_missing_clients(home, clients)
+    forbidden = find_forbidden_links(home)
     copies = find_dotfiles_copies(home)
     if not copies:
         print("\n!! 没找到任何 dotfiles 副本（含 skills/ 的 *dotfiles* 目录），无法确定权威来源。")
@@ -317,6 +348,11 @@ def main() -> int:
         print("   %-46s %-10s %s" % (str(p).replace(str(home), "~"), shape, info))
     for p in missing:
         print("   %-46s %-10s %s" % (str(p).replace(str(home), "~"), "❌ 缺失", "客户端在，但 skills 目录/链接没了"))
+    for p in forbidden:
+        print("   %-46s %-10s %s" % (str(p).replace(str(home), "~"), "⚠️  不该在", "与 .agents/skills 重复 → 技能索引翻倍"))
+    if forbidden:
+        print("      ⚠️  同一份 skills 被同一客户端扫两遍，每轮请求白付一份索引 token。")
+        print("      → 加 --apply 重跑本脚本即可移除（只删链接，技能文件不动）。")
     if missing:
         print("      ⚠️  这类缺失最常见的原因：客户端自动更新时把 junction 抹掉了。")
         print("      → 加 --apply 重跑本脚本即可重建（下面【3】也会列出）。")
@@ -347,6 +383,13 @@ def main() -> int:
             b = backup_dir(p, args.apply, backup_root)
             todo.append("      备份: " + str(b).replace(str(home), "~"))
         make_link(p, authority / "skills", args.apply)
+
+    # 3a. 禁止存在的链接 → 移除（只删链接，不动技能文件）
+    for p in forbidden:
+        pp = str(p).replace(str(home), "~")
+        print("   🗑  %-44s 移除（.agents/skills 已覆盖）" % pp)
+        todo.append(pp)
+        remove_link(p, args.apply)
 
     # 3b. 白名单里缺失的客户端 → 直接重建
     for p in missing:
