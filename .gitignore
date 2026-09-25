@@ -33,3 +33,6 @@ opencode-skill-creator-update-check.json
 skills/.disable_to_model_invocation_migration.json
 skills/.model_invocation_to_override_migration.json
 skills/.system/
+
+# 手工备份（如 opencode.json.bak-full70 —— *.bak 匹配不到带后缀的）
+*.bak-*
