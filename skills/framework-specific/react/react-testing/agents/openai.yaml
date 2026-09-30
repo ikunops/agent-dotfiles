@@ -1,0 +1,6 @@
+interface:
+  display_name: "React Testing"
+  short_description: "React component testing with React Testing Library, Vitest/Je..."
+
+policy:
+  allow_implicit_invocation: false

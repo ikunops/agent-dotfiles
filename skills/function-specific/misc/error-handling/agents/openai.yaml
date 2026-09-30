@@ -1,0 +1,6 @@
+interface:
+  display_name: "Error Handling"
+  short_description: "Patterns for robust error handling across TypeScript, Python,..."
+
+policy:
+  allow_implicit_invocation: false

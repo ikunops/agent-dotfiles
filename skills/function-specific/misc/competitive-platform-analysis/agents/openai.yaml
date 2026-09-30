@@ -1,0 +1,6 @@
+interface:
+  display_name: "Competitive Platform Analysis"
+  short_description: "Use when scoping a competitive landscape — identifying, categ..."
+
+policy:
+  allow_implicit_invocation: false

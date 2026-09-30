@@ -1,0 +1,6 @@
+interface:
+  display_name: "React Patterns"
+  short_description: "React 18/19 patterns including hooks discipline, server/clien..."
+
+policy:
+  allow_implicit_invocation: false

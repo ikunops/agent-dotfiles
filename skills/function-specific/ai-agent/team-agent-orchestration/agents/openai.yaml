@@ -1,0 +1,6 @@
+interface:
+  display_name: "Team Agent Orchestration"
+  short_description: "Run team-based orchestration for agent squads using work item..."
+
+policy:
+  allow_implicit_invocation: false

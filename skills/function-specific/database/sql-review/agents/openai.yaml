@@ -1,0 +1,6 @@
+interface:
+  display_name: "Sql Review"
+  short_description: "Sql Review"
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Design Taste Frontend"
+  short_description: "Design-taste rules for production frontend work — color commi..."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Workbench Layout"
+  short_description: "Layout & interaction rules for workbench/opscopt-lite style U..."
+
+policy:
+  allow_implicit_invocation: false

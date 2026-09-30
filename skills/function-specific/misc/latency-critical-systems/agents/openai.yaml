@@ -1,0 +1,6 @@
+interface:
+  display_name: "Latency Critical Systems"
+  short_description: "Use for latency-sensitive systems such as realtime dashboards..."
+
+policy:
+  allow_implicit_invocation: false

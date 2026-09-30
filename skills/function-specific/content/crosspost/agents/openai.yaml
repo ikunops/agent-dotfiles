@@ -1,0 +1,6 @@
+interface:
+  display_name: "Crosspost"
+  short_description: "Multi-platform content distribution across X, LinkedIn, Threa..."
+
+policy:
+  allow_implicit_invocation: false

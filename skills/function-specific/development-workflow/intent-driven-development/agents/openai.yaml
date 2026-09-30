@@ -1,0 +1,6 @@
+interface:
+  display_name: "Intent Driven Development"
+  short_description: "Turn ambiguous or high-impact product and engineering changes..."
+
+policy:
+  allow_implicit_invocation: false

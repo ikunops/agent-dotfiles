@@ -1,0 +1,6 @@
+interface:
+  display_name: "Brand Discovery"
+  short_description: "Use when a brand needs to discover or articulate its identity..."
+
+policy:
+  allow_implicit_invocation: false

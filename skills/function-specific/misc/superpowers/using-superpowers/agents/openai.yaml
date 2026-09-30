@@ -1,0 +1,6 @@
+interface:
+  display_name: "Using Superpowers"
+  short_description: "Use when starting any conversation - establishes how to find..."
+
+policy:
+  allow_implicit_invocation: false

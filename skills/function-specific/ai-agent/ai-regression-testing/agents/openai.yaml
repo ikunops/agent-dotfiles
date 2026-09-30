@@ -1,0 +1,6 @@
+interface:
+  display_name: "Ai Regression Testing"
+  short_description: "Regression testing strategies for AI-assisted development."
+
+policy:
+  allow_implicit_invocation: false

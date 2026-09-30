@@ -1,0 +1,6 @@
+interface:
+  display_name: "Agentic Engineering"
+  short_description: "Operate as an agentic engineer using eval-first execution, de..."
+
+policy:
+  allow_implicit_invocation: false

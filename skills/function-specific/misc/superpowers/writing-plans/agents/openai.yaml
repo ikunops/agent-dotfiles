@@ -1,0 +1,6 @@
+interface:
+  display_name: "Writing Plans"
+  short_description: "Use when you have a spec or requirements for a multi-step tas..."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Ai First Engineering"
+  short_description: "Engineering operating model for teams where AI agents generat..."
+
+policy:
+  allow_implicit_invocation: false

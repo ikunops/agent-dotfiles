@@ -1,0 +1,6 @@
+interface:
+  display_name: "X Api"
+  short_description: "X/Twitter API integration for posting tweets, threads, readin..."
+
+policy:
+  allow_implicit_invocation: false

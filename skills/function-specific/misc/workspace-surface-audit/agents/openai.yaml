@@ -1,0 +1,6 @@
+interface:
+  display_name: "Workspace Surface Audit"
+  short_description: "Audit the active repo, MCP servers, plugins, connectors, env..."
+
+policy:
+  allow_implicit_invocation: false

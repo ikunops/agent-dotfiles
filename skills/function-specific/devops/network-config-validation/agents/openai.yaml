@@ -1,0 +1,6 @@
+interface:
+  display_name: "Network Config Validation"
+  short_description: "Pre-deployment checks for router and switch configuration, in..."
+
+policy:
+  allow_implicit_invocation: false

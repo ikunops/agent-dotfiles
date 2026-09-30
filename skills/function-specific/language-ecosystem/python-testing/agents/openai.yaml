@@ -1,0 +1,6 @@
+interface:
+  display_name: "Python Testing"
+  short_description: "Python testing strategies using pytest, TDD methodology, fixt..."
+
+policy:
+  allow_implicit_invocation: false

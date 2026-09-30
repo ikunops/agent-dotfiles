@@ -1,0 +1,6 @@
+interface:
+  display_name: "Rules Distill"
+  short_description: "Scan skills to extract cross-cutting principles and distill t..."
+
+policy:
+  allow_implicit_invocation: false

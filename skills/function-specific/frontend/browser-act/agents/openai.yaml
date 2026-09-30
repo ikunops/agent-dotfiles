@@ -1,0 +1,6 @@
+interface:
+  display_name: "Browser Act"
+  short_description: "Browser automation CLI for AI agents."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Autonomous Agent Harness"
+  short_description: "Transform Claude Code into a fully autonomous agent system wi..."
+
+policy:
+  allow_implicit_invocation: false

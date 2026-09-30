@@ -1,0 +1,6 @@
+interface:
+  display_name: "Vite Patterns"
+  short_description: "Vite build tool patterns including config, plugins, HMR, env..."
+
+policy:
+  allow_implicit_invocation: false

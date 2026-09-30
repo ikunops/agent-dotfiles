@@ -1,0 +1,6 @@
+interface:
+  display_name: "Ansible"
+  short_description: "Ansible"
+
+policy:
+  allow_implicit_invocation: false

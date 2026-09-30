@@ -1,0 +1,6 @@
+interface:
+  display_name: "Subagent Driven Development"
+  short_description: "Use when executing implementation plans with independent task..."
+
+policy:
+  allow_implicit_invocation: false

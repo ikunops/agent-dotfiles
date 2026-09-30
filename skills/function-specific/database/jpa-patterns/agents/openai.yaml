@@ -1,0 +1,6 @@
+interface:
+  display_name: "Jpa Patterns"
+  short_description: "JPA/Hibernate patterns for entity design, relationships, quer..."
+
+policy:
+  allow_implicit_invocation: false

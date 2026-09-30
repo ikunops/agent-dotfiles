@@ -1,0 +1,6 @@
+interface:
+  display_name: "Plan Orchestrate"
+  short_description: "Read a plan document, decompose it into steps, design a per-s..."
+
+policy:
+  allow_implicit_invocation: false

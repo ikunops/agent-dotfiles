@@ -1,0 +1,6 @@
+interface:
+  display_name: "Agent Architecture Audit"
+  short_description: "Full-stack diagnostic for agent and LLM applications."
+
+policy:
+  allow_implicit_invocation: false

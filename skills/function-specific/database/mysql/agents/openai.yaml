@@ -1,0 +1,6 @@
+interface:
+  display_name: "Mysql"
+  short_description: "MySQL and MariaDB coding standards, query optimization, index..."
+
+policy:
+  allow_implicit_invocation: false

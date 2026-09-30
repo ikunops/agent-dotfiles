@@ -1,0 +1,6 @@
+interface:
+  display_name: "K8s Knowledge"
+  short_description: "K8S（Kubernetes）运维知识库，涵盖 Docker、Pod、控制器、网络、存储、安全、集群搭建、监控、CI/CD..."
+
+policy:
+  allow_implicit_invocation: false

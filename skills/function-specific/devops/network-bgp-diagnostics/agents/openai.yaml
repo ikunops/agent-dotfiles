@@ -1,0 +1,6 @@
+interface:
+  display_name: "Network Bgp Diagnostics"
+  short_description: "Diagnostics-only BGP troubleshooting patterns for neighbor st..."
+
+policy:
+  allow_implicit_invocation: false

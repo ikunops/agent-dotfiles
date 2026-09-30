@@ -1,0 +1,6 @@
+interface:
+  display_name: "Security Reviewer"
+  short_description: "Identifies security vulnerabilities, generates structured aud..."
+
+policy:
+  allow_implicit_invocation: false

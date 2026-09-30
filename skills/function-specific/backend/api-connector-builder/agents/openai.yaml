@@ -1,0 +1,6 @@
+interface:
+  display_name: "Api Connector Builder"
+  short_description: "Build a new API connector or provider by matching the target..."
+
+policy:
+  allow_implicit_invocation: false

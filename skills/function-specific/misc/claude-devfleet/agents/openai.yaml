@@ -1,0 +1,6 @@
+interface:
+  display_name: "Claude Devfleet"
+  short_description: "Orchestrate multi-agent coding tasks via Claude DevFleet — pl..."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Project Flow Ops"
+  short_description: "Operate execution flow across GitHub and Linear by triaging i..."
+
+policy:
+  allow_implicit_invocation: false

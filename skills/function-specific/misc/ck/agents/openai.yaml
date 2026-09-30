@@ -1,0 +1,6 @@
+interface:
+  display_name: "Ck"
+  short_description: "Persistent per-project memory for Claude Code."
+
+policy:
+  allow_implicit_invocation: false

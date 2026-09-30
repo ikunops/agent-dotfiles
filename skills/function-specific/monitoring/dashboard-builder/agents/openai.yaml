@@ -1,0 +1,6 @@
+interface:
+  display_name: "Dashboard Builder"
+  short_description: "Build monitoring dashboards that answer real operator questio..."
+
+policy:
+  allow_implicit_invocation: false

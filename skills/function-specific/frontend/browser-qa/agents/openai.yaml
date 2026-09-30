@@ -1,0 +1,6 @@
+interface:
+  display_name: "Browser Qa"
+  short_description: "Use this skill to automate visual testing and UI interaction..."
+
+policy:
+  allow_implicit_invocation: false

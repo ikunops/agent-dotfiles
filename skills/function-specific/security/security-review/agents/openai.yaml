@@ -1,0 +1,6 @@
+interface:
+  display_name: "Security Review"
+  short_description: "Use this skill when adding authentication, handling user inpu..."
+
+policy:
+  allow_implicit_invocation: false

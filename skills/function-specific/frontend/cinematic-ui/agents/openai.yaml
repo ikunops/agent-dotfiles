@@ -35,7 +35,7 @@ interface:
     Do not reuse shells from previous demos.
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false
 
 skills:
   - id: cinematic-ui

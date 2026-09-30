@@ -1,0 +1,6 @@
+interface:
+  display_name: "Workers Best Practices"
+  short_description: "Reviews and authors Cloudflare Workers code against productio..."
+
+policy:
+  allow_implicit_invocation: false

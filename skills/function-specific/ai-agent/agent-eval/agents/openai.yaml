@@ -1,0 +1,6 @@
+interface:
+  display_name: "Agent Eval"
+  short_description: "Head-to-head comparison of coding agents (Claude Code, Aider,..."
+
+policy:
+  allow_implicit_invocation: false

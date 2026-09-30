@@ -1,0 +1,6 @@
+interface:
+  display_name: "Hallmark"
+  short_description: "Anti-AI-slop design skill for greenfield pages, audits, redes..."
+
+policy:
+  allow_implicit_invocation: false

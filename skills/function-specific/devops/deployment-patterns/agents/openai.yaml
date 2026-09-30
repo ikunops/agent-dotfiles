@@ -1,0 +1,6 @@
+interface:
+  display_name: "Deployment Patterns"
+  short_description: "Deployment workflows, CI/CD pipeline patterns, Docker contain..."
+
+policy:
+  allow_implicit_invocation: false

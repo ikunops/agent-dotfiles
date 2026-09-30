@@ -1,0 +1,6 @@
+interface:
+  display_name: "Anysearch"
+  short_description: "Real-time search engine supporting web search, vertical domai..."
+
+policy:
+  allow_implicit_invocation: false

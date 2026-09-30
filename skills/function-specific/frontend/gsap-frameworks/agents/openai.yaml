@@ -1,0 +1,6 @@
+interface:
+  display_name: "Gsap Frameworks"
+  short_description: "Official GSAP skill for Vue, Svelte, and other non-React fram..."
+
+policy:
+  allow_implicit_invocation: false

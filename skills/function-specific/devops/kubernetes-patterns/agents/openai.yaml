@@ -1,0 +1,6 @@
+interface:
+  display_name: "Kubernetes Patterns"
+  short_description: "Kubernetes workload patterns, resource management, RBAC, prob..."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Context7"
+  short_description: "Use the ctx7 CLI to fetch library documentation, manage AI co..."
+
+policy:
+  allow_implicit_invocation: false

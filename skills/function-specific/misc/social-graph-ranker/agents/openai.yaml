@@ -1,0 +1,6 @@
+interface:
+  display_name: "Social Graph Ranker"
+  short_description: "Weighted social-graph ranking for warm intro discovery, bridg..."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Dotnet Patterns"
+  short_description: "Idiomatic C# and .NET patterns, conventions, dependency injec..."
+
+policy:
+  allow_implicit_invocation: false

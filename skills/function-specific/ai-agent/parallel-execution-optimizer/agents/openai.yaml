@@ -1,0 +1,6 @@
+interface:
+  display_name: "Parallel Execution Optimizer"
+  short_description: "Use when the user wants a task done much faster through paral..."
+
+policy:
+  allow_implicit_invocation: false

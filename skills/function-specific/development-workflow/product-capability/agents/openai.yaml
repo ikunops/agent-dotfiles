@@ -1,0 +1,6 @@
+interface:
+  display_name: "Product Capability"
+  short_description: "Translate PRD intent, roadmap asks, or product discussions in..."
+
+policy:
+  allow_implicit_invocation: false

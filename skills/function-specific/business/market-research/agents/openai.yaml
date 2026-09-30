@@ -1,0 +1,6 @@
+interface:
+  display_name: "Market Research"
+  short_description: "Conduct market research, competitive analysis, investor due d..."
+
+policy:
+  allow_implicit_invocation: false

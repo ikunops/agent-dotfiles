@@ -1,0 +1,6 @@
+interface:
+  display_name: "Exa Search"
+  short_description: "Neural search via Exa MCP for web, code, and company research."
+
+policy:
+  allow_implicit_invocation: false

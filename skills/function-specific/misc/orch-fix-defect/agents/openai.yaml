@@ -1,0 +1,6 @@
+interface:
+  display_name: "Orch Fix Defect"
+  short_description: "Orchestrate fixing a bug — reproduce it as a failing regressi..."
+
+policy:
+  allow_implicit_invocation: false

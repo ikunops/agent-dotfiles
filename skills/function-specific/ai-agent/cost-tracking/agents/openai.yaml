@@ -1,0 +1,6 @@
+interface:
+  display_name: "Cost Tracking"
+  short_description: "Track and report Claude Code token usage, spending, and budge..."
+
+policy:
+  allow_implicit_invocation: false

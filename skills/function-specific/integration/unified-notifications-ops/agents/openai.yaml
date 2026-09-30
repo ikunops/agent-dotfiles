@@ -1,0 +1,6 @@
+interface:
+  display_name: "Unified Notifications Ops"
+  short_description: "Operate notifications as one ECC-native workflow across GitHu..."
+
+policy:
+  allow_implicit_invocation: false

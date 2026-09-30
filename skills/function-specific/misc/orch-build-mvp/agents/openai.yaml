@@ -1,0 +1,6 @@
+interface:
+  display_name: "Orch Build Mvp"
+  short_description: "Orchestrate bootstrapping a working MVP from a design or spec..."
+
+policy:
+  allow_implicit_invocation: false

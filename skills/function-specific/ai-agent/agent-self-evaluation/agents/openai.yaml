@@ -1,0 +1,6 @@
+interface:
+  display_name: "Agent Self Evaluation"
+  short_description: "Use after completing any non-trivial task."
+
+policy:
+  allow_implicit_invocation: false

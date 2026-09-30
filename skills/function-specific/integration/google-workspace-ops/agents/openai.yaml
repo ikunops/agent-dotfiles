@@ -1,0 +1,6 @@
+interface:
+  display_name: "Google Workspace Ops"
+  short_description: "Operate across Google Drive, Docs, Sheets, and Slides as one..."
+
+policy:
+  allow_implicit_invocation: false

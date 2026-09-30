@@ -160,17 +160,24 @@ AGENTS.md 缺失/为空但工作区有代码 → **不直接开工**，先建最
 
 未收编（skillhub 同源重复，WorkBuddy 侧备份保留）：agent-browser-core、agent-team-orchestration__skillhub。存疑未动：frontend-dev、university-applications（名实不符，待用户处置）。
 
-## 本地检索命令（路由表没覆盖时的兜底）
+## 本地检索（路由表没覆盖时的兜底）
+
+**库层 208 个已退出常驻索引**（`agents/openai.yaml` 的 `policy.allow_implicit_invocation: false`），
+路由表 + 下面的检索是找到它们的通道。全量清单见 `skills/INDEX.md` 的「库层全量清单」一节。
 
 ```bash
-# 活跃层与库层在同一目录：~/.zcode/skills 是 dotfiles/skills 的 Junction，改这里即部署生效
-ls C:/Users/30849/opencode-dotfiles/skills/          # 顶层活跃 skill + 库层三分类（数量以 ls 为准）
+# dotfiles 仓库根：按本机实际情况取，别硬编码用户名
+DOTFILES="${DOTFILES:-$HOME/opencode-dotfiles}"     # 或 Windows: C:\Users\<你>\opencode-dotfiles
 
-# 关键词扫描（含下沉层）
-rg -il "关键词" C:/Users/30849/opencode-dotfiles/skills/ --glob "SKILL.md"
+ls "$DOTFILES/skills/"                              # 顶层 = 活跃层（进索引）
+ls "$DOTFILES/skills/function-specific/"            # 库层三分类（不进索引，按需取）
+
+# 关键词扫描（含库层）
+rg -il "关键词" "$DOTFILES/skills/" --glob "SKILL.md"
 ```
 
-下沉层取回：`git mv function-specific/<类>/<名> <名>` 移回顶层即重新激活；单次使用直接读其 SKILL.md。
+取回：`git mv function-specific/<类>/<名> <名>` 移回顶层即重新激活；
+**单次使用不必移动** —— 直接读它的 `SKILL.md` 即可，或 `$技能名` 显式调用。
 
 ## 外部生态查找（本地无匹配才走）
 

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Database Migrations"
+  short_description: "Database migration best practices for schema changes, data mi..."
+
+policy:
+  allow_implicit_invocation: false

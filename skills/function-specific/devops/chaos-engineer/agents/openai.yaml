@@ -1,0 +1,6 @@
+interface:
+  display_name: "Chaos Engineer"
+  short_description: "Designs chaos experiments, creates failure injection framewor..."
+
+policy:
+  allow_implicit_invocation: false

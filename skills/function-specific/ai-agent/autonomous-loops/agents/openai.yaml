@@ -1,0 +1,6 @@
+interface:
+  display_name: "Autonomous Loops"
+  short_description: "Patterns and architectures for autonomous Claude Code loops —..."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Hexagonal Architecture"
+  short_description: "Design, implement, and refactor Ports & Adapters systems with..."
+
+policy:
+  allow_implicit_invocation: false

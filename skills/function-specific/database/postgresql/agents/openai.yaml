@@ -1,0 +1,6 @@
+interface:
+  display_name: "Postgresql"
+  short_description: "PostgreSQL coding standards, query optimization, indexing, pa..."
+
+policy:
+  allow_implicit_invocation: false

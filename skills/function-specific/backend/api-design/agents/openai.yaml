@@ -1,0 +1,6 @@
+interface:
+  display_name: "Api Design"
+  short_description: "REST API design patterns including resource naming, status co..."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Security Bounty Hunter"
+  short_description: "Hunt for exploitable, bounty-worthy security issues in reposi..."
+
+policy:
+  allow_implicit_invocation: false

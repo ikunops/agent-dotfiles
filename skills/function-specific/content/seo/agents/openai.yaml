@@ -1,0 +1,6 @@
+interface:
+  display_name: "Seo"
+  short_description: "Audit, plan, and implement SEO improvements across technical..."
+
+policy:
+  allow_implicit_invocation: false

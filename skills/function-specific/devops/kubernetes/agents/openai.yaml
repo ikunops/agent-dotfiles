@@ -1,0 +1,6 @@
+interface:
+  display_name: "Kubernetes"
+  short_description: "Kubernetes best practices, translating Docker concepts to K8s..."
+
+policy:
+  allow_implicit_invocation: false

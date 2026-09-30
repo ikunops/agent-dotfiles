@@ -1,0 +1,6 @@
+interface:
+  display_name: "Cloudflare"
+  short_description: "Comprehensive Cloudflare platform skill covering Workers, Pag..."
+
+policy:
+  allow_implicit_invocation: false

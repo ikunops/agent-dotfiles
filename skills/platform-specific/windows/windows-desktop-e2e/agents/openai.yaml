@@ -1,0 +1,6 @@
+interface:
+  display_name: "Windows Desktop E2e"
+  short_description: "E2E testing for Windows native desktop apps (WPF, WinForms, W..."
+
+policy:
+  allow_implicit_invocation: false

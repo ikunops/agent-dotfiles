@@ -1,0 +1,6 @@
+interface:
+  display_name: "Canary Watch"
+  short_description: "Use this skill to monitor and verify a deployed URL after rel..."
+
+policy:
+  allow_implicit_invocation: false

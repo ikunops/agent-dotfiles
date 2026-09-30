@@ -1,0 +1,6 @@
+interface:
+  display_name: "Security Scan"
+  short_description: "Scan your Claude Code configuration (.claude/ directory) for..."
+
+policy:
+  allow_implicit_invocation: false

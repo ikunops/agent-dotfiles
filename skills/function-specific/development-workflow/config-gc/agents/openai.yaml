@@ -1,0 +1,6 @@
+interface:
+  display_name: "Config Gc"
+  short_description: "Garbage collection for your Claude Code configuration."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Mle Workflow"
+  short_description: "Production machine-learning engineering workflow for data con..."
+
+policy:
+  allow_implicit_invocation: false

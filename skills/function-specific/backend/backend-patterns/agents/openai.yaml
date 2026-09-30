@@ -1,0 +1,6 @@
+interface:
+  display_name: "Backend Patterns"
+  short_description: "Backend architecture patterns, API design, database optimizat..."
+
+policy:
+  allow_implicit_invocation: false

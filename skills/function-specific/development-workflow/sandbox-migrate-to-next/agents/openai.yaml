@@ -1,0 +1,6 @@
+interface:
+  display_name: "Sandbox Migrate To Next"
+  short_description: "Use when porting a Cloudflare Sandbox app from stable @cloudf..."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Pytorch Patterns"
+  short_description: "PyTorch deep learning patterns and best practices for buildin..."
+
+policy:
+  allow_implicit_invocation: false

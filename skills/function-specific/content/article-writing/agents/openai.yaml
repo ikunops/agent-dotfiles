@@ -1,0 +1,6 @@
+interface:
+  display_name: "Article Writing"
+  short_description: "Write articles, guides, blog posts, tutorials, newsletter iss..."
+
+policy:
+  allow_implicit_invocation: false

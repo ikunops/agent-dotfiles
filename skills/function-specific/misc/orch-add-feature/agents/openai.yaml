@@ -1,0 +1,6 @@
+interface:
+  display_name: "Orch Add Feature"
+  short_description: "Orchestrate building a brand-new feature end to end — researc..."
+
+policy:
+  allow_implicit_invocation: false

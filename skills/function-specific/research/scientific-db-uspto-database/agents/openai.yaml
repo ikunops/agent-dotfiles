@@ -1,0 +1,6 @@
+interface:
+  display_name: "Scientific Db Uspto Database"
+  short_description: "USPTO patent and trademark data workflow for official record..."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Nextjs Turbopack"
+  short_description: "Next.js 16+ and Turbopack — incremental bundling, FS caching,..."
+
+policy:
+  allow_implicit_invocation: false

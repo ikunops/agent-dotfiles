@@ -1,0 +1,6 @@
+interface:
+  display_name: "Enterprise Agent Ops"
+  short_description: "Operate long-lived agent workloads with observability, securi..."
+
+policy:
+  allow_implicit_invocation: false

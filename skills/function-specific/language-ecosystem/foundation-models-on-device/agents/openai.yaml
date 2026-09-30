@@ -1,0 +1,6 @@
+interface:
+  display_name: "Foundation Models On Device"
+  short_description: "Apple FoundationModels framework for on-device LLM — text gen..."
+
+policy:
+  allow_implicit_invocation: false

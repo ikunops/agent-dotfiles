@@ -1,0 +1,6 @@
+interface:
+  display_name: "Data Throughput Accelerator"
+  short_description: "Use when large data ingestion, backfill, export, ETL, warehou..."
+
+policy:
+  allow_implicit_invocation: false

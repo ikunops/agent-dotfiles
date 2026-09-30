@@ -1,0 +1,6 @@
+interface:
+  display_name: "Investor Outreach"
+  short_description: "Draft cold emails, warm intro blurbs, follow-ups, update emai..."
+
+policy:
+  allow_implicit_invocation: false

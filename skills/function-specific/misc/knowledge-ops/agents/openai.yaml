@@ -1,0 +1,6 @@
+interface:
+  display_name: "Knowledge Ops"
+  short_description: "Knowledge base management, ingestion, sync, and retrieval acr..."
+
+policy:
+  allow_implicit_invocation: false

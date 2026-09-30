@@ -1,0 +1,6 @@
+interface:
+  display_name: "Gan Style Harness"
+  short_description: "GAN-inspired Generator-Evaluator agent harness for building h..."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Agent Introspection Debugging"
+  short_description: "Structured self-debugging workflow for AI agent failures usin..."
+
+policy:
+  allow_implicit_invocation: false

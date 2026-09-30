@@ -1,0 +1,6 @@
+interface:
+  display_name: "Benchmark Optimization Loop"
+  short_description: "Use when the user asks to make something faster, try many var..."
+
+policy:
+  allow_implicit_invocation: false

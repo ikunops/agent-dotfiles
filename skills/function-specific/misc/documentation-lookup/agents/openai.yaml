@@ -1,0 +1,6 @@
+interface:
+  display_name: "Documentation Lookup"
+  short_description: "Use up-to-date library and framework docs via Context7 MCP in..."
+
+policy:
+  allow_implicit_invocation: false

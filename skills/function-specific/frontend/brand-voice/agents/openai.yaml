@@ -1,0 +1,6 @@
+interface:
+  display_name: "Brand Voice"
+  short_description: "Build a source-derived writing style profile from real posts,..."
+
+policy:
+  allow_implicit_invocation: false

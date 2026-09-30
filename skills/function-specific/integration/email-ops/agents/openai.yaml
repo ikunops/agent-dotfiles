@@ -1,0 +1,6 @@
+interface:
+  display_name: "Email Ops"
+  short_description: "Evidence-first mailbox triage, drafting, send verification, a..."
+
+policy:
+  allow_implicit_invocation: false

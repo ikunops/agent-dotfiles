@@ -1,0 +1,6 @@
+interface:
+  display_name: "Automation Audit Ops"
+  short_description: "Evidence-first automation inventory and overlap audit workflo..."
+
+policy:
+  allow_implicit_invocation: false

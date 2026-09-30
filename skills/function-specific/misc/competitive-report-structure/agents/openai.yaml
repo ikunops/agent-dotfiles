@@ -1,0 +1,6 @@
+interface:
+  display_name: "Competitive Report Structure"
+  short_description: "Use after benchmark-methodology has produced scored competito..."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Recursive Decision Ledger"
+  short_description: "Use when the user asks for repeated rollouts, marked decision..."
+
+policy:
+  allow_implicit_invocation: false

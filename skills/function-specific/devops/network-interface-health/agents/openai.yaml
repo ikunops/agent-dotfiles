@@ -1,0 +1,6 @@
+interface:
+  display_name: "Network Interface Health"
+  short_description: "Diagnose interface errors, drops, CRCs, duplex mismatches, fl..."
+
+policy:
+  allow_implicit_invocation: false

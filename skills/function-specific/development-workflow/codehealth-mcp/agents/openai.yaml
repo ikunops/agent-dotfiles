@@ -1,0 +1,6 @@
+interface:
+  display_name: "Codehealth Mcp"
+  short_description: "Real-time structural Code Health via CodeScene MCP — review b..."
+
+policy:
+  allow_implicit_invocation: false

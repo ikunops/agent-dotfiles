@@ -1,0 +1,6 @@
+interface:
+  display_name: "Investor Materials"
+  short_description: "Create and update pitch decks, one-pagers, investor memos, ac..."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Opensource Pipeline"
+  short_description: "Open-source pipeline: fork, sanitize, and package private pro..."
+
+policy:
+  allow_implicit_invocation: false

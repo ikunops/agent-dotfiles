@@ -1,0 +1,6 @@
+interface:
+  display_name: "Scientific Db Pubmed Database"
+  short_description: "Direct PubMed and NCBI E-utilities search workflows for biome..."
+
+policy:
+  allow_implicit_invocation: false

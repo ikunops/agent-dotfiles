@@ -1,0 +1,6 @@
+interface:
+  display_name: "Social Publisher"
+  short_description: "Agent-driven scheduling and publishing of social media posts..."
+
+policy:
+  allow_implicit_invocation: false

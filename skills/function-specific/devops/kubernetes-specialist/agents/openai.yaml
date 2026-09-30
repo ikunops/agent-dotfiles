@@ -1,0 +1,6 @@
+interface:
+  display_name: "Kubernetes Specialist"
+  short_description: "Use when deploying or managing Kubernetes workloads."
+
+policy:
+  allow_implicit_invocation: false

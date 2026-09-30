@@ -1,0 +1,6 @@
+interface:
+  display_name: "Github Ops"
+  short_description: "GitHub repository operations, automation, and management."
+
+policy:
+  allow_implicit_invocation: false

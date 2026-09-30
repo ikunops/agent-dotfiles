@@ -1,0 +1,6 @@
+interface:
+  display_name: "Regex Vs Llm Structured Text"
+  short_description: "Decision framework for choosing between regex and LLM when pa..."
+
+policy:
+  allow_implicit_invocation: false

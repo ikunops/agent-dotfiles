@@ -1,0 +1,6 @@
+interface:
+  display_name: "Agentic Os"
+  short_description: "Build persistent multi-agent operating systems on Claude Code."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Gsap Plugins"
+  short_description: "Official GSAP skill for GSAP plugins — registration, ScrollTo..."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Data Scraper Agent"
+  short_description: "Build a fully automated AI-powered data collection agent for..."
+
+policy:
+  allow_implicit_invocation: false

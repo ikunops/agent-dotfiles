@@ -1,0 +1,6 @@
+interface:
+  display_name: "Hookify Rules"
+  short_description: "This skill should be used when the user asks to create a hook..."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Terminal Ops"
+  short_description: "Evidence-first repo execution workflow for ECC."
+
+policy:
+  allow_implicit_invocation: false

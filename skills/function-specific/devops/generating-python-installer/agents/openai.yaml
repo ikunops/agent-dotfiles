@@ -1,0 +1,6 @@
+interface:
+  display_name: "Generating Python Installer"
+  short_description: "Commercial-grade Python installer expert for Windows: Nuitka..."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Ml Adoption Playbook"
+  short_description: "End-to-end methodology for AI agents and software engineers t..."
+
+policy:
+  allow_implicit_invocation: false

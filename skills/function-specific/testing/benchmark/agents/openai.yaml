@@ -1,0 +1,6 @@
+interface:
+  display_name: "Benchmark"
+  short_description: "Use this skill to measure performance baselines, detect regre..."
+
+policy:
+  allow_implicit_invocation: false

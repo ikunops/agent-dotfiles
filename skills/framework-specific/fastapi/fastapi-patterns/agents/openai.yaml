@@ -1,0 +1,6 @@
+interface:
+  display_name: "Fastapi Patterns"
+  short_description: "FastAPI best practices covering project structure, Pydantic v..."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Connections Optimizer"
+  short_description: "Reorganize the user's X and LinkedIn network with review-firs..."
+
+policy:
+  allow_implicit_invocation: false

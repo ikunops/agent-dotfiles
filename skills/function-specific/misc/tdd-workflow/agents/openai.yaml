@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tdd Workflow"
+  short_description: "Use this skill when writing new features, fixing bugs, or ref..."
+
+policy:
+  allow_implicit_invocation: false

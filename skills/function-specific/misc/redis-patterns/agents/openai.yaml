@@ -1,0 +1,6 @@
+interface:
+  display_name: "Redis Patterns"
+  short_description: "Redis data structure patterns, caching strategies, distribute..."
+
+policy:
+  allow_implicit_invocation: false

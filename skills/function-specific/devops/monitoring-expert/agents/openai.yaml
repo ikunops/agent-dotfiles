@@ -1,0 +1,6 @@
+interface:
+  display_name: "Monitoring Expert"
+  short_description: "Configures monitoring systems, implements structured logging..."
+
+policy:
+  allow_implicit_invocation: false

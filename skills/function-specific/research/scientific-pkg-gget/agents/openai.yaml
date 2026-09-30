@@ -1,0 +1,6 @@
+interface:
+  display_name: "Scientific Pkg Gget"
+  short_description: "gget CLI and Python workflow for quick genomic database queri..."
+
+policy:
+  allow_implicit_invocation: false

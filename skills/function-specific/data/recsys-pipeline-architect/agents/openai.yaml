@@ -1,0 +1,6 @@
+interface:
+  display_name: "Recsys Pipeline Architect"
+  short_description: "Design composable recommendation, ranking, and feed pipelines..."
+
+policy:
+  allow_implicit_invocation: false

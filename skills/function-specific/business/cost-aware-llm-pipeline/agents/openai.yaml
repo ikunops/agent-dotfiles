@@ -1,0 +1,6 @@
+interface:
+  display_name: "Cost Aware Llm Pipeline"
+  short_description: "Cost optimization patterns for LLM API usage — model routing..."
+
+policy:
+  allow_implicit_invocation: false

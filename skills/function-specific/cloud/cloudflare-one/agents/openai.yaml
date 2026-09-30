@@ -1,0 +1,6 @@
+interface:
+  display_name: "Cloudflare One"
+  short_description: "Guides Cloudflare One Zero Trust and SASE work across Access,..."
+
+policy:
+  allow_implicit_invocation: false

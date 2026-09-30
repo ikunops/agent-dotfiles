@@ -1,0 +1,6 @@
+interface:
+  display_name: "Claude Design"
+  short_description: "Produce thoughtful, high-fidelity design artifacts in HTML —..."
+
+policy:
+  allow_implicit_invocation: false

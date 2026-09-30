@@ -1,0 +1,6 @@
+interface:
+  display_name: "Wrangler"
+  short_description: "Cloudflare Workers CLI for deploying, developing, and managin..."
+
+policy:
+  allow_implicit_invocation: false

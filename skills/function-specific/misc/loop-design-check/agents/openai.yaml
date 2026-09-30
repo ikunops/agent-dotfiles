@@ -1,0 +1,6 @@
+interface:
+  display_name: "Loop Design Check"
+  short_description: "Design a goal-oriented agent loop, and review it for the ways..."
+
+policy:
+  allow_implicit_invocation: false

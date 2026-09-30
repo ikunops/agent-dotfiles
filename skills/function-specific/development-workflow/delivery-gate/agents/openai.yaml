@@ -1,0 +1,6 @@
+interface:
+  display_name: "Delivery Gate"
+  short_description: "Stop hook that blocks Claude from finishing until quality che..."
+
+policy:
+  allow_implicit_invocation: false

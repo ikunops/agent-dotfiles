@@ -1,0 +1,6 @@
+interface:
+  display_name: "Orch Refine Code"
+  short_description: "Orchestrate a behavior-preserving refactor — confirm tests ar..."
+
+policy:
+  allow_implicit_invocation: false

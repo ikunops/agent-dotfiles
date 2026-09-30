@@ -1,0 +1,6 @@
+interface:
+  display_name: "Sre Engineer"
+  short_description: "Defines service level objectives, creates error budget polici..."
+
+policy:
+  allow_implicit_invocation: false

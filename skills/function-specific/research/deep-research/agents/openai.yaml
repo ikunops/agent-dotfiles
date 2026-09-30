@@ -1,0 +1,6 @@
+interface:
+  display_name: "Deep Research"
+  short_description: "Multi-source deep research using firecrawl and exa MCPs."
+
+policy:
+  allow_implicit_invocation: false

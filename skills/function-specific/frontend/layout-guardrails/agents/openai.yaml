@@ -1,0 +1,6 @@
+interface:
+  display_name: "Layout Guardrails"
+  short_description: "Enforce layout stacking-context, z-axis, and overflow contain..."
+
+policy:
+  allow_implicit_invocation: false

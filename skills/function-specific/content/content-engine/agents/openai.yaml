@@ -1,0 +1,6 @@
+interface:
+  display_name: "Content Engine"
+  short_description: "Create platform-native content systems for X, LinkedIn, TikTo..."
+
+policy:
+  allow_implicit_invocation: false

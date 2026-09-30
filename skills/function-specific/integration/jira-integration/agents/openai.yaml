@@ -1,0 +1,6 @@
+interface:
+  display_name: "Jira Integration"
+  short_description: "Use this skill when retrieving Jira tickets, analyzing requir..."
+
+policy:
+  allow_implicit_invocation: false

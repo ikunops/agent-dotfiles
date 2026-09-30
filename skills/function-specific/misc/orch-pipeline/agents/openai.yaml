@@ -1,0 +1,6 @@
+interface:
+  display_name: "Orch Pipeline"
+  short_description: "Shared orchestration engine for the orch-* skill family."
+
+policy:
+  allow_implicit_invocation: false

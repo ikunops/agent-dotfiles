@@ -1,0 +1,6 @@
+interface:
+  display_name: "E2e Testing"
+  short_description: "Playwright E2E testing patterns, Page Object Model, configura..."
+
+policy:
+  allow_implicit_invocation: false

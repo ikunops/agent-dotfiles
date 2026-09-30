@@ -1,0 +1,6 @@
+interface:
+  display_name: "Using Git Worktrees"
+  short_description: "Use when starting feature work that needs isolation from curr..."
+
+policy:
+  allow_implicit_invocation: false

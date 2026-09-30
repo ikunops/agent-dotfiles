@@ -1,0 +1,6 @@
+interface:
+  display_name: "Pencilplaybook"
+  short_description: "PencilPlaybook is the UI Skills / Taste-Skill for Pencil.dev..."
+
+policy:
+  allow_implicit_invocation: false

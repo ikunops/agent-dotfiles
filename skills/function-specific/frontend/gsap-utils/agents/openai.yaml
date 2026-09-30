@@ -1,0 +1,6 @@
+interface:
+  display_name: "Gsap Utils"
+  short_description: "Official GSAP skill for gsap.utils — clamp, mapRange, normali..."
+
+policy:
+  allow_implicit_invocation: false

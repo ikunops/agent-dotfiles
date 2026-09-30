@@ -1,0 +1,6 @@
+interface:
+  display_name: "Configure Ecc"
+  short_description: "Interactive installer for Everything Claude Code — guides use..."
+
+policy:
+  allow_implicit_invocation: false

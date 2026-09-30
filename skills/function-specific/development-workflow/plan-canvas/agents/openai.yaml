@@ -1,0 +1,6 @@
+interface:
+  display_name: "Plan Canvas"
+  short_description: "Open plans and HTML artifacts in a local browser canvas where..."
+
+policy:
+  allow_implicit_invocation: false

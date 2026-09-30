@@ -1,0 +1,6 @@
+interface:
+  display_name: "Eval Harness"
+  short_description: "Formal evaluation framework for Claude Code sessions implemen..."
+
+policy:
+  allow_implicit_invocation: false

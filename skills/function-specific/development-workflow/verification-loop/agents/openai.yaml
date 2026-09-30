@@ -1,0 +1,6 @@
+interface:
+  display_name: "Verification Loop"
+  short_description: "A comprehensive verification system for Claude Code sessions."
+
+policy:
+  allow_implicit_invocation: false

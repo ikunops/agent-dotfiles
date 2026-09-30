@@ -1,0 +1,6 @@
+interface:
+  display_name: "Vue Patterns"
+  short_description: "Vue.js 3 Composition API patterns, component architecture, re..."
+
+policy:
+  allow_implicit_invocation: false

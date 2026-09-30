@@ -1,0 +1,6 @@
+interface:
+  display_name: "Prompt Optimizer"
+  short_description: "Analyze raw prompts, identify intent and gaps, match ECC comp..."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Scientific Thinking Scholar Evaluation"
+  short_description: "Structured scholarly-work evaluation for papers, proposals, l..."
+
+policy:
+  allow_implicit_invocation: false

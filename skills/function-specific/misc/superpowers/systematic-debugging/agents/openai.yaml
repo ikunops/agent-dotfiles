@@ -1,0 +1,6 @@
+interface:
+  display_name: "Systematic Debugging"
+  short_description: "Use when encountering any bug, test failure, or unexpected be..."
+
+policy:
+  allow_implicit_invocation: false
