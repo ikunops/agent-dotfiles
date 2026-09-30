@@ -38,7 +38,7 @@ Opening the browser to "see if I'm logged in" is the #1 way to **destroy** the s
 Path: `<user-data-dir>/Local State` (JSON, not sqlite).
 ```python
 import json, os
-ls = r"C:\Users\30849\AppData\Local\Google\Chrome\User Data\Local State"
+ls = os.path.join(os.environ["LOCALAPPDATA"], "Google", "Chrome", "User Data", "Local State")
 d = json.load(open(ls, encoding="utf-8", errors="replace"))
 cache = (d.get("profile") or {}).get("info_cache") or {}
 for k, v in cache.items():
@@ -109,9 +109,13 @@ import os, json, datetime, sqlite3
 from pathlib import Path
 
 TARGETS = ["chatgpt", "openai", "claude", "gemini", "google"]  # host substrings
+# 用 LOCALAPPDATA 推导，不写死用户名（换机器/换用户都能跑）
+LOCAL = os.environ.get("LOCALAPPDATA") or os.path.expanduser(r"~\AppData\Local")
 BROWSERS = [
-    r"C:\Users\30849\AppData\Local\Google\Chrome",
-    r"C:\Users\30849\AppData\Local\Microsoft\Edge",
+    os.path.join(LOCAL, "Google", "Chrome"),
+    os.path.join(LOCAL, "Microsoft", "Edge"),
+    os.path.join(LOCAL, "Google", "Chrome Beta"),
+    os.path.join(LOCAL, "BraveSoftware", "Brave-Browser", "User Data"),
 ]
 PRUNE = {"node_modules",".git","Crashpad","Code Cache","ShaderCache",
          "GPUCache","Cache","CacheStorage","Service Worker","blob_storage"}
@@ -167,8 +171,12 @@ for base in BROWSERS:
                         print(f"  ** LIVE ** {f}\n       host={h} name={n} exp={dt}")
 print(f"\n  scanned {scanned} cookie DBs, {hits} live sessions")
 ```
-Run with the managed interpreter so websockets/stdlib are present:
-`C:\Users\30849\.workbuddy\binaries\python\envs\default\Scripts\python.exe diag.py`
+Run it with any Python 3 (only stdlib is used — `os`, `json`, `sqlite3`, `datetime`, `pathlib`):
+```bash
+python diag.py          # 或本机惯用的 python3 / py -3
+```
+`LOCALAPPDATA` 决定扫描根；PowerShell 里通常已存在，Git Bash 下若缺可先
+`export LOCALAPPDATA="$LOCALAPPDATA"`（Windows 默认 `C:\Users\<你>\AppData\Local`）。
 
 ## Output contract
 Report, per live session found:
