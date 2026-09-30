@@ -35,7 +35,9 @@
 
 ## ④ 工程哲学（常驻人格）
 
-（2026-09-25 已全部归档 → skills-archive/：ponytail 家族 6 个）
+`ponytail`（最懒可行方案：先问"这功能真需要吗"，再要最短 diff）· `ponytail-audit`（全仓过度工程审计）· `ponytail-review`（diff 级审查）· `ponytail-debt`（把 ponytail: 捷径注释汇成债务台账）· `ponytail-gain`（量化收益记分板）· `ponytail-help`（速查）
+
+> 2026-09-25 曾整体归档，2026-09-30 恢复：常驻工程人格，属长期使用项而非低频库件。
 
 ## ⑤ 浏览器与视觉
 
@@ -78,9 +80,11 @@
 
 本次共归档 147 个（顶层平铺 15 + 分类目录 132），完整清单见 skills-archive/_archived_list.json。
 
-顶层这 15 个：
+> 2026-09-30：ponytail 家族 6 个已恢复至顶层活跃层（见 ④），现存归档 139 个（清单文件为准）。
 
-android-dev · android-native-dev · darwin-skill · game-development · grill-me · ios-dev · notebooklm-studio · ponytail · ponytail-audit · ponytail-debt · ponytail-gain · ponytail-help · ponytail-review · turnstile-spin · ziwei-doushu-master
+顶层这 15 个（2026-09-30 恢复 6 个后剩 9 个）：
+
+android-dev · android-native-dev · darwin-skill · game-development · grill-me · ios-dev · notebooklm-studio · turnstile-spin · ziwei-doushu-master
 
 > 恢复：把 skills-archive/ 下对应目录移回 skills/ 原位（顶层放平铺位，其余放 function|framework|platform-specific/），
 > 并在本文件重新登记。校验：python scripts/audit-skills.py --strict
