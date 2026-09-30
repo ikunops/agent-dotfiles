@@ -15,6 +15,7 @@
 
 本脚本把这件事一次性做对：
   1. 发现所有客户端的 skills 路径 + 所有 dotfiles 副本
+     （含"客户端已安装、但其 skills 目录还没被创建"的情况，见 KNOWN_CLIENTS）
   2. 按「新鲜度」选出权威副本（git 提交时间 > skills 内最新文件 mtime）
   3. 计算各客户端相对权威副本的 "独有 skill"（重定向后会丢的）
   4. 用目录链接（junction/symlink）把客户端指向权威副本
@@ -32,6 +33,7 @@
     python sync-skills-links.py                  # 体检：报告现状与建议（不改动）
     python sync-skills-links.py --apply          # 执行
     python sync-skills-links.py --apply --force  # 即使有独有 skill 也强制重定向
+    python sync-skills-links.py --apply --only qoder-cn   # 只动这一个客户端（单点验证用）
     python sync-skills-links.py --home /root     # 指定用户目录（默认自动取）
     python sync-skills-links.py --strict         # 体检模式下：有缺失/待处理项就 exit 1（给定时任务用）
 
@@ -96,6 +98,8 @@ KNOWN_CLIENTS = [
     ".copilot/skills",
     ".cursor/skills",
     ".gemini/skills",
+    ".qoder-cn/skills",          # Qoder CN（本机实测路径）
+    ".qoder/skills",             # Qoder 国际版
     ".trae/skills",
     ".trae-cn/skills",
     ".workbuddy/skills",
@@ -185,6 +189,12 @@ def skill_names(d: Path) -> set[str]:
                 if not p.name.startswith(".") and (p.is_dir() or is_link(p))}
     except Exception:
         return set()
+
+
+def client_name(p: Path) -> str:
+    """客户端名 = skills 目录的父目录名去掉前导点（~/.qoder-cn/skills → qoder-cn）。
+    备份目录命名和 --only 过滤共用这一套，避免两处规则漂移。"""
+    return p.parent.name.lstrip(".") or "client"
 
 
 # ---------- 发现 ----------
@@ -300,7 +310,7 @@ def remove_link(p: Path, apply: bool) -> None:
 
 
 def backup_dir(p: Path, apply: bool, backup_root: Path) -> Path:
-    client = p.parent.name.lstrip(".") or "client"
+    client = client_name(p)
     dst = backup_root / (time.strftime("%Y%m%d-%H%M%S") + "-" + client + "-" + p.name)
     print("      $ mv \"%s\" \"%s\"" % (p, dst))
     if apply:
@@ -316,11 +326,15 @@ def main() -> int:
     ap.add_argument("--force", action="store_true", help="即使有独有 skill 也强制重定向")
     ap.add_argument("--strict", action="store_true",
                     help="体检模式（不加 --apply）下：有缺失链接或待处理客户端就 exit 1")
+    ap.add_argument("--only", default=None, metavar="客户端名",
+                    help="只处理指定客户端（逗号分隔），其余一律不动；名字见【2】的路径，如 qoder-cn")
     args = ap.parse_args()
 
     home = Path(args.home)
+    scope = "（仅 %s）" % args.only if args.only else ""
     print("=" * 78)
-    print("skills 统一指向    home=%s    模式=%s" % (home, "APPLY（会改动）" if args.apply else "DRY-RUN（只报告）"))
+    print("skills 统一指向    home=%s    模式=%s%s"
+          % (home, "APPLY（会改动）" if args.apply else "DRY-RUN（只报告）", scope))
     print("=" * 78)
 
     # 1. 现状
@@ -331,6 +345,21 @@ def main() -> int:
     if not copies:
         print("\n!! 没找到任何 dotfiles 副本（含 skills/ 的 *dotfiles* 目录），无法确定权威来源。")
         return 2
+
+    # --only：只保留指定客户端，其余一律不动（单点验证用；权威副本判定不受影响）
+    # 三个集合都要过滤 —— 只筛 clients 的话，missing/forbidden 仍会照常执行，
+    # 「只动一个客户端」就成了空话。
+    if args.only:
+        want = {s.strip().lower() for s in args.only.split(",") if s.strip()}
+        clients = {p: t for p, t in clients.items() if client_name(p).lower() in want}
+        missing = [p for p in missing if client_name(p).lower() in want]
+        forbidden = [p for p in forbidden if client_name(p).lower() in want]
+        if not clients and not missing and not forbidden:
+            all_names = sorted({client_name(p) for p in find_client_skills(home)}
+                               | {Path(rel).parent.name.lstrip(".") for rel in KNOWN_CLIENTS})
+            print("\n!! --only %s 没有匹配到任何客户端。当前可选：%s"
+                  % (args.only, ", ".join(all_names) or "（无）"))
+            return 2
 
     print("\n【1】dotfiles 副本（按新鲜度排序）")
     ranked = sorted(((freshness(c), c) for c in copies), key=lambda x: -x[0][0])

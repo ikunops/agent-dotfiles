@@ -165,3 +165,34 @@ node --experimental-strip-types scripts/selftest.mts     # .mts 里 import '../s
 - `--user-data-dir` 每次用不同目录，避免上一次的缓存/锁残留。
 - 项目的 `.dockerignore`/`.gitignore` 不会替你清理，脚本和截图**用完要删**，别留在源码目录里。
 - 若部署的是 `web/dist` 且后端用 `http.FileServer` 磁盘热读，**重跑 `npm run build` 后不必重启后端**，刷新即可；但浏览器要禁缓存才看得到。
+
+
+## ⚠️ 进程树回收纪律（血泪：一次泄漏 627 个 chrome，把构建拖死 5 分钟）
+
+**现象**：CDP 脚本里只写 `chrome.kill()` / `process.exit()` → **子进程不会被回收**。
+每个 headless Chromium 会派生 15~20 个辅助进程；跑几轮就累积到**几百个**，把 CPU 吃干 →
+同一台机器上的 `vite build` 从 25s 变成**卡死数分钟**（而构建卡死会清空 `dist` → 页面白屏）。
+
+**正确收尾（缺一不可）**：
+```js
+import { spawn, spawnSync } from 'node:child_process'
+const chrome = spawn(CHROME, [...])
+const killTree = () => { try { spawnSync('taskkill', ['/PID', String(chrome.pid), '/T', '/F'], { stdio: 'ignore' }) } catch {} }
+process.on('exit', killTree)
+process.on('SIGTERM', () => { killTree(); process.exit(0) })   // 被会话打断时也要收
+process.on('SIGINT',  () => { killTree(); process.exit(0) })
+// 收尾：killTree() 之后 再 process.exit(0)
+```
+- **`/T` 是关键**（杀整棵进程树）；只 kill 主进程 = 必然泄漏。
+- **跑完核查**：`tasklist | grep -ci chrome` 应为 0。
+- **兜底清理**：只清 Playwright 的测试浏览器，**按可执行文件路径鉴别**（别按名字）：
+  ```text
+  Get-CimInstance Win32_Process -Filter "Name='chrome.exe'" |
+    Where-Object { $_.ExecutablePath -like '*ms-playwright*' } |
+    ForEach-Object { Stop-Process -Id $_.ProcessId -Force }
+  ```
+  ⚠️ **绝不要** `taskkill /IM chrome.exe` —— 会连带杀掉用户自己的浏览器。
+
+**连带纪律（同样重要）**：
+- **构建一律后台跑**。前台构建会被会话 SIGTERM 打断，而 `vite build` 是"先清空 dist 再写入" → 打断即**白屏**。
+- **改前端前先 `cp -r dist` 快照**一份（166 文件 / 4.4M）；白屏时 `cp -r 快照/. dist/` 秒回。
