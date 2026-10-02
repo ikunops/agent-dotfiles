@@ -371,3 +371,12 @@ android-dev · android-native-dev · darwin-skill · game-development · grill-m
 
 > 恢复：把 skills-archive/ 下对应目录移回 skills/ 原位（顶层放平铺位，其余放 function|framework|platform-specific/），
 > 并在本文件重新登记。校验：python scripts/audit-skills.py --strict
+
+## ⑧ 内容生产与架构迁移（2026-10-02 入库）
+
+| skill | 一句话 | 什么时候用 |
+|---|---|---|
+| `pan-share-screenshots` | 网盘分享页分层截图流水线（目录树采集→严格匹配→点击链截图→平铺滚动→挂库） | 给课程/资料素材补真实网盘截图、鉴别空壳文件夹、要合规截图（不露实名/名师名） |
+| `mysql-to-sqlite-migration` | MySQL(+Redis)→SQLite 完整迁移方法论（类型兼容层+引擎级方言改写器+锁替换+验证清单） | 单机/低并发项目嫌 MySQL/Redis 太重、做单文件独立版、迁移中踩任何 SQLite 坑 |
+
+> 项目专属的 xianyu-ops（94.20 闲鱼系统运维 runbook，放工作区 .agents/skills/，非本仓库）放在工作区 `.agents/skills/`，不进本索引。
