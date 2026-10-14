@@ -1,6 +1,6 @@
 ---
 name: mysql-to-sqlite-migration
-description: 把单机/低并发的 SQLAlchemy 项目从 MySQL(+Redis) 完整迁到 SQLite 的方法论。当用户觉得"MySQL/Redis 太重了"、要做单文件独立版、或迁移过程中出现 disk I/O error、BIGINT 主键不自增、INSERT IGNORE 报语法错、aiosqlite 不认 timeout 参数、Decimal/绑定类型错误、__all__ 幽灵名导致 import * 崩溃等问题时使用。含类型兼容层、引擎级方言改写器、Redis 锁替换、数据迁移与验证清单，全部条目来自真实迁移。
+description: 把单机/低并发的 SQLAlchemy 项目从 MySQL(+Redis) 完整迁到 SQLite 的方法论。当用户觉得"MySQL/Redis 太重了"、要做单文件独立版、或迁移过程中出现 disk I/O error、BIGINT 主键不自增、INSERT IGNORE 报语法错、aiosqlite 不认 timeout 参数、Decimal/绑定类型错误、__all__ 幽灵名导致 import * 崩溃、**缓存或查询"永远读不出来"却无报错（raw SQL 读 DATETIME 得 str 与 datetime 比较抛 TypeError 被吞）**、**某表行数持续增长（手写 DDL 漏 UNIQUE 导致 upsert 退化成 insert）** 等问题时使用。含类型兼容层、引擎级方言改写器、**读侧类型语义与 coerce helper**、**DDL 约束核对清单**、Redis 锁替换、数据迁移与验证清单，全部条目来自真实迁移。
 ---
 
 # MySQL(+Redis) → SQLite 迁移方法论
@@ -59,10 +59,79 @@ def _(conn, clause, mp, params, eo):
 无法改写的少数表达式（`SUBSTRING_INDEX`、`JSON_UNQUOTE`）在业务代码按后端分支：
 Python 侧切分 / SQLite json1（`json_extract` 对文本可直接解 JSON 且标量不带引号）。
 
+## 读侧类型语义（最容易漏的一层，2026-10-14 真实事故）
+
+写入/DDL 层（`@compiles`、方言改写器）通常都会想到，**但"读出来是什么类型"才是最隐蔽的坑**：
+
+| 类型 | MySQL 驱动返回 | SQLite 驱动返回 |
+|---|---|---|
+| `DATETIME` | `datetime` 对象 | **`str`**（DATETIME 在 SQLite 只是"亲和性"，实际存 TEXT） |
+| `BOOLEAN` | `bool` | `int`（0/1） |
+| `DECIMAL/NUMERIC` | `Decimal` | `float` 或 `str` |
+| `JSON` | 已解析对象 | `str`（需 `json.loads`） |
+
+**真实事故**：token 缓存读取 `if expire_at and expire_at > now:` 在 SQLite 下抛
+`'>' not supported between instances of 'str' and 'datetime.datetime'`；
+异常被外层 `except Exception` 吞掉 → 缓存**永远读不出来** → 每 3 分钟重新申请 token
+→ 持续触发平台风控（表现为"一直在过滑块"，排查了几小时才定位）。
+
+### 分界线：ORM 查询 vs raw SQL
+
+**同一个项目里两种写法行为不同**，实测：
+
+```python
+# A) ORM 查询：SQLAlchemy 按模型声明的 DateTime 做转换 → datetime ✅
+(await s.execute(select(XYOrder.created_at).limit(1))).scalar_one_or_none()  # datetime
+
+# B) raw SQL：无类型声明，驱动原样返回 → str ❌
+(await s.execute(text("SELECT created_at FROM xy_orders LIMIT 1"))).fetchone()  # str
+```
+
+**所以：项目里所有 `text(...)` + `fetchone()` 读时间字段的地方都要查。**
+
+### 统一解法：一个 coerce helper
+
+```python
+def _coerce_dt(value):
+    """把 DB 读出的时间值统一成 datetime（SQLite 返回 str，MySQL 返回 datetime）。"""
+    if value is None or isinstance(value, datetime):
+        return value
+    if isinstance(value, str):
+        try:
+            return datetime.fromisoformat(value.replace(" ", "T"))
+        except ValueError:
+            return None
+    return value
+
+# 用法：比较/运算前先转
+expire_at = _coerce_dt(expire_at)
+if expire_at and expire_at > now: ...
+```
+
+**扫描方法**：`grep -rn 'text(' --include='*.py'` 找 raw SQL 文件，再看里面有没有
+`expire_at|created_at|updated_at` 与 `> < >= <=` 同现。ORM 写法可以放过。
+
+## 手写 DDL 必须 1:1 抄约束（2026-10-14 同一事故的第二因）
+
+SQLite 版 DDL 若手写（"仅 DDL 无模型"的表），**必须逐条对比 MySQL 版，尤其 UNIQUE/索引**：
+
+| MySQL | SQLite 手写版漏掉后 |
+|---|---|
+| `UNIQUE KEY uk_user_id (user_id)` | 写入用 `INSERT ... ON DUPLICATE KEY UPDATE`（被改写器转成 `INSERT OR REPLACE`）时**没有唯一键可冲突** → 每次都是新增 → 表从 3 行涨到 105 行 |
+
+**核对清单**：MySQL 版每张表 `SHOW CREATE TABLE` 或读源码 DDL，逐个确认
+`UNIQUE KEY` / `PRIMARY KEY` / `KEY`（索引影响查询性能）都在 SQLite 版里有对应物。
+SQLite 语法：列级 `user_id VARCHAR(128) NOT NULL UNIQUE` 或表级 `UNIQUE(user_id)`。
+
+> 教训归纳：**迁移时"搬运 SQL 文本"是不够的，要验证三件事——
+> 写入时的类型转换（DDL/绑定）、读取时的返回类型（ORM vs raw SQL）、约束是否齐全。**
+
 ## 坑速查表（每条都真实踩过）
 
 | 症状 | 根因 → 解法 |
 |---|---|
+| **缓存/查询永远"读不出来"、却无报错** | raw SQL 读 DATETIME 得 str，与 datetime 比较抛 TypeError 被 except 吞掉 → `_coerce_dt()` 转换；见「读侧类型语义」 |
+| **某表行数莫名持续增长** | SQLite 手写 DDL 漏了 UNIQUE 约束，upsert 退化成纯 insert → 补约束 + 重建表去重；见「手写 DDL 必须 1:1 抄约束」 |
 | `disk I/O error` | 同一库文件被**两个连接并发**（异步引擎 + 迁移裸连接）→ 建表用同步引擎跑完 `dispose()` 再迁；`rm` 掉残留 `-wal/-shm` |
 | 测试跑到了线上库 | pydantic `env_file=".env"` 相对 CWD，**.env 会盖过环境变量** → 测试换一个无 .env 的工作目录 |
 | `INSERT ... ON CONFLICT` 后判断成败 | 读 `cursor.rowcount`（冲突未更新=0）；先 commit 再读 |
