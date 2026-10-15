@@ -356,12 +356,19 @@ HTML文件的开头先写下你的assumptions + reasoning + placeholders，**尽
 
 ### 标准流程（用TaskCreate追踪）
 
-1. **理解需求**：
-   - 🔍 **0. 事实验证（涉及具体产品/技术时必做，优先级最高）**：任务涉及具体产品/技术/事件（DJI Pocket 4、Gemini 3 Pro、Nano Banana Pro、某新 SDK 等）时，**第一个动作**是 `WebSearch` 验证其存在性、发布状态、最新版本、关键规格。把事实写入 `product-facts.md`。详见「核心原则 #0」。**这步做在问 clarifying questions 之前**——事实错了问什么都歪。
-   - 新任务或模糊任务必须问clarifying questions，详见 `references/workflow.md`。一次focused一轮问题通常够，小修小补跳过。
+1. **理解需求**：先事实验证 → 再澄清 → 最后按分流表走。
+   - 🔍 **事实验证（涉及具体产品/技术/事件时必做，优先级最高）**：任务涉及具体产品/技术/事件（DJI Pocket 4、Gemini 3 Pro、某新 SDK 等）时，**第一个动作**是 `WebSearch` 验证其存在性、发布状态、最新版本、关键规格，写入 `product-facts.md`。**这步做在问 clarifying questions 之前**——事实错了问什么都歪。详见「核心原则 #0」。
+   - 新任务或模糊任务必须问 clarifying questions（模板见 `references/workflow.md`）；一次 focused 一轮问题通常够，小修小补跳过。
    - 🛑 **检查点1：问题清单一次性发给用户，等用户批量答完再往下走**。不要边问边做。
-   - 🛑 **幻灯片/PPT 任务走固定交付链，开工不问格式**：HTML deck（每页独立 HTML + `assets/deck_index.html` 概览墙）→ 完成后**自动**出 PDF（`scripts/export_deck_pdf.mjs`，不问直接给）→ **询问**才出可编辑 PPTX。**出 PPTX 有两条路，先按 HTML 的状态选**：HTML 还没写 → 按 4 条硬约束写再走 `html2pptx.js`（`references/editable-pptx.md`）；**HTML 已经写好且是视觉驱动的、或甲方要求继承他们的模板 → 走 `scripts/pptx_from_rendered.py`（`references/pptx-from-rendered-html.md`），读渲染后坐标，零改造**。两条路不要混用。**绝不**为迁就 html2pptx 约束而降级已有的 HTML 设计——那正是第二条路存在的意义。**≥5 页必须先做 2 页 showcase 定 grammar 再批量**——跳过 = 方向错返工 N 次而非 2 次。完整规则 + 交付格式决策树见 `references/slide-decks.md`。
-   - 🔴 **三方向硬门（100%，无关风格参考有无）**：任何新视觉设计，先走「设计方向顾问（Fallback 模式）」大节完成 Phase 1-5——三版真实初稿摆给用户、**用户选定后**才回到这里 Step 2。用户给了风格词/品牌名只改变三方向的取材方式（见 Fallback 节），不豁免这道门。唯一例外见 Fallback「唯一豁免」清单，豁免必须落档 `direction-approved.md`。
+
+   🔀 **Step 1 分流表**（命中哪行执行哪行动作；多信号同时命中按行序叠加）：
+
+   | 命中信号 | 动作 |
+   |---|---|
+   | 幻灯片 / PPT | 🛑 走固定交付链（**开工不问格式**）：HTML deck（每页独立 HTML + `assets/deck_index.html` 概览墙）→ 完成后**自动**出 PDF（`scripts/export_deck_pdf.mjs`，不问直接给）→ **询问**才出可编辑 PPTX。PPTX 两条路**先按 HTML 的状态选**：HTML 未写 → 按 4 条硬约束写再走 `html2pptx.js`（`references/editable-pptx.md`）；HTML 已写好且视觉驱动、或甲方要求继承其模板 → 走 `scripts/pptx_from_rendered.py`（`references/pptx-from-rendered-html.md`），读渲染后坐标、零改造。**两条路不要混用**；**绝不为迁就 html2pptx 约束而降级已有 HTML 设计**——那正是第二条路存在的意义。**≥5 页必须先做 2 页 showcase 定 grammar 再批量**（跳过 = 方向错返工 N 次而非 2 次）。完整规则 + **交付格式决策树**见 `references/slide-decks.md` |
+   | 任何会产出新视觉设计的任务（**100% 命中，无关风格参考有无**） | 🔴 **三方向硬门**：走「设计方向顾问（Fallback 模式）」Phase 1-5 出三版真实初稿 → **用户选定后**才回本流程 Step 2。用户给了风格词/品牌名只改变取材方式（见 Fallback 节），**不豁免**这道门；唯一例外见 Fallback「唯一豁免」清单，豁免必须落档 `direction-approved.md` |
+   | 动画 / 导出 MP4/GIF | 标准流程 + Step 9 执行 |
+   | 带解说长视频（≥1 分钟） | 标准流程 + Step 9.5 执行 |
 2. **探索资源 + 抽核心资产**（不只是抽色值）：读 design system、linked files、上传的截图/代码。**涉及具体品牌时必走 §1.a「核心资产协议」五步**，产出 `brand-spec.md`。
    - 🛑 **检查点2·资产自检**：开工前确认核心资产到位——实体产品要有产品图（不是 CSS 剪影）、数字产品要有 logo+UI 截图、色值从真实 HTML/SVG 抽取。缺了就停下补，不硬做。
    - 如果用户没给 context 且挖不出资产，先走设计方向顾问 Fallback，再按 `references/design-context.md` 的品位锚点兜底。
