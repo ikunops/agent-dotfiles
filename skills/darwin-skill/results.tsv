@@ -1,0 +1,2 @@
+timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
+2026-10-15T16:00	baseline	huashu-design	-	93.0	baseline	-	初始基线评估；weakest=dim2(工作流清晰度)	dry_run

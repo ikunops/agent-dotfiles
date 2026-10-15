@@ -26,7 +26,7 @@
 
 ## ③ 前端工艺
 
-`frontend-review-squad`（**前端审查小分队**：九 skill 编队组合审查——cartographer 闭环测绘 + debug-and-refactor 前提核查 + 布局/刻度/手感/UX/反AI味五件套，六步流程产出带证据的分级清单，2026-09-12 入库）· `frontend-design`（界面设计）· `shadcn`（组件体系）· `wireframe`（线框）· `interactive-prototype`（交互原型）· `create-design-system`（设计系统）· `icon-finder`（找图标）· `no-emoji-ui`（界面禁 emoji：SVG/文字/CSS 替代 + grep 清单）· `make-a-deck`（幻灯片）· `make-tweakable`（可调产物）· `web-perf`（性能）· `vercel-react-best-practices`（React 最佳实践）· `design-taste-frontend`（生产级设计审美：色彩承诺/字号阶梯/间距节奏/对比度/动效克制）· `interaction-design`（交互设计模式库，32KB）· `ui-acceptance`（四层验收+硬阈值+众数一致性+失败二分+汇报三件套）· `frontend-ui-consistency`（前端 UI 相对一致性规范 + 一键审计脚本）
+`frontend-review-squad`（**前端审查小分队**：九 skill 编队组合审查——cartographer 闭环测绘 + debug-and-refactor 前提核查 + 布局/刻度/手感/UX/反AI味五件套，六步流程产出带证据的分级清单，2026-09-12 入库）· `frontend-design`（界面设计）· `shadcn`（组件体系）· `wireframe`（线框）· `interactive-prototype`（交互原型）· `create-design-system`（设计系统）· `icon-finder`（找图标）· `no-emoji-ui`（界面禁 emoji：SVG/文字/CSS 替代 + grep 清单）· `make-a-deck`（幻灯片）· `huashu-design`（花叔Design：HTML 原生设计——高保真原型/幻灯片/动画/信息图，20 设计哲学 + 5 维评审 + MP4 导出；任何新设计先出三个方向初稿再执行，2026-10-15 入库）· `make-tweakable`（可调产物）· `web-perf`（性能）· `vercel-react-best-practices`（React 最佳实践）· `design-taste-frontend`（生产级设计审美：色彩承诺/字号阶梯/间距节奏/对比度/动效克制）· `interaction-design`（交互设计模式库，32KB）· `ui-acceptance`（四层验收+硬阈值+众数一致性+失败二分+汇报三件套）· `frontend-ui-consistency`（前端 UI 相对一致性规范 + 一键审计脚本）
 
 ### ③b 前端工艺库层新增（2026-09-12 收编 14 个，均在 function-specific/frontend/，用 find-skills 取用）
 
@@ -45,7 +45,7 @@
 
 ## ⑥ 元工具
 
-`opencode-skill-creator`（OpenCode 生态 skill 评测/基准/打包）· `skill-creator`（官方版：起草→试跑→迭代造 skill，2026-09-11 入库自 zcode plugin cache）
+`opencode-skill-creator`（OpenCode 生态 skill 评测/基准/打包）· `skill-creator`（官方版：起草→试跑→迭代造 skill，2026-09-11 入库自 zcode plugin cache） · `darwin-skill`（达尔文.skill 2.1：像训练模型一样优化 skill——9 维评分 + 独立评委 + validation-gated 棘轮 + 人在回路，2026-10-15 入库）
 
 ## ⑦ 已下沉库层（2026-09-06，路由见 find-skills/SKILL.md）
 
@@ -363,11 +363,12 @@
 
 本次共归档 147 个（顶层平铺 15 + 分类目录 132），完整清单见 skills-archive/_archived_list.json。
 
-> 2026-09-30：ponytail 家族 6 个已恢复至顶层活跃层（见 ④），现存归档 139 个（清单文件为准）。
+> 2026-09-30：ponytail 家族 6 个已恢复至顶层活跃层（见 ④）。
+> 2026-10-15：darwin-skill 以 v2.1 恢复至顶层活跃层（见 ⑥，旧 v1 已删）；现存归档 138 个（清单文件为准）。
 
-顶层这 15 个（2026-09-30 恢复 6 个后剩 9 个）：
+顶层这 15 个（2026-09-30 恢复 6 个、2026-10-15 恢复 1 个后剩 8 个）：
 
-android-dev · android-native-dev · darwin-skill · game-development · grill-me · ios-dev · notebooklm-studio · turnstile-spin · ziwei-doushu-master
+android-dev · android-native-dev · game-development · grill-me · ios-dev · notebooklm-studio · turnstile-spin · ziwei-doushu-master
 
 > 恢复：把 skills-archive/ 下对应目录移回 skills/ 原位（顶层放平铺位，其余放 function|framework|platform-specific/），
 > 并在本文件重新登记。校验：python scripts/audit-skills.py --strict
