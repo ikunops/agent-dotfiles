@@ -1,3 +1,4 @@
 timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
 2026-10-15T16:00	baseline	huashu-design	-	93.0	baseline	-	初始基线评估；weakest=dim2(工作流清晰度)	dry_run
 2026-10-16T09:20	4de5429	huashu-design	93.0	-	keep	dim2	Step1 长分支抽成「🔀 分流表」（PPT链/三方向硬门/动画/长视频 4 行）+ 顺序句；paired 盲测 3/3 判新版胜（3 独立评委，均确认分支零丢失、🛑15/🔴13 对齐）；体积 1.005x	dry_run
+2026-10-16T14:30	811cecc	huashu-design	-	-	full_test	dim8	真跑 A/B 实测（同 prompt「做个 SaaS 登录页，给 3 个风格方向」）；盲评：组1(带skill) 完胜 组2(baseline)——方向质量 9:5（组2 两个方向是伪方向，只换配色/圆角）、反slop 9:4（baseline aurora-glass 五项全中紫渐变+玻璃拟态+Inter+居中卡）、内容驱动 9:4（baseline 三个方向各用不同假品牌，风格与内容无关）、工艺 9:6（baseline 编造 12,400+ Teams/99.99% Uptime 假社会证明）	full_test
