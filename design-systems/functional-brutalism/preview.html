@@ -85,6 +85,14 @@
   footer{border-top:1px solid var(--rule);margin-top:auto}
   footer .wrap{display:flex;flex-wrap:wrap;gap:8px 22px;padding:16px 28px;font:12px/1.4 var(--mono);color:var(--ink-2)}
   footer a{color:var(--ink-2)}
+
+  /* mobile: single column; spec rows stack */
+  @media (max-width:760px){
+    .grid{grid-template-columns:1fr}
+    .col{padding:36px 24px 44px}
+    .col+.col{border-left:0;border-top:1px solid var(--rule)}
+    .spec .item{grid-template-columns:1fr;gap:6px}
+  }
 </style>
 </head>
 <body>

@@ -31,7 +31,7 @@ description: 电影暗场风格。当设计需要"戏剧感/叙事感"时使用�
 
 ### 两层伪元素，缺一不可
 
-```css
+`````css
 .stage::before {   /* 光源 */
   background: radial-gradient(60% 55% at 26% 38%,
               rgba(233,162,59,.20) 0%, rgba(233,162,59,.05) 38%, transparent 68%);
@@ -45,7 +45,7 @@ description: 电影暗场风格。当设计需要"戏剧感/叙事感"时使用�
 
 ### 入场是一次编排，不是一堆微交互
 
-```css
+`````css
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 .d1 { animation-delay: .05s; } .d2 { .16s } .d3 { .27s } .d4 { .38s } .d5 { .49s }
 ```
@@ -53,6 +53,31 @@ description: 电影暗场风格。当设计需要"戏剧感/叙事感"时使用�
 **一次 well-orchestrated 的入场**（元素依次升起，总时长 <1s）胜过十个散落的 hover 效果。这是"电影感"的真正来源——节奏，不是特效。
 
 `prefers-reduced-motion` 时必须全部关闭。
+
+## 核心陷阱（实测）
+
+### ch 单位在中文下会让标题逐字竖排
+
+`.hero{max-width:16ch}` 看着人畜无害，实则是本风格的定时炸弹：
+
+- `ch` = 数字「0」的宽度（本页 15px 正文下 ≈9.2px），16ch ≈ **147px**；
+- 英文单词不能逐字断行 → "Incidents" 整体溢出，视觉上 3 行没问题；
+- **一个汉字 ≈ 2ch（全角）**，可以逐字断行 → 147px 每行只塞得下 1.8 个字，80px 标题**竖成一条**。
+
+实测数据（1440×900）：英文 3 行 [395/212/210px]，机器翻译后 6 行 [79/79/79/79/79/158px] —— 直接变竖排。
+
+**修法**（已内置在 `preview.html`，翻译态才生效，英文零改动）：
+
+```css
+/* Chrome/Edge 翻译时会往 <html> 加 .translated-ltr / .translated-rtl */
+html.translated-ltr .hero{max-width:none}     /* 松开父级 ch 限制 */
+html.translated-ltr h1{max-width:4.5em}       /* 用 em 限宽：随自身字号，与语言无关 */
+html.translated-ltr .sub{max-width:24em}
+```
+
+验证：英文版截图像素级零差异（diff bbox = None），中文从 6 行竖排 → 2 行正常。
+
+**新写任何带大标题的页面时**：标题限宽用 `em`（随字号缩放），不要用 `ch`（随拉丁字符宽度，对 CJK 失真）。`ch` 只适合给纯拉丁正文估行宽。
 
 ## 微调旋钮
 

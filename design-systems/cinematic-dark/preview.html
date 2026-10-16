@@ -94,6 +94,21 @@
   .d4{animation-delay:.38s}.d5{animation-delay:.49s}
   @media (prefers-reduced-motion:reduce){.animate{animation:none}}
 
+  /* --- Translation resilience ---------------------------------------------
+     Chrome/Edge add .translated-ltr / .translated-rtl to <html> when the page
+     is machine-translated. This layout caps the hero at 16ch: fine in EN
+     because Latin words can't break mid-word (they simply overflow), but one
+     CJK glyph is ~2ch, so a 16ch (≈147px) cap stacks an 80px headline one
+     character per line. In translated mode, drop the parent cap and size the
+     headline in em — relative to its own font, language-independent. */
+  html.translated-ltr .hero,
+  html.translated-rtl .hero{max-width:none}
+  html.translated-ltr .timeline,
+  html.translated-rtl .timeline{max-width:16ch}
+  html.translated-ltr h1,
+  html.translated-rtl h1{max-width:4.5em}
+  html.translated-ltr .sub,
+  html.translated-rtl .sub{max-width:24em}
   @media (max-width:860px){
     .stage{grid-template-columns:1fr}
     .right{border-left:0;border-top:1px solid var(--line);padding:40px 28px}

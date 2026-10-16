@@ -56,3 +56,4 @@
 3. **移动端的 `display:contents` 会在桌面断点继续生效** → 见 `soft-clay/SKILL.md`
 4. **新拟态天生低对比** → 正文/标签必须实测 ≥4.5:1
 5. **渐变必须被框住** → 整页渐变是 slop，被裁进有边界的 band 才是 craft
+6. **ch 限宽 × 中文 = 大标题竖排** → ch 是数字「0」的宽度，汉字约占 2ch；欧洲语言下安全的 max-width:16ch，机器翻译成中文后会让 80px 标题一行只放 1.8 个字。修法见 cinematic-dark/SKILL.md（翻译态用 html.translated-ltr 钩子 + em 限宽）
