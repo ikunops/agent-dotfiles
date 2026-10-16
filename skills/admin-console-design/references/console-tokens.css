@@ -1,0 +1,158 @@
+/* 后台 / 控制台设计令牌 —— 4 套主题 + 尺度
+   用法：直接 @import，或复制需要的变量块进项目。
+   规则：组件样式里不出现字面颜色，只引用这里的语义变量。
+
+   对比度约定（全部实测，见 SKILL.md 第三节）：
+   - text-primary / text-secondary / text-muted 在三层背景上都 >= 4.5
+   - *-ink 只用于 *-soft 浅底；*-solid 已压暗到白字 >= 4.5
+   - --on-brand 是主按钮前景；--brand-ink 是品牌色当文字用时的版本
+   - 任何"色底 + 字"组合都必须实测 >= 4.5:1，不许凭感觉选白色 */
+
+/* ============ 主题 1 · 深色科技（监控 / 数据密集首选） ============ */
+:root,
+[data-theme="dark"] {
+  --bg-canvas: #0b0f17;
+  --bg-surface: #131a25;
+  --bg-elevated: #1a2331;
+  --border: #263347;
+  --text-primary: #e9eef7;
+  --text-secondary: #a3b1c6;
+  --text-muted: #8b95a5;
+  --text-inverse: #ffffff;
+  --brand: #3d8bff;
+  --brand-strong: #1f6feb;
+  --brand-soft: #15243c;
+  --brand-ink: #3d8bff;
+  --accent: #22d3a6;
+  --success: #2ed47a;
+  --warning: #f5a524;
+  --danger: #ff5c5c;
+  --chart-a: #3d8bff;
+  --chart-b: #22d3a6;
+  --chart-c: #f5a524;
+  --chart-d: #b47aff;
+  /* 徽标三件套：-soft 浅底 + -ink 亮字；-solid 实心底 + 白字 */
+  --success-solid: #1d874d;  --success-soft: #183b34;  --success-ink: #4ade80;
+  --warning-solid: #a06c18;  --warning-soft: #3c3325;  --warning-ink: #fbbf24;
+  --danger-solid:  #cc4a4a;  --danger-soft:  #3d262f;  --danger-ink:  #f87171;
+  /* 实心主按钮前景：品牌色偏亮，用深字 */
+  --on-brand: #0a0f18;
+}
+
+/* ============ 主题 2 · 浅色简洁（国际化 SaaS） ============ */
+[data-theme="light"] {
+  --bg-canvas: #f5f7fa;
+  --bg-surface: #ffffff;
+  --bg-elevated: #ffffff;
+  --border: #e3e8ef;
+  --text-primary: #111827;
+  --text-secondary: #55637a;
+  --text-muted: #6b7280;
+  --text-inverse: #ffffff;
+  --brand: #2563eb;
+  --brand-strong: #1d4ed8;
+  --brand-soft: #e8f0fe;
+  --brand-ink: #2563eb;
+  --accent: #0ea5a4;
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --chart-a: #2563eb;
+  --chart-b: #0ea5a4;
+  --chart-c: #f59e0b;
+  --chart-d: #8b5cf6;
+  --success-solid: #12883e;  --success-soft: #e3f4e9;  --success-ink: #166534;
+  --warning-solid: #b26205;  --warning-soft: #faefe1;  --warning-ink: #92400e;
+  --danger-solid:  #dc2626;  --danger-soft:  #fbe5e5;  --danger-ink:  #b91c1c;
+  --on-brand: #ffffff;
+}
+
+/* ============ 主题 3 · 明亮渐变（消费级调性） ============ */
+[data-theme="vibrant"] {
+  --bg-canvas: #fff7f2;
+  --bg-surface: #ffffff;
+  --bg-elevated: #ffffff;
+  --border: #ffe0d0;
+  --text-primary: #2b1b33;
+  --text-secondary: #6b5a76;
+  --text-muted: #7a6885;
+  --text-inverse: #ffffff;
+  --brand: #ff6a3d;
+  --brand-strong: #e8452a;
+  --brand-soft: #ffede3;
+  /* 明亮橙压白字只有 2.85：当按钮底用 --on-brand 深字，当文字用 --brand-ink */
+  --brand-ink: #c2410c;
+  --accent: #7c4dff;
+  --success: #12b76a;
+  --warning: #f79009;
+  --danger: #f04438;
+  --chart-a: #ff6a3d;
+  --chart-b: #7c4dff;
+  --chart-c: #12b76a;
+  --chart-d: #f79009;
+  --success-solid: #0d874e;  --success-soft: #e3f6ed;  --success-ink: #047857;
+  --warning-solid: #ad6506;  --warning-soft: #fef2e1;  --warning-ink: #b45309;
+  --danger-solid:  #d83d32;  --danger-soft:  #fde9e7;  --danger-ink:  #be123c;
+  --on-brand: #2b1b33;
+}
+
+/* ============ 主题 4 · 极简黑白（品牌官网 / 极简调性） ============ */
+[data-theme="mono"] {
+  --bg-canvas: #fafafa;
+  --bg-surface: #ffffff;
+  --bg-elevated: #ffffff;
+  --border: #e6e6e6;
+  --text-primary: #0a0a0a;
+  --text-secondary: #525252;
+  --text-muted: #6b6b6b;
+  --text-inverse: #ffffff;
+  --brand: #0a0a0a;
+  --brand-strong: #000000;
+  --brand-soft: #f0f0f0;
+  --brand-ink: #0a0a0a;
+  --accent: #525252;
+  --success: #4b7f5e;
+  --warning: #9a7b3f;
+  --danger: #a44a4a;
+  --chart-a: #111827;
+  --chart-b: #4b5563;
+  --chart-c: #9ca3af;
+  --chart-d: #d1d5db;
+  --success-solid: #4b7f5e;  --success-soft: #e9f0ec;  --success-ink: #3f6f52;
+  --warning-solid: #8f723b;  --warning-soft: #f3efe8;  --warning-ink: #7a5f2a;
+  --danger-solid:  #a44a4a;  --danger-soft:  #f4e9e9;  --danger-ink:  #8f3d3d;
+  --on-brand: #ffffff;
+}
+
+/* ============ 尺度令牌（与主题无关） ============ */
+:root {
+  /* 尺寸骨架 */
+  --sidebar-w: 240px;
+  --topbar-h: 64px;
+  --card-w-info: 380px;
+  --card-w-detail: 460px;
+  --control-h: 40px;
+  --control-h-sm: 34px;
+  --input-h: 44px;
+
+  /* 间距：24 / 20 / 16 / 12 四档，不出现中间值 */
+  --space-page: 24px;
+  --space-block: 20px;
+  --space-card: 20px;
+  --space-inline: 12px;
+
+  /* 圆角三档 */
+  --radius-card: 14px;
+  --radius-control: 8px;
+  --radius-sm: 6px;
+
+  /* 字阶五档 */
+  --fs-kpi: 30px;
+  --fs-page-title: 20px;
+  --fs-card-title: 15px;
+  --fs-body: 14px;
+  --fs-aux: 12px;
+
+  --font: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
