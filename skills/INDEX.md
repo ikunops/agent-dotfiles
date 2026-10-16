@@ -23,6 +23,7 @@
 | `debug-and-refactor` | 调试与重构 | 修 bug、行为不对 |
 | `find-skills` | 任务路由器：L0 项目记忆直达 → L1 路由表组链 → L2 外部生态 → L3 条件沉淀 | 每个任务开工时；"有没有 skill 能做 X" |
 | `handoff-to-claude-code` | 交接给 Claude Code | 跨工具交接 |
+| `delivery-no-pseudoblock` | 交付前伪阻断闸门（D1–D12 逐项快照） | 任何一次交付结果前（写总结/下结论/状态汇报/提问）强制终检 |
 
 ## ③ 前端工艺
 
@@ -45,7 +46,7 @@
 
 ## ⑥ 元工具
 
-`opencode-skill-creator`（OpenCode 生态 skill 评测/基准/打包）· `skill-creator`（官方版：起草→试跑→迭代造 skill，2026-09-11 入库自 zcode plugin cache） · `darwin-skill`（达尔文.skill 2.1：像训练模型一样优化 skill——9 维评分 + 独立评委 + validation-gated 棘轮 + 人在回路，2026-10-15 入库）
+`opencode-skill-creator`（OpenCode 生态 skill 评测/基准/打包）· `skill-creator`（官方版：起草→试跑→迭代造 skill，2026-09-11 入库自 zcode plugin cache） · `darwin-skill`（达尔文.skill 2.1：像训练模型一样优化 skill——9 维评分 + 独立评委 + validation-gated 棘轮 + 人在回路，2026-10-15 入库） · `text-summary`（长文本→三段式摘要：核心结论 / 关键要点 / 待办与风险）
 
 ## ⑦ 已下沉库层（2026-09-06，路由见 find-skills/SKILL.md）
 
@@ -71,6 +72,25 @@
 `github`（gh CLI）· `github-trending-cn`（trending 监控）· `markitdown-skill`（文档转 MD）· `mcporter`（MCP 管理）· `nano-banana-pro`（Gemini 3 Pro 图像）· `excalidraw-diagram`（Excalidraw 图表，.venv 已剔除）· `browser-profile-diag`（浏览器登录态诊断）· `html-dashboard-regression`（单文件 dashboard 回归）· `minimax-pdf`（设计感 PDF）· `k8s-pitfalls`（K8s 避坑，原 k8s__skillhub 改名归一）
 
 > 未收编（skillhub 同源重复，备份保留在 WorkBuddy）：agent-browser-core · agent-team-orchestration__skillhub。存疑未动：frontend-dev · university-applications（名实不符，待用户处置）。路由见 find-skills I 组。
+
+### ⑨b HyperFrames 视频族（2026-10-17 入库，源 = WorkBuddy 装）
+
+> 用 HTML 渲染视频的框架：10 个 skill 协作，总入口必读。日常不手动调，由作品流程自动加载。
+
+| skill | 一句话 | 什么时候用 |
+|---|---|---|
+| `hyperframes` | 总入口：任何做/改/渲染视频前先读，恢复项目状态、选工作流 | 视频/动画/动效素材的起点 |
+| `hyperframes-core` | 合成契约：时序属性、轨道、子合成、确定性渲染 | 写合成 HTML 前必读 |
+| `hyperframes-animation` | 动画知识库：原子运动、场景蓝图、转场 + 7 种运行时适配器 | 任何动画/运动设计 |
+| `hyperframes-creative` | 非动画创意：配色、字体、旁白、节拍、frame 预设 | 风格/调性决策 |
+| `hyperframes-cli` | CLI 开发环：init / render / publish / preview / doctor | 建站、渲染、发布 |
+| `hyperframes-registry` | 检索并接入现成效果块（CRT、glitch、色差、胶片颗粒等） | 手写名状效果之前先查 |
+| `hyperframes-keyframes` | 推拉镜头、Ken Burns、运镜、SVG morph | 镜头/关键帧 |
+| `hyperframes-audio` | 混音：淡入淡出、ducking、人声压背景乐 | 音频已就位后 |
+| `hyperframes-studio` | Studio 协作工作方式 | 人在回路的方案/变更讨论 |
+| `media-use` | 媒体 OS：BGM/SFX/图标/配音/调色 LUT 解析与生成 | 素材就位 |
+
+> 与 ⑧ 设计线的通用动画纪律互补：那条是跨框架纪律，这组是 HyperFrames 框架专用。
 
 ## ⑩ 未归类（待归位）
 
