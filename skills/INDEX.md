@@ -64,7 +64,7 @@
 
 `opendesign` · `setup-opendesign` · `run-opendesign` · `code-motion-film`（代码叙事动画纪律：可辨识性/投影统一/增量生长语法（含工地式搭建、逐字符打字、粒子消散）/文字不压图/物理/风格真分家/密集抽帧自检，2026-10-16 入库）
 
-**个人风格库**（存放于仓库根目录 design-systems/，不是 skill、不进常驻索引）：6 套可复用风格 —— 极光玻璃、软陶新拟态、瑞士编辑、电影暗场、功能主义租野、Stripe 工具风。每套含风格定义 + 设计 token + 预览页；用法：opendesign / create-design-system 开工时会同时扫项目内 opendesign/design-systems/ 和全局仓库的 design-systems/，同名时项目内优先。该目录自带 README：含六套风格对照表与跨风格通用陷阱。
+**个人风格库**（存放于仓库根目录 design-systems/，不是 skill、不进常驻索引）：6 套可复用风格 —— 极光玻璃、软陶新拟态、瑞士编辑、电影暗场、功能主义粗野、Stripe 工具风。每套含风格定义 + 设计 token + 预览页；用法：opendesign / create-design-system 开工时会同时扫项目内 opendesign/design-systems/ 和全局仓库的 design-systems/，同名时项目内优先。该目录自带 README：含六套风格对照表与跨风格通用陷阱。
 
 ## ⑨ WorkBuddy skillhub 收编（2026-09-18，源 = ~/.workbuddy/skills 独有）
 
