@@ -102,6 +102,8 @@ When the artifact is a product surface (dashboard, console, workbench, app shell
 
 Full numeric table, four ready themes (dark / light / vibrant / mono), and the contrast rules that go with them live in the `admin-console-design` skill.
 
+**If the environment has an Ardot canvas MCP** (WorkBuddy ships one, with its own `ardot-design-core` / `ardot-ui-design` skills), prefer it when the user wants an *editable* design file rather than HTML — and follow **Ardot's own** spacing scale (`4 / 8 / 16 / 24 / 32 / 48 / 64`) instead of the preset below, because that preset's `20` and `12` are not on Ardot's grid. Use this preset for code / static HTML output; use Ardot's grid on the canvas. Never mix the two in one artifact.
+
 ## Anti-slop list
 
 - No gradient overload.
