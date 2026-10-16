@@ -77,6 +77,8 @@ AGENTS.md 缺失/为空但工作区有代码 → **不直接开工**，先建最
 
 | 触发关键词（中 / 英） | skill | 适用边界（一句话） |
 |---|---|---|
+| 任何设计任务开工 / HTML·PPT·原型·UI kit·品牌系统 · any design task | `opendesign` | **通用设计入口**：三档约束模型（画布硬规则 → 视觉令牌 → 产品结构法则）+ 产品界面数字预设 + anti-slop；先扫项目内 `opendesign/design-systems/` 与全局 `design-systems/` 再动手 |
+| 后台 / 管理台 / 监控面板 / 运维平台 / Dashboard · admin console / dashboard | `admin-console-design` | 后台类的正向令牌标准（字阶 5 档 / 间距 24-20-16-12 / 固定骨架+弹性主区 / 描边反转）+ 4 套主题令牌 + 语义色对比度规则；通用表述见 `opendesign` |
 | 前端布局 / 新页面 / 视觉方向 / 审美太平庸 · frontend design / aesthetics | `frontend-design` | 无既有品牌系统时给 committed 的视觉方向；已有品牌要沉淀成规范 → 加 `create-design-system`（reusable design system / UI kit） |
 | 线框 / 多方案粗稿 / 先画几个方向 · wireframe / low-fi | `wireframe` | 探索阶段出 3–5 个结构不同方案；定了方向要能点 → `interactive-prototype`（可交互原型 / clickable prototype） |
 | 设计产物要开关/换色/改文案不重画 · toggle / variant / tweaks | `make-tweakable` | 给已成稿的设计产物加 Tweaks 面板；不是用来生成初稿 |
