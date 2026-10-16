@@ -177,6 +177,30 @@ JS 读属性渲染外壳，页面正文保持真实语义化 HTML。
 
 这四样必须在"有数据"的理想态之外单独设计，否则上线即翻车。
 
+## 八、出处与一个必须知道的冲突（2026-10-17 查证）
+
+这套模型不是凭空的。逐条对照 Ardot 官方规范后，**结论是分层的**：
+
+| 层 | 来源 | 证据 |
+|---|---|---|
+| **产品结构法则**（5 条） | **Ardot 官方** | `ardot-ui-design/references/guidelines-web-app.md` 的 16 条「universal product design principles」：§1 Purpose First / §2 Dominant Region / §6 Status Visibility / §7 Action Hierarchy / §9 Density Intentionality —— 5 条**逐条对应** |
+| **画布硬规则** | **Ardot 官方** | `ardot-design-core/rules/design-rules.md`：flexbox 优先、`hug_contents` 卡片、SVG 图标必须是独立 frame+svg 节点、颜色走 variables、禁 emoji/符号字 —— 均**原文可查** |
+| **视觉令牌的具体数字** | **会话自定**（个别数字在官方示例里出现过，但都不是标准） | 字阶 `30/20/15/14/12`、间距 `24/20/16/12` 官方**查无**；`240` 只出现在 `batch-edit.md` 的侧栏**示例代码**里，`380` 只出现在 style-guide 提取模板的卡片**示例**里 —— 是举例，不是声明标准 |
+
+⚠️ **一个真冲突：间距档不一样。**
+
+- **Ardot 官方** spacing scale：`4, 8, 16, 24, 32, 48, 64`（8 点网格）
+- **本 skill**：`24 / 20 / 16 / 12`
+
+`20` 和 `12` **不在** Ardot 的档位里。所以：
+
+> **在 Ardot 画布上作业时，跟随 Ardot 的 8 点网格（4/8/16/24/32/48/64）；写代码/静态站点时，用本 skill 的四档。**
+> 两者不要混着用——混用正是"看起来齐、但处处差 4px"的根源。
+
+另外：Ardot 的**字阶不是固定的**，它靠 `search_style_guide` + `build_style_guide` 动态生成。所以本 skill 那 5 档是"没有风格库时的默认值"，不是硬标准。
+
+**用词提醒**：`ardot-ui-design` / `ardot-design-core` 等 6 个 skill 是 **WorkBuddy 内置插件**（`workbuddy-builtin/ardot`），不在本仓库里，也不该复制进来——它们随插件升级。本 skill 只吸收其**结论**，不搬运其文本。
+
 ## 与其它 skill 的分工
 
 - `opendesign` = **通用入口**（任何设计任务）：三档约束模型的**通用表述** + 产品界面数字预设 + anti-slop；本 skill 是它的"后台类"展开版
