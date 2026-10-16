@@ -7,7 +7,7 @@ Loaded when the user asks you to produce a reusable design system or UI kit from
 
 ## Where design systems live
 
-All design systems for a project live under `./opendesign/design-systems/<name>/`. Multiple systems can coexist — for example, `./opendesign/design-systems/marketing/`, `./opendesign/design-systems/product/`, `./opendesign/design-systems/deck-template/`. The name is required and descriptive of what the system is for (brand surface, product surface, deck template, co-brand partner). Never use `design-system/` singular or generic names like `main`.
+All design systems for a project live under `./opendesign/design-systems/<name>/`. The user's **personal global library** lives at `$DOTFILES/design-systems/` (dotfiles repo root; on this machine `C:\Users\30849\opencode-dotfiles\design-systems/`) — read it for house style and reuse its tokens when they fit, but write new systems to the project path. Multiple systems can coexist — for example, `./opendesign/design-systems/marketing/`, `./opendesign/design-systems/product/`, `./opendesign/design-systems/deck-template/`. The name is required and descriptive of what the system is for (brand surface, product surface, deck template, co-brand partner). Never use `design-system/` singular or generic names like `main`.
 
 A folder is recognized as a design system if it contains **either** a `SKILL.md` **or** a tokens file (`colors_and_type.css` at the root, or `tokens/colors_and_type.css` nested). `opendesign` accepts either marker when detecting systems. Always write both: the `SKILL.md` makes the folder portable as a standalone agent skill, and the tokens file is the canonical output of this skill.
 

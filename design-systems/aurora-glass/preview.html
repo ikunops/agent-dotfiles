@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Nimbus — Sign in</title>
+<style>
+  :root{
+    --bg:#070912; --text:#eef1ff; --muted:#98a1c6;
+    --stroke:rgba(255,255,255,.14);
+    --accent:#7c5cff; --accent2:#22d3ee;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;min-height:100vh;overflow-x:hidden;
+    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:var(--bg);color:var(--text);display:grid;place-items:center;padding:32px 20px;
+  }
+  .aurora{position:fixed;inset:-25%;z-index:0;filter:blur(90px);opacity:.75}
+  .blob{position:absolute;border-radius:50%;mix-blend-mode:screen}
+  .b1{width:520px;height:520px;background:#6d28d9;top:-4%;left:-6%;animation:f1 18s ease-in-out infinite}
+  .b2{width:460px;height:460px;background:#0891b2;bottom:-12%;right:-6%;animation:f2 22s ease-in-out infinite}
+  .b3{width:360px;height:360px;background:#db2777;top:38%;left:48%;animation:f3 26s ease-in-out infinite}
+  @keyframes f1{50%{transform:translate(120px,80px) scale(1.15)}}
+  @keyframes f2{50%{transform:translate(-140px,-60px) scale(1.1)}}
+  @keyframes f3{50%{transform:translate(-90px,120px) scale(.9)}}
+  .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.06;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+  .card{
+    position:relative;z-index:2;width:100%;max-width:420px;
+    padding:36px 34px 30px;border-radius:24px;
+    background:rgba(255,255,255,.06);
+    border:1px solid var(--stroke);
+    backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+    box-shadow:0 30px 70px -20px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.18);
+  }
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+  .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:grid;place-items:center;font-weight:800;color:#fff;font-size:16px;box-shadow:0 6px 18px -4px var(--accent)}
+  .brand b{font-size:16px;letter-spacing:.2px}
+  h1{font-size:25px;margin:0 0 6px;letter-spacing:-.02em}
+  .sub{color:var(--muted);font-size:14px;margin:0 0 26px;line-height:1.5}
+  label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:16px}
+  input[type=email],input[type=password],input[type=text]{
+    width:100%;margin-top:7px;padding:12px 14px;font-size:14px;color:var(--text);
+    background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:12px;outline:none;
+    transition:border-color .18s, box-shadow .18s, background .18s;
+  }
+  input::placeholder{color:#5f6a92}
+  input:focus{border-color:var(--accent);background:rgba(255,255,255,.07);
+    box-shadow:0 0 0 4px rgba(124,92,255,.22)}
+  .pw{position:relative}
+  .pw button{position:absolute;right:8px;top:calc(50% + 3px);transform:translateY(-50%);
+    background:none;border:0;color:var(--muted);font-size:12px;cursor:pointer;padding:6px 8px;border-radius:8px}
+  .pw button:hover{color:var(--text);background:rgba(255,255,255,.06)}
+  .row{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin:2px 0 22px}
+  .check{display:flex;align-items:center;gap:8px;color:var(--muted);cursor:pointer}
+  .check input{accent-color:var(--accent)}
+  a{color:var(--accent2);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .primary{
+    width:100%;padding:13px;border:0;border-radius:12px;cursor:pointer;color:#fff;font-size:14.5px;font-weight:600;
+    background:linear-gradient(135deg,var(--accent),#4f46e5);box-shadow:0 12px 30px -8px var(--accent);
+    transition:transform .12s, filter .18s;
+  }
+  .primary:hover{filter:brightness(1.08)}
+  .primary:active{transform:translateY(1px)}
+  .sso{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .ghost{
+    display:flex;align-items:center;justify-content:center;gap:9px;
+    padding:11px;border-radius:12px;font-size:14px;color:var(--text);cursor:pointer;
+    background:rgba(255,255,255,.05);border:1px solid var(--stroke);transition:background .18s,border-color .18s;
+  }
+  .ghost:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.28)}
+  .divider{display:flex;align-items:center;gap:12px;color:#5f6a92;font-size:11.5px;
+    text-transform:uppercase;letter-spacing:.12em;margin:22px 0}
+  .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--stroke)}
+  .foot{text-align:center;color:var(--muted);font-size:13.5px;margin:24px 0 0}
+  :focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){.blob{animation:none}}
+
+  /* ============================================================
+     桌面断点 · PC 适配（≥1000px）
+     依据 huashu-design：
+       · §5 系统优先，不要填充 —— 不加 meta / 徽章 / 分隔线之类 filler
+       · 第320行 留白必须是构图 —— 左舱用「两端锚点 + 大字号」立骨架：
+         品牌锚在左上，主张锚在左下，中间那片空是极光本身（内容，不是缺席）
+       · §6.2 反 slop —— 删掉中缝那条 border-left:1px。
+         玻璃是一整片，真实玻璃的边缘是厚度渐变，不是画上去的线；
+         一条硬直线横切半透明板 = 线框感 = 破绽（实测：缝处亮度 101 vs 周围 79）
+       · 左右分舱靠左舱自己的品牌色薄纱渐变区分，不需要再加分隔线
+       · 版式只用已有的 token，无新色新元素
+     ============================================================ */
+  .pane-left,.pane-right{display:contents}
+  @media (min-width:1000px){
+    body{padding:48px 40px}
+    /* ---- 玻璃融入背景（无边界）----
+       不再给 .card 画描边/填充/模糊：那会勾出一圈硬边（用户实测反馈"边框出戏"）。
+       玻璃面收进 ::before，四周用 mask 羽化 —— 填充与模糊在边缘处淡出、与极光无缝相接，
+       矩形轮廓消失，但玻璃本体（模糊+品牌色薄纱）仍在。
+       边缘台阶实测：11.7 → 5.7（逐级过渡，无跳变）。 */
+    .card{max-width:1040px;padding:0;border:0;border-radius:28px;background:none;box-shadow:none;
+      backdrop-filter:none;-webkit-backdrop-filter:none;
+      display:grid;grid-template-columns:1.04fr .96fr;align-items:stretch}
+    .card::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:28px;
+      background:linear-gradient(120deg,rgba(124,92,255,.16),rgba(34,211,238,.05) 52%,rgba(255,255,255,0) 84%),
+                 rgba(255,255,255,.055);
+      backdrop-filter:blur(24px) saturate(1.1);-webkit-backdrop-filter:blur(24px) saturate(1.1);
+      -webkit-mask-image:linear-gradient(to right,transparent 0,#000 110px,#000 calc(100% - 110px),transparent 100%),
+                         linear-gradient(to bottom,transparent 0,#000 90px,#000 calc(100% - 90px),transparent 100%);
+      -webkit-mask-composite:source-in;
+      mask-image:linear-gradient(to right,transparent 0,#000 110px,#000 calc(100% - 110px),transparent 100%),
+                 linear-gradient(to bottom,transparent 0,#000 90px,#000 calc(100% - 90px),transparent 100%);
+      mask-composite:intersect}
+    .pane-left{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:space-between;
+      min-height:640px;padding:56px 54px}
+    .pane-left .brand{margin-bottom:0}
+    .pane-left .copy{margin-bottom:6px}
+    .pane-left h1{font-size:56px;line-height:1.02;letter-spacing:-.035em;margin:0 0 20px;max-width:9ch}
+    .pane-left .sub{font-size:16px;line-height:1.6;max-width:28ch;margin:0}
+    .pane-right{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;
+      padding:48px 44px}
+  }
+
+  }
+</style>
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <main class="card">
+    <div class="pane-left">
+      <div class="brand"><span class="logo">N</span><b>Nimbus</b></div>
+      <div class="copy">
+        <h1>Welcome back</h1>
+        <p class="sub">Sign in to your workspace to keep shipping.</p>
+      </div>
+    </div>
+    <div class="pane-right">
+<div class="sso">
+      <button class="ghost" type="button">
+        <svg viewBox="0 0 24 24" width="17" height="17"><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.7-2.4 3.6v3h3.9c2.3-2.1 3.6-5.2 3.6-8.8z"/><path fill="#34A853" d="M12 24c3.2 0 5.9-1.1 7.9-2.9l-3.9-3c-1.1.7-2.4 1.2-4 1.2-3.1 0-5.7-2.1-6.6-4.9H1.4v3.1C3.4 21.3 7.4 24 12 24z"/><path fill="#FBBC05" d="M5.4 14.4c-.2-.7-.4-1.5-.4-2.4s.1-1.6.4-2.4V6.5H1.4C.5 8.2 0 10 0 12s.5 3.8 1.4 5.5l4-3.1z"/><path fill="#EA4335" d="M12 4.8c1.8 0 3.3.6 4.6 1.8l3.4-3.4C17.9 1.2 15.2 0 12 0 7.4 0 3.4 2.7 1.4 6.5l4 3.1C6.3 6.9 8.9 4.8 12 4.8z"/></svg>
+        Google
+      </button>
+      <button class="ghost" type="button">
+        <svg viewBox="0 0 16 16" width="17" height="17" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </button>
+    </div>
+
+    <div class="divider">or</div>
+
+    <form onsubmit="return false">
+      <label>Email
+        <input type="email" placeholder="you@company.com" autocomplete="email" />
+      </label>
+      <label>Password
+        <span class="pw">
+          <input id="pw" type="password" placeholder="••••••••" autocomplete="current-password" />
+          <button type="button" onclick="var p=document.getElementById('pw');p.type=p.type==='password'?'text':'password'">Show</button>
+        </span>
+      </label>
+      <div class="row">
+        <label class="check"><input type="checkbox" /> Remember me</label>
+        <a href="#">Forgot password?</a>
+      </div>
+      <button class="primary" type="submit">Sign in</button>
+    </form>
+
+    <p class="foot">New to Nimbus? <a href="#">Create an account</a></p>
+    </div>
+  </main>
+</body>
+</html>

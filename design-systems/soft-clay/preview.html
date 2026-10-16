@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Loamly — Sign in</title>
+<style>
+  :root{--bg:#eceef4;--text:#2c3142;--muted:#828a9e;--accent:#ff7a59;
+    --sh-dark:#c8ccd8;--sh-light:#ffffff;}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:grid;place-items:center;padding:36px 20px;
+    background:var(--bg);color:var(--text);
+    font-family:"Nunito","Inter",-apple-system,"Segoe UI",Roboto,sans-serif;}
+  .card{width:100%;max-width:430px;background:var(--bg);border-radius:32px;padding:44px 40px 36px;
+    box-shadow:16px 16px 40px var(--sh-dark), -16px -16px 40px var(--sh-light);}
+  .brand{display:flex;align-items:center;gap:11px;margin-bottom:30px;justify-content:center}
+  .logo{width:44px;height:44px;border-radius:16px;display:grid;place-items:center;color:#fff;font-weight:800;
+    background:linear-gradient(145deg,#ff9070,#ef5f3c);
+    box-shadow:6px 6px 14px var(--sh-dark), -4px -4px 10px var(--sh-light);}
+  .brand b{font-size:19px;letter-spacing:-.01em}
+  h1{font-size:24px;text-align:center;margin:0 0 6px;font-weight:800}
+  .sub{text-align:center;color:var(--muted);font-size:14px;margin:0 0 30px}
+  label{display:block;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:18px}
+  input[type=email],input[type=password],input[type=text]{
+    width:100%;margin-top:9px;padding:14px 16px;font-size:15px;color:var(--text);font-family:inherit;
+    border:0;border-radius:16px;background:var(--bg);outline:none;
+    box-shadow:inset 4px 4px 9px var(--sh-dark), inset -4px -4px 9px var(--sh-light);
+    transition:box-shadow .2s;}
+  input::placeholder{color:#b0b7c6}
+  input:focus{box-shadow:inset 4px 4px 9px var(--sh-dark), inset -4px -4px 9px var(--sh-light),
+    0 0 0 3px rgba(255,122,89,.35)}
+  .pw{position:relative;display:block}
+  .pw button{position:absolute;right:6px;top:calc(50% + 4px);transform:translateY(-50%);border:0;cursor:pointer;
+    background:var(--bg);border-radius:12px;padding:7px 11px;font-size:12px;font-weight:700;color:var(--muted);
+    box-shadow:3px 3px 7px var(--sh-dark), -3px -3px 7px var(--sh-light);}
+  .pw button:hover{color:var(--accent)}
+  .row{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;margin:4px 0 26px}
+  .check{display:flex;align-items:center;gap:9px;color:var(--muted);font-weight:600;cursor:pointer}
+  .check input{accent-color:var(--accent)}
+  a{color:var(--accent);text-decoration:none;font-weight:700}
+  a:hover{text-decoration:underline}
+  .primary{width:100%;padding:16px;border:0;border-radius:16px;cursor:pointer;color:#fff;font-size:16px;
+    font-weight:800;font-family:inherit;background:linear-gradient(145deg,#ff9070,#ef5f3c);
+    box-shadow:8px 8px 18px var(--sh-dark), -6px -6px 16px var(--sh-light);
+    transition:transform .12s, box-shadow .18s;}
+  .primary:hover{box-shadow:10px 10px 22px var(--sh-dark), -6px -6px 16px var(--sh-light)}
+  .primary:active{transform:translateY(2px) scale(.995)}
+  .alt{display:flex;gap:14px;margin-top:16px}
+  .alt button{flex:1;padding:14px;border:0;border-radius:16px;background:var(--bg);cursor:pointer;
+    font-size:14px;font-weight:700;font-family:inherit;color:var(--text);display:flex;align-items:center;
+    justify-content:center;gap:9px;box-shadow:6px 6px 14px var(--sh-dark), -6px -6px 14px var(--sh-light);
+    transition:transform .12s, color .18s;}
+  .alt button:hover{color:var(--accent)}
+  .alt button:active{transform:translateY(2px)}
+  .or{text-align:center;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.08em;
+    text-transform:uppercase;margin:26px 0 16px}
+  .foot{text-align:center;color:var(--muted);font-size:14px;margin:26px 0 0;font-weight:600}
+  :focus-visible{outline:3px solid rgba(255,122,89,.5);outline-offset:3px}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+
+  /* ============================================================
+     桌面断点 · PC 适配（≥1000px）
+     规则依据 huashu-design：
+       · §5 系统优先，不要填充 —— 不新增任何装饰元素
+       · §6.2 反 slop —— 不加 data slop / 装饰几何
+       · 第320行 留白必须是构图 —— 用字号层级 + 光学居中撑起左舱
+     新拟态的原生语言只有两种：凸起(raised) / 内凹(inset)。
+     左舱做成「内凹凹槽」，是材质语法，不是贴上去的装饰。
+     ============================================================ */
+  .well,.form-col,.copy{display:contents}
+  @media (min-width:1000px){
+    body{padding:56px 40px}
+    .card{max-width:1040px;padding:0;border-radius:44px;overflow:hidden;
+      display:grid;grid-template-columns:1fr 1fr;
+      box-shadow:20px 20px 48px var(--sh-dark), -20px -20px 48px var(--sh-light);}
+    .well{display:flex;flex-direction:column;justify-content:space-between;
+      min-height:620px;padding:60px 56px;border-radius:44px 0 0 44px;
+      box-shadow:inset 10px 10px 26px var(--sh-dark), inset -10px -10px 26px var(--sh-light);}
+    .well .brand{justify-content:flex-start;margin-bottom:0}
+    .well .copy{display:block}
+    .well h1{font-size:50px;line-height:1.06;letter-spacing:-.03em;text-align:left;margin:0 0 18px}
+    .well .sub{text-align:left;font-size:16px;line-height:1.55;max-width:26ch;margin:0}
+    .form-col{display:flex;flex-direction:column;justify-content:center;padding:60px 56px}
+  }
+</style>
+</head>
+<body>
+  <main class="card">
+    <section class="well">
+      <div class="brand"><span class="logo">L</span><b>Loamly</b></div>
+      <div class="copy">
+        <h1>Good to see you again</h1>
+        <p class="sub">Sign in and pick up right where you left off.</p>
+      </div>
+    </section>
+    <section class="form-col">
+      <form onsubmit="return false">
+      <label>Email address
+        <input type="email" placeholder="you@team.com" autocomplete="email" />
+      </label>
+      <label>Password
+        <span class="pw">
+          <input id="p3" type="password" placeholder="Your password" autocomplete="current-password" />
+          <button type="button" onclick="var p=document.getElementById('p3');p.type=p.type==='password'?'text':'password'">Show</button>
+        </span>
+      </label>
+      <div class="row">
+        <label class="check"><input type="checkbox" /> Remember me</label>
+        <a href="#">Need help?</a>
+      </div>
+      <button class="primary" type="submit">Sign in</button>
+    </form>
+
+    <p class="or">or</p>
+    <div class="alt">
+      <button type="button">
+        <svg viewBox="0 0 24 24" width="17" height="17"><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.7-2.4 3.6v3h3.9c2.3-2.1 3.6-5.2 3.6-8.8z"/><path fill="#34A853" d="M12 24c3.2 0 5.9-1.1 7.9-2.9l-3.9-3c-1.1.7-2.4 1.2-4 1.2-3.1 0-5.7-2.1-6.6-4.9H1.4v3.1C3.4 21.3 7.4 24 12 24z"/><path fill="#FBBC05" d="M5.4 14.4c-.2-.7-.4-1.5-.4-2.4s.1-1.6.4-2.4V6.5H1.4C.5 8.2 0 10 0 12s.5 3.8 1.4 5.5l4-3.1z"/><path fill="#EA4335" d="M12 4.8c1.8 0 3.3.6 4.6 1.8l3.4-3.4C17.9 1.2 15.2 0 12 0 7.4 0 3.4 2.7 1.4 6.5l4 3.1C6.3 6.9 8.9 4.8 12 4.8z"/></svg>
+        Google
+      </button>
+      <button type="button">Email link</button>
+    </div>
+
+    <p class="foot">New here? <a href="#">Create a free account</a></p>
+    </section>
+  </main>
+</body>
+</html>

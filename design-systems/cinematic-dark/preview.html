@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sign in · Kestrel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<!--
+  Direction C · 🧠 最佳设计师（深呼吸·顶级定制）→ 启用 Locomotive (Montréal) 的设计思维
+  Locomotive philosophy applied: dark cinematic stage, one decisive light source, bold
+  condensed display type, asymmetric split, one well-orchestrated page-load — never a
+  bag of micro-interactions.
+  WHY: an incident happens in the dark, under pressure. The page IS that moment: a night
+  stage with a single warm light, a huge headline, and Kestrel's TIMELINE motif as the glow.
+  ASSUMPTIONS: same product/content; desktop 1440x900; EN copy; no brand assets.
+  PALETTE (argued): near-black #0A0A0B (not uniform navy), warm ink #F2F0ED, muted #9A9AA0,
+  ONE warm amber accent #E9A23B. Argument: warmth = authorial intent, contrasts the banned
+  "cool neon on navy" slop; amber also reads as "alert light" — content-driven, not decorative.
+  DEGRADATION: ~85% — light, type and timeline are pure CSS; true WebGL depth would add more.
+-->
+<style>
+  *{box-sizing:border-box}
+  :root{
+    --bg:#0A0A0B; --surface:#121214; --line:rgba(242,240,237,.12); --ink:#F2F0ED; --muted:#9A9AA0;
+    --amber:#E9A23B; --amber-soft:rgba(233,162,59,.16);
+    --display:"Archivo",system-ui,sans-serif;
+    --sans:"Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  }
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font:15px/1.6 var(--sans);
+       -webkit-font-smoothing:antialiased;overflow-x:hidden;text-wrap:pretty}
+  a{color:var(--amber);text-decoration:none}
+  a:hover{text-decoration:underline;text-underline-offset:3px}
+
+  .stage{position:relative;min-height:100vh;display:grid;grid-template-columns:1.35fr 1fr}
+  /* one decisive light source, warm, off-centre */
+  .stage::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(60% 55% at 26% 38%, rgba(233,162,59,.20) 0%, rgba(233,162,59,.05) 38%, transparent 68%);
+  }
+  .stage::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(140% 120% at 50% 50%, transparent 55%, rgba(0,0,0,.55) 100%);
+  }
+  .stage>*{position:relative;z-index:2}
+
+  .left{padding:56px 60px 56px 72px;display:flex;flex-direction:column;justify-content:space-between}
+  .brand{font:800 15px/1 var(--display);letter-spacing:.22em;text-transform:uppercase}
+  .hero{margin:auto 0;max-width:16ch}
+
+  /* timeline motif — the content's own structure, made luminous */
+  .timeline{display:flex;align-items:center;gap:0;margin:0 0 30px}
+  .tl-node{width:9px;height:9px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 4px var(--amber-soft)}
+  .tl-seg{height:1px;width:78px;background:linear-gradient(90deg,rgba(233,162,59,.85),rgba(242,240,237,.25))}
+  .tl-node.mute{background:rgba(242,240,237,.35);box-shadow:none}
+
+  .eyebrow{font:600 12px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin:0 0 18px}
+  h1{font:900 clamp(44px,5.6vw,86px)/0.98 var(--display);letter-spacing:-.02em;margin:0}
+  .sub{margin:22px 0 0;color:var(--muted);font-size:16px;max-width:40ch}
+  .foot{font-size:12.5px;color:var(--muted)}
+
+  .right{border-left:1px solid var(--line);background:var(--surface);
+         padding:56px 56px 56px 52px;display:flex;align-items:center}
+  .panel{width:100%;max-width:380px}
+  .panel h2{font:700 22px/1.2 var(--display);letter-spacing:-.01em;margin:0 0 6px}
+  .panel .hint{color:var(--muted);font-size:14px;margin:0 0 28px}
+  .field{margin-bottom:16px}
+  label{display:block;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  input{width:100%;font:15px/1.4 var(--sans);color:var(--ink);background:#0E0E10;
+        border:1px solid var(--line);border-radius:6px;padding:12px 13px;transition:border-color .18s, box-shadow .18s}
+  input::placeholder{color:#66666e}
+  input:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px var(--amber-soft)}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:6px 0 22px}
+  .check{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+  .check input{width:15px;height:15px;padding:0;accent-color:var(--amber)}
+  button.primary{width:100%;font:700 15px/1 var(--sans);color:#1a1206;background:var(--amber);
+        border:0;border-radius:6px;padding:14px;cursor:pointer;transition:filter .15s, transform .05s}
+  button.primary:hover{filter:brightness(1.07)}
+  button.primary:active{transform:translateY(1px)}
+  button.primary:focus-visible{outline:none;box-shadow:0 0 0 3px var(--amber-soft)}
+  .divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--muted);font-size:12px}
+  .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line)}
+  button.ghost{width:100%;font:600 14px/1 var(--sans);color:var(--ink);background:transparent;
+        border:1px solid var(--line);border-radius:6px;padding:13px;cursor:pointer}
+  button.ghost:hover{border-color:rgba(242,240,237,.4);background:rgba(242,240,237,.04)}
+  .signup{text-align:center;font-size:13.5px;color:var(--muted);margin:22px 0 0}
+
+  /* one well-orchestrated load */
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .animate{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+  .d1{animation-delay:.05s}.d2{animation-delay:.16s}.d3{animation-delay:.27s}
+  .d4{animation-delay:.38s}.d5{animation-delay:.49s}
+  @media (prefers-reduced-motion:reduce){.animate{animation:none}}
+
+  @media (max-width:860px){
+    .stage{grid-template-columns:1fr}
+    .right{border-left:0;border-top:1px solid var(--line);padding:40px 28px}
+    .left{padding:36px 28px}
+    h1{font-size:clamp(38px,11vw,60px)}
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <!-- Left: light, type, and the product's own timeline motif -->
+    <div class="left">
+      <div class="brand animate d1">Kestrel</div>
+
+      <div class="hero">
+        <div class="timeline animate d2" aria-hidden="true">
+          <span class="tl-node"></span><span class="tl-seg"></span>
+          <span class="tl-node mute"></span><span class="tl-seg"></span>
+          <span class="tl-node mute"></span>
+        </div>
+        <p class="eyebrow animate d2">On-call · Incident response</p>
+        <h1 class="animate d3">Incidents don't wait.</h1>
+        <p class="sub animate d4">One timeline for every alert, deploy and page — drafted while the incident is still moving.</p>
+      </div>
+
+      <p class="foot animate d5">© 2026 Kestrel · <a href="#">Status</a> · <a href="#">Security</a></p>
+    </div>
+
+    <!-- Right: the form on a single raised surface -->
+    <div class="right">
+      <div class="panel animate d3" aria-labelledby="h">
+        <h2 id="h">Sign in</h2>
+        <p class="hint">Open your Kestrel workspace.</p>
+        <form method="post" action="#" novalidate>
+          <div class="field">
+            <label for="email">Work email</label>
+            <input id="email" name="email" type="email" autoComplete="username" placeholder="you@company.com" required />
+          </div>
+          <div class="field">
+            <label for="pw">Password</label>
+            <input id="pw" name="password" type="password" autoComplete="current-password" placeholder="Your password" required />
+          </div>
+          <div class="row">
+            <label class="check" for="remember"><input id="remember" type="checkbox" /> Keep me signed in</label>
+            <a href="#">Forgot password?</a>
+          </div>
+          <button class="primary" type="submit">Sign in</button>
+          <div class="divider">or</div>
+          <button class="ghost" type="button">Continue with SSO</button>
+          <p class="signup">New to Kestrel? <a href="#">Start a 14-day trial</a></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

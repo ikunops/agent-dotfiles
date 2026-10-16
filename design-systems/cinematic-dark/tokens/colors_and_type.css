@@ -1,0 +1,84 @@
+/* ==========================================================================
+   Cinematic Dark — tokens
+   电影暗场：近黑舞台 + 单一暖琥珀光源 + 超大字重标题 + 交错入场
+   来源: glass-ui/dim8-ab-test-20261016/evidence/with_skill/design-demos/Login - Cinematic Dark.html
+         （huashu-design 三方向之一 · 逻辑 C「最佳设计师」→ 启用 Locomotive 设计思维）
+   适用: 需要"戏剧感/叙事感"的产品页、发布会、暗色品牌站
+   关键: 这不是"冷蓝霓虹"slop —— 暖色是有作者意图的打光，且琥珀读作"警示灯"= 内容驱动
+   ========================================================================== */
+
+:root {
+  /* ---- raw: color ---- */
+  --bg:        #0A0A0B;   /* 近黑，非均匀深蓝 */
+  --surface:   #121214;
+  --field:     #0E0E10;
+
+  --ink:       #F2F0ED;   /* 暖白，不是纯白 */
+  --muted:     #9A9AA0;
+  --line:      rgba(242,240,237,.12);
+
+  --amber:        #E9A23B;   /* 唯一光源色 */
+  --amber-soft:   rgba(233,162,59,.16);
+
+  /* ---- raw: type ---- */
+  --font-display: "Archivo", system-ui, sans-serif;       /* 900 字重做标题 */
+  --font-sans:    "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+  --fs-h1:    clamp(44px, 5.6vw, 86px);   /* 超大，占满视觉重心 */
+  --fs-h2:    22px;
+  --fs-body:  15px;
+  --fs-eye:   12px;                       /* 全大写 + 字距 .24em */
+
+  /* ---- raw: shape ---- */
+  --radius:      6px;      /* 小而克制，不做圆润卡片 */
+  --grid-split:  1.35fr 1fr;   /* 明显不对称 */
+  --pad-left:    56px 60px 56px 72px;
+
+  /* ---- semantic ---- */
+  --text-primary:   var(--ink);
+  --text-secondary: var(--muted);
+  --accent:         var(--amber);
+  --border-subtle:  var(--line);
+  --surface-raised: var(--surface);
+
+  /* ---- effects ---- */
+  --focus-ring: 0 0 0 3px var(--amber-soft);
+  --shadow-elevated: 0 18px 48px -20px rgba(0,0,0,.9);
+}
+
+/* ---- 打光：一束偏心暖光 + 四周暗角（两层伪元素，缺一不可）---- */
+.stage { position: relative; min-height: 100vh; display: grid; grid-template-columns: var(--grid-split); }
+
+.stage::before {   /* 光源：偏左上，暖色 */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(60% 55% at 26% 38%,
+              rgba(233,162,59,.20) 0%, rgba(233,162,59,.05) 38%, transparent 68%);
+}
+.stage::after {    /* 暗角：把视线压回中间 */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(140% 120% at 50% 50%, transparent 55%, rgba(0,0,0,.55) 100%);
+}
+
+/* ---- 入场：一次编排好的 page-load，不是散落的微交互 ---- */
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.animate { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; }
+.d1 { animation-delay: .05s; } .d2 { animation-delay: .16s; } .d3 { animation-delay: .27s; }
+.d4 { animation-delay: .38s; } .d5 { animation-delay: .49s; }
+
+@media (prefers-reduced-motion: reduce) { .animate { animation: none; } }
+
+/* 主要按钮：暖色实心，深色文字（对比度更高） */
+.btn-amber {
+  width: 100%; border: 0; border-radius: var(--radius); padding: 14px;
+  font: 700 15px/1 var(--font-sans); color: #1A1206; background: var(--amber);
+  cursor: pointer; transition: filter .15s, transform .05s;
+}
+.btn-amber:hover  { filter: brightness(1.07); }
+.btn-amber:active { transform: translateY(1px); }
+
+@media (max-width: 860px) {
+  .stage { grid-template-columns: 1fr; }
+  .right { border-left: 0; border-top: 1px solid var(--line); padding: 40px 28px; }
+  .left  { padding: 36px 28px; }
+  h1     { font-size: clamp(38px, 11vw, 60px); }
+}

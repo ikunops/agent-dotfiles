@@ -1,0 +1,80 @@
+/* ==========================================================================
+   Functional Brutalism — tokens
+   功能主义粗野：纸白文档网格 + 系统字体 + 发丝分割线 + 功能蓝链接
+   来源: glass-ui/dim8-ab-test-20261016/evidence/with_skill/design-demos/Login - Functional Brutalism (wheel).html
+         （huashu-design 三方向之一 · 逻辑 A「秒数轮盘 #17」→ Functional Brutalism）
+   谱系: Are.na / Lobsters / Quartz；Müller-Brockmann 网格 + Tufte 密度
+   适用: 开发者工具、文档站、状态页、需要"可信/无装饰"的场合
+   立场: 功能主义网页自己的词汇就是灰发丝线 + 经典蓝链接；这里造品牌色反而是 slop
+   ========================================================================== */
+
+:root {
+  /* ---- raw: color ---- */
+  --paper:    #FBFBFB;
+  --field:    #FFFFFF;
+  --ink:      #111111;
+  --ink-2:    #585858;
+  --rule:     #E0E0E0;   /* 发丝线，全站唯一的分隔手段 */
+  --border-input: #C9C9C9;
+  --link:     #0000EE;   /* 经典未加前缀的链接蓝 */
+  --link-hover: #0000C2;
+  --ok:       #1E8E3E;
+
+  /* ---- raw: type ---- */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  --fs-body:  14px;
+  --fs-h1:    21px;
+  --fs-label: 12px;   /* 等宽 + 全大写 + 字距 .08em */
+
+  /* ---- raw: shape ---- */
+  --radius:    0;      /* 全站无圆角，这是立场 */
+  --maxw:      1180px;
+  --grid-split: 1.12fr 1fr;
+
+  /* ---- semantic ---- */
+  --text-primary:   var(--ink);
+  --text-secondary: var(--ink-2);
+  --accent:         var(--link);
+  --border-subtle:  var(--rule);
+}
+
+/* ---- 布局：文档网格 ---- */
+.page { min-height: 100vh; display: flex; flex-direction: column; background: var(--paper); color: var(--ink); }
+.wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+
+header.top { border-bottom: 1px solid var(--rule); }
+footer     { border-top: 1px solid var(--rule); margin-top: auto; }
+
+.grid { display: grid; grid-template-columns: var(--grid-split); }
+.col  { padding: 46px 28px 60px; }
+.col + .col { border-left: 1px solid var(--rule); }   /* 唯一的分栏手段：一条发丝线 */
+
+/* ---- 元件：全部方角，靠边框和留白分层 ---- */
+.bf-input {
+  width: 100%; font: 14px/1.4 var(--font-sans); color: var(--ink); background: var(--field);
+  border: 1px solid var(--border-input); border-radius: 0; padding: 11px 12px;
+}
+.bf-input:focus { outline: 2px solid var(--link); outline-offset: -1px; border-color: var(--link); }
+
+.btn-brutal {
+  width: 100%; font: 600 14px/1 var(--font-sans); color: #fff; background: var(--link);
+  border: 1px solid var(--link); border-radius: 0; padding: 13px 12px; cursor: pointer;
+}
+.btn-brutal:hover { background: var(--link-hover); border-color: var(--link-hover); }
+
+/* 规格表：产品事实读起来像 changelog（这是这个风格的招牌） */
+.spec { border-top: 1px solid var(--rule); }
+.spec .item {
+  display: grid; grid-template-columns: 120px 1fr; gap: 18px;
+  padding: 16px 0; border-bottom: 1px solid var(--rule);
+}
+.spec dt { font: 12px/1.5 var(--font-mono); color: var(--ink-2); text-transform: uppercase; letter-spacing: .06em; }
+.spec dd { margin: 0; font-size: 14px; }
+
+/* 诚实占位：没有真实 logo 就画虚线框，不要编造 */
+.logo-slot {
+  font: 12px/1 var(--font-mono); color: #9A9A9A;
+  border: 1px dashed #CFCFCF; padding: 9px 12px;
+}

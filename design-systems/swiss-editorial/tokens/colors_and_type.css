@@ -1,0 +1,74 @@
+/* ==========================================================================
+   Swiss Editorial — tokens
+   瑞士编辑：黑白纸面 + 单点信号橙 + 强网格 + 大字号衬线感标题
+   来源: glass-ui/dim8-ab-test-20261016/baseline/swiss-editorial.html（无 skill 产出）
+   适用: 品牌主页、媒体报道、金融/数据类产品、需要"理性权威"的场合
+   特点: 自带 @media(max-width:900px) 断点，移动端自动隐藏左栏——无需额外适配
+   ========================================================================== */
+
+:root {
+  /* ---- raw: color ---- */
+  --paper:    #FFFFFF;
+  --ink:      #0C0C0D;   /* 左栏底色 = 纸面反色 */
+  --line:     #E3E3E0;
+  --muted:    #6B6B6B;
+  --signal:   #FF4D00;   /* 唯一信号色，用得极省 */
+
+  /* ---- raw: type ---- */
+  --font-sans: "Inter", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+
+  --fs-panel-h2: clamp(34px, 4.1vw, 60px);  /* 左栏主张 */
+  --fs-h1:       30px;
+  --fs-body:     15px;
+  --fs-label:    11.5px;   /* 全大写 + 字距 .16em */
+
+  /* ---- raw: shape ---- */
+  --grid-split:  1.05fr .95fr;   /* 左栏略宽 */
+  --panel-pad:   56px 60px;
+
+  /* ---- semantic ---- */
+  --text-primary:   var(--ink);
+  --text-on-dark:   #FFFFFF;
+  --text-secondary: var(--muted);
+  --text-dim:       #A7A7A7;   /* 深色底上的次级文字 */
+  --accent:         var(--signal);
+  --border-subtle:  var(--line);
+}
+
+/* 深色编辑栏：整块反色 + 极淡网格底纹 */
+.editorial-panel {
+  position: relative; overflow: hidden;
+  background: var(--ink); color: var(--text-on-dark);
+  padding: var(--panel-pad);
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.editorial-panel .grid-bg {
+  position: absolute; inset: 0; opacity: .14;
+  background-image:
+    linear-gradient(#fff 1px, transparent 1px),
+    linear-gradient(90deg, #fff 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(160deg, #000, transparent 78%);
+}
+
+/* 下划线式输入：编辑排版的语言，不是盒子 */
+.field-underline input {
+  width: 100%; border: 0; border-bottom: 1.5px solid var(--line);
+  background: transparent; padding: 8px 2px; font-size: 16px; outline: none;
+  transition: border-color .2s;
+}
+.field-underline input:focus { border-color: var(--ink); }
+
+/* 全大写小标签 */
+.eyebrow {
+  font-size: 11.5px; text-transform: uppercase; letter-spacing: .16em;
+  color: var(--muted); margin: 0 0 10px;
+}
+
+/* 方形按钮（无圆角是立场） */
+.btn-editorial {
+  width: 100%; padding: 15px; border: 0;
+  background: var(--ink); color: #fff; font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: background .2s;
+}
+.btn-editorial:hover { background: var(--signal); }

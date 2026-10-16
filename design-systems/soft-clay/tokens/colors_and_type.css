@@ -1,0 +1,74 @@
+/* ==========================================================================
+   Soft Clay — tokens
+   新拟态（Neumorphism）：凸起/内凹同色材质 + 柔和双向阴影 + 暖橘点色
+   来源: glass-ui/dim8-ab-test-20261016/baseline/soft-clay.html（无 skill 产出）
+   适用: 移动端优先的轻量工具、健康/记账/习惯类 App、需要"温暖手感"的场合
+   注意: 新拟态对对比度天生不友好，正文/标签必须额外验证 ≥4.5:1
+   ========================================================================== */
+
+:root {
+  /* ---- raw: color ---- */
+  --bg:        #ECEEF4;   /* 底色即材质色：凸起与内凹共用 */
+  --sh-dark:   #C8CCD8;   /* 暗侧阴影 */
+  --sh-light:  #FFFFFF;   /* 亮侧高光 */
+
+  --ink:       #2C3142;
+  --ink-muted: #828A9E;
+  --ink-place: #B0B7C6;
+
+  --accent:        #FF7A59;
+  --accent-light:  #FF9070;   /* 渐变亮端 */
+  --accent-deep:   #EF5F3C;   /* 渐变暗端 */
+  --accent-ring:   rgba(255,122,89,.35);
+
+  /* ---- raw: type ---- */
+  --font-sans: "Nunito", "Inter", -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --fs-h1:    50px;   /* 桌面左舱 */
+  --fs-h1-sm: 24px;   /* 移动端 */
+  --fs-body:  15px;
+  --fs-label: 13px;
+  --fs-small: 12px;
+
+  /* ---- raw: shape ---- */
+  --radius-card:  32px;
+  --radius-inner: 16px;
+  --maxw-card:    1040px;
+
+  /* ---- semantic ---- */
+  --text-primary:   var(--ink);
+  --text-secondary: var(--ink-muted);
+  --accent-solid:   linear-gradient(145deg, var(--accent-light), var(--accent-deep));
+  --surface-raised: var(--bg);   /* 凸起 */
+  --surface-inset:  var(--bg);   /* 内凹（同一颜色，靠阴影方向区分） */
+
+  /* ---- effects: 新拟态的全部秘密就在这两组阴影 ---- */
+  --shadow-raised-sm: 6px 6px 14px var(--sh-dark), -6px -6px 14px var(--sh-light);
+  --shadow-raised:    8px 8px 18px var(--sh-dark), -6px -6px 16px var(--sh-light);
+  --shadow-raised-lg: 16px 16px 40px var(--sh-dark), -16px -16px 40px var(--sh-light);
+  --shadow-inset:     inset 4px 4px 9px var(--sh-dark), inset -4px -4px 9px var(--sh-light);
+  --shadow-inset-lg:  inset 10px 10px 26px var(--sh-dark), inset -10px -10px 26px var(--sh-light);
+}
+
+/* 凸起元素 */
+.clay-raised {
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-raised);
+}
+
+/* 内凹元素（输入框、凹槽） */
+.clay-inset {
+  background: var(--surface-inset);
+  box-shadow: var(--shadow-inset);
+}
+
+/* ---- 桌面布局：一端凸起承载动作，一端内凹承载内容 ----
+   新拟态原生语言只有两态（raised / inset），这是材质语法不是装饰。
+   左舱做内凹凹槽 + 两端锚定（品牌锚顶、主张锚底），空白由构图撑开。 */
+@media (min-width: 1000px) {
+  .clay-well {
+    display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 620px;
+    box-shadow: var(--shadow-inset-lg);
+  }
+}

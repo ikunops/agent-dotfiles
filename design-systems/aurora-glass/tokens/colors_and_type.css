@@ -1,0 +1,76 @@
+/* ==========================================================================
+   Aurora Glass — tokens
+   深色极光玻璃：紫青双色光晕 + 玻璃拟态 + 噪点颗粒
+   来源: glass-ui/dim8-ab-test-20261016/baseline/aurora-glass.html（无 skill 产出）
+   适用: 暗色 SaaS 登录/落地页、AI 产品界面、需要"科技但克制"的场合
+   ========================================================================== */
+
+:root {
+  /* ---- raw: color ---- */
+  --bg-deep:        #070912;   /* 页面底：近黑带蓝，非纯黑 */
+  --bg-elevated:    rgba(255,255,255,.06);  /* 玻璃面板填充 */
+
+  --ink:            #EEF1FF;
+  --ink-muted:      #98A1C6;
+  --ink-faint:      #5F6A92;
+
+  --accent:         #7C5CFF;   /* 主：紫 */
+  --accent-2:       #22D3EE;   /* 次：青 */
+  --accent-deep:    #4F46E5;   /* 按钮渐变端 */
+
+  /* 极光光斑（三团，缓慢漂移） */
+  --blob-1:         #6D28D9;
+  --blob-2:         #0891B2;
+  --blob-3:         #DB2777;
+
+  --stroke:         rgba(255,255,255,.14);
+  --stroke-strong:  rgba(255,255,255,.28);
+
+  /* ---- raw: type ---- */
+  --font-sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --fs-h1:    56px;   /* 桌面左舱大标题 */
+  --fs-h2:    25px;   /* 卡片内标题 / 移动端 h1 */
+  --fs-body:  14px;
+  --fs-label: 12.5px;
+  --fs-small: 11.5px;
+
+  /* ---- raw: space / shape ---- */
+  --radius-card:   24px;
+  --radius-input:  12px;
+  --space-page:    48px 40px;
+  --maxw-card:     1040px;
+
+  /* ---- semantic ---- */
+  --surface-card:   var(--bg-elevated);
+  --border-subtle:  var(--stroke);
+  --border-hover:   var(--stroke-strong);
+  --text-primary:   var(--ink);
+  --text-secondary: var(--ink-muted);
+  --text-tertiary:  var(--ink-faint);
+  --link:           var(--accent-2);
+  --focus-ring:     0 0 0 4px rgba(124,92,255,.22);
+
+  /* ---- effects ---- */
+  --blur-glass:     blur(22px);
+  --shadow-card:    0 30px 70px -20px rgba(0,0,0,.7),
+                    inset 0 1px 0 rgba(255,255,255,.18);
+  --shadow-glow:    0 12px 30px -8px var(--accent);
+}
+
+/* 背景层：三团模糊光斑 + 噪点，整体极慢漂移 */
+.aurora-bg {
+  position: fixed; inset: -25%; z-index: 0;
+  filter: blur(90px); opacity: .75; pointer-events: none;
+}
+.aurora-bg .blob { position: absolute; border-radius: 50%; mix-blend-mode: screen; }
+
+/* 玻璃面板 —— 注意：加 border/background/backdrop-filter 会勾出可见轮廓，
+   要"融入背景"必须把玻璃面收进伪元素 + 四周 mask 羽化（见 README 的核心陷阱） */
+.glass-panel {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
+  box-shadow: var(--shadow-card);
+}

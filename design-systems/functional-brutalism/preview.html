@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sign in · Kestrel</title>
+<!--
+  Direction A · 🎲 秒数轮盘 #17/20 (网页区) → 功能主义网格社区 Functional Brutalism
+  Reference lineage: Are.na / Lobsters / Quartz; Müller-Brockmann grid + Tufte density.
+  WHY this style: an incident-response tool is read like a spec sheet / changelog, so the
+  page is built as a documentation grid — hairline rules, system type, functional blue
+  links, no decorative surface. The product's own "status: operational" line is the hero.
+  ASSUMPTIONS (unattended run): product = Kestrel (incident-response SaaS), ENG audience,
+  real English copy, desktop 1440x900, no brand assets → text wordmark + honest placeholders.
+  PALETTE (sampled→converged→argued): paper #FBFBFB / ink #111 / hairline #E0E0E0 /
+  functional action-link blue #0000EE. Argument: functionalist web's own vocabulary is the
+  gray hairline + classic unprefixed-blue link; inventing a brand color here would be the slop.
+  DEGRADATION: ~98% — pure structural CSS, zero image assets, no fabricated logo.
+-->
+<style>
+  *{box-sizing:border-box}
+  :root{
+    --paper:#FBFBFB; --ink:#111111; --ink-2:#585858; --rule:#E0E0E0; --field:#FFFFFF;
+    --link:#0000EE; --ok:#1E8E3E;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  html,body{margin:0}
+  body{
+    background:var(--paper); color:var(--ink); font:14px/1.55 var(--sans);
+    -webkit-font-smoothing:antialiased; text-wrap:pretty;
+  }
+  a{color:var(--link);text-underline-offset:2px}
+  .page{min-height:100vh;display:flex;flex-direction:column}
+  .wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 28px}
+
+  header.top{border-bottom:1px solid var(--rule)}
+  .top .wrap{display:flex;align-items:baseline;justify-content:space-between;gap:24px;padding:18px 28px}
+  .brand{font:600 13px/1 var(--mono);letter-spacing:.22em;text-transform:uppercase}
+  .status{font:12px/1 var(--mono);color:var(--ink-2);display:flex;align-items:center;gap:8px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--ok);display:inline-block}
+
+  main{flex:1}
+  .grid{display:grid;grid-template-columns:1.12fr 1fr}
+  .col{padding:46px 28px 60px}
+  .col+.col{border-left:1px solid var(--rule)}
+
+  h1{font-size:21px;font-weight:600;letter-spacing:-.01em;margin:0 0 6px;text-wrap:balance}
+  .lede{color:var(--ink-2);margin:0 0 30px;max-width:46ch}
+
+  .field{margin-bottom:16px;max-width:420px}
+  label{display:block;font:12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;
+        color:#3A3A3A;margin-bottom:8px}
+  input{width:100%;font:14px/1.4 var(--sans);color:var(--ink);background:var(--field);
+        border:1px solid #C9C9C9;border-radius:0;padding:11px 12px}
+  input:focus{outline:2px solid var(--link);outline-offset:-1px;border-color:var(--link)}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:420px;margin:4px 0 20px}
+  .row a{font-size:13px}
+  .check{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-2)}
+  .check input{width:15px;height:15px;accent-color:var(--link)}
+
+  button.primary{width:100%;max-width:420px;font:600 14px/1 var(--sans);color:#fff;background:var(--link);
+        border:1px solid var(--link);border-radius:0;padding:13px 12px;cursor:pointer}
+  button.primary:hover{background:#0000c2;border-color:#0000c2}
+  button.primary:focus-visible{outline:2px solid #111;outline-offset:2px}
+
+  .divider{max-width:420px;display:flex;align-items:center;gap:12px;margin:22px 0;color:var(--ink-2);font:12px/1 var(--mono)}
+  .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--rule)}
+  button.ghost{width:100%;max-width:420px;font:14px/1 var(--sans);color:var(--ink);background:#fff;
+        border:1px solid #C9C9C9;border-radius:0;padding:12px;cursor:pointer}
+  button.ghost:hover{border-color:#111}
+  .signup{max-width:420px;margin:24px 0 0;font-size:13px;color:var(--ink-2)}
+  .note{max-width:420px;margin:20px 0 0;font:12px/1.6 var(--mono);color:var(--ink-2)}
+
+  /* right column: dense product spec sheet */
+  .kicker{font:12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);margin:0 0 18px}
+  dl{margin:0}
+  .spec{border-top:1px solid var(--rule)}
+  .spec .item{display:grid;grid-template-columns:120px 1fr;gap:18px;padding:16px 0;border-bottom:1px solid var(--rule)}
+  .spec dt{font:12px/1.5 var(--mono);color:var(--ink-2);text-transform:uppercase;letter-spacing:.06em}
+  .spec dd{margin:0;font-size:14px;color:var(--ink);max-width:46ch}
+  .logos{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+  .logo-slot{font:12px/1 var(--mono);color:#9A9A9A;border:1px dashed #CFCFCF;padding:9px 12px}
+
+  footer{border-top:1px solid var(--rule);margin-top:auto}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:8px 22px;padding:16px 28px;font:12px/1.4 var(--mono);color:var(--ink-2)}
+  footer a{color:var(--ink-2)}
+</style>
+</head>
+<body>
+  <div class="page">
+    <header class="top">
+      <div class="wrap">
+        <span class="brand">Kestrel</span>
+        <span class="status"><span class="dot" aria-hidden="true"></span> All systems operational</span>
+      </div>
+    </header>
+
+    <main>
+      <div class="wrap">
+        <div class="grid">
+          <!-- Left: the form, laid out like a documented procedure -->
+          <section class="col" aria-labelledby="signin-h">
+            <h1 id="signin-h">Sign in</h1>
+            <p class="lede">Use your work account to open the Kestrel console.</p>
+
+            <form method="post" action="#" novalidate>
+              <div class="field">
+                <label for="email">Work email</label>
+                <input id="email" name="email" type="email" autoComplete="username"
+                       placeholder="you@company.com" required />
+              </div>
+              <div class="field">
+                <label for="pw">Password</label>
+                <input id="pw" name="password" type="password" autoComplete="current-password"
+                       placeholder="••••••••••" required />
+              </div>
+
+              <div class="row">
+                <label class="check" for="remember">
+                  <input id="remember" name="remember" type="checkbox" /> Keep me signed in
+                </label>
+                <a href="#">Forgot password?</a>
+              </div>
+
+              <button class="primary" type="submit">Sign in</button>
+
+              <div class="divider">OR</div>
+              <button class="ghost" type="button">Continue with SSO</button>
+
+              <p class="signup">New to Kestrel? <a href="#">Start a 14-day trial</a></p>
+              <p class="note">Trouble signing in? Read <a href="#">account &amp; access docs</a> · status page</p>
+            </form>
+          </section>
+
+          <!-- Right: product facts, read like a changelog / spec sheet -->
+          <section class="col" aria-labelledby="why-h">
+            <p class="kicker" id="why-h">What happens after you sign in</p>
+            <dl class="spec">
+              <div class="item">
+                <dt>Timeline</dt>
+                <dd>Every alert, deploy and page lands on one auto-built timeline — no manual postmortem notes.</dd>
+              </div>
+              <div class="item">
+                <dt>On-call</dt>
+                <dd>Routing follows your service graph, so the right responder is paged the first time.</dd>
+              </div>
+              <div class="item">
+                <dt>Postmortems</dt>
+                <dd>Draft reports assemble from the incident as it happens, ready to edit when it resolves.</dd>
+              </div>
+              <div class="item">
+                <dt>Audit</dt>
+                <dd>Every action is timestamped and exportable for review and compliance.</dd>
+              </div>
+            </dl>
+            <!-- Honest placeholder — no fabricated customer logos/stats -->
+            <div class="logos" aria-label="Trusted by (placeholder)">
+              <span class="logo-slot">customer logo · todo</span>
+              <span class="logo-slot">customer logo · todo</span>
+              <span class="logo-slot">customer logo · todo</span>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <span>© 2026 Kestrel</span>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Security</a>
+        <a href="#">Status</a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

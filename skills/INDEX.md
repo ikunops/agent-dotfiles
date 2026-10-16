@@ -26,7 +26,7 @@
 
 ## ③ 前端工艺
 
-`frontend-review-squad`（**前端审查小分队**：九 skill 编队组合审查——cartographer 闭环测绘 + debug-and-refactor 前提核查 + 布局/刻度/手感/UX/反AI味五件套，六步流程产出带证据的分级清单，2026-09-12 入库）· `frontend-design`（界面设计）· `shadcn`（组件体系）· `wireframe`（线框）· `interactive-prototype`（交互原型）· `create-design-system`（设计系统）· `icon-finder`（找图标）· `no-emoji-ui`（界面禁 emoji：SVG/文字/CSS 替代 + grep 清单）· `make-a-deck`（幻灯片）· `huashu-design`（花叔Design：HTML 原生设计——高保真原型/幻灯片/动画/信息图，20 设计哲学 + 5 维评审 + MP4 导出；任何新设计先出三个方向初稿再执行，2026-10-15 入库）· `make-tweakable`（可调产物）· `web-perf`（性能）· `vercel-react-best-practices`（React 最佳实践）· `design-taste-frontend`（生产级设计审美：色彩承诺/字号阶梯/间距节奏/对比度/动效克制）· `interaction-design`（交互设计模式库，32KB）· `ui-acceptance`（四层验收+硬阈值+众数一致性+失败二分+汇报三件套）· `frontend-ui-consistency`（前端 UI 相对一致性规范 + 一键审计脚本）
+`frontend-review-squad`（**前端审查小分队**：九 skill 编队组合审查——cartographer 闭环测绘 + debug-and-refactor 前提核查 + 布局/刻度/手感/UX/反AI味五件套，六步流程产出带证据的分级清单，2026-09-12 入库）· `frontend-design`（界面设计）· `shadcn`（组件体系）· `wireframe`（线框）· `interactive-prototype`（交互原型）· `create-design-system`（设计系统）· `icon-finder`（找图标）· `no-emoji-ui`（界面禁 emoji：SVG/文字/CSS 替代 + grep 清单）· `make-a-deck`（幻灯片）· `huashu-design`（花叔Design：HTML 原生设计——高保真原型/幻灯片/动画/信息图，20 设计哲学 + 5 维评审 + MP4 导出；任何新设计先出三个方向初稿再执行，2026-10-15 入库）· `make-tweakable`（可调产物） · `code-motion-film`（代码叙事动画纪律：可辨识性优先/投影统一/生长语法/文字不添乱；Remotion·SVG·Canvas·CSS·GSAP）· `web-perf`（性能）· `vercel-react-best-practices`（React 最佳实践）· `design-taste-frontend`（生产级设计审美：色彩承诺/字号阶梯/间距节奏/对比度/动效克制）· `interaction-design`（交互设计模式库，32KB）· `ui-acceptance`（四层验收+硬阈值+众数一致性+失败二分+汇报三件套）· `frontend-ui-consistency`（前端 UI 相对一致性规范 + 一键审计脚本）
 
 ### ③b 前端工艺库层新增（2026-09-12 收编 14 个，均在 function-specific/frontend/，用 find-skills 取用）
 
@@ -62,7 +62,9 @@
 
 ## ⑧ 设计线
 
-`opendesign` · `setup-opendesign` · `run-opendesign`
+`opendesign` · `setup-opendesign` · `run-opendesign` · `code-motion-film`（代码叙事动画纪律：可辨识性/投影统一/增量生长语法（含工地式搭建、逐字符打字、粒子消散）/文字不压图/物理/风格真分家/密集抽帧自检，2026-10-16 入库）
+
+**个人风格库**（存放于仓库根目录 design-systems/，不是 skill、不进常驻索引）：6 套可复用风格 —— 极光玻璃、软陶新拟态、瑞士编辑、电影暗场、功能主义租野、Stripe 工具风。每套含风格定义 + 设计 token + 预览页；用法：opendesign / create-design-system 开工时会同时扫项目内 opendesign/design-systems/ 和全局仓库的 design-systems/，同名时项目内优先。该目录自带 README：含六套风格对照表与跨风格通用陷阱。
 
 ## ⑨ WorkBuddy skillhub 收编（2026-09-18，源 = ~/.workbuddy/skills 独有）
 

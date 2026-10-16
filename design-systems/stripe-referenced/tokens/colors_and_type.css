@@ -1,0 +1,85 @@
+/* ==========================================================================
+   Stripe Referenced — tokens
+   干净工具风：白底 + 靛蓝主色 + 理性栅格 + 斜切彩色渐变横幅
+   来源: glass-ui/dim8-ab-test-20261016/evidence/with_skill/design-demos/Login - Stripe Referenced.html
+         （huashu-design 三方向之一 · 逻辑 B「现实参照」→ 标杆迁移 Stripe）
+   适用: SaaS 登录/定价/营销页，需要"可靠、克制、成熟"的场合
+   关键: 渐变被框在一个 band 里（不是整页紫洗）—— 这是 craft 与 slop 的分界线
+   ========================================================================== */
+
+:root {
+  /* ---- raw: color ---- */
+  --surface:   #FFFFFF;
+  --ink:       #1A1F36;
+  --muted:     #59617A;
+  --line:      #E6E8EF;
+  --line-hover:#C7CCDA;
+  --placeholder: #A2A8BC;
+
+  --accent:    #635BFF;   /* 靛蓝 */
+  --accent-d:  #4B44D6;   /* hover 深一档 */
+
+  /* 标志性渐变：靛蓝 → 青 → 薄荷，另外两层玫红/橙作角部点缀 */
+  --grad-core: linear-gradient(115deg, #4B44D6 0%, #635BFF 32%, #46B3E6 68%, #38C7A6 100%);
+  --grad-pink: radial-gradient(120% 150% at 78% 0%,  #E86AB0 0%, rgba(232,106,176,0) 48%);
+  --grad-amber:radial-gradient(120% 160% at 88% 10%, #F0A16B 0%, rgba(240,161,107,0) 42%);
+
+  /* ---- raw: type ---- */
+  --font-sans: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --fs-h1:    40px;
+  --fs-h2:    20px;
+  --fs-body:  15px;
+  --fs-label: 12px;
+
+  /* ---- raw: shape ---- */
+  --radius-card:  12px;
+  --radius-input: 8px;
+  --maxw:         1080px;
+
+  /* ---- semantic ---- */
+  --text-primary:   var(--ink);
+  --text-secondary: var(--muted);
+  --accent:         var(--accent);
+  --border-subtle:  var(--line);
+  --shadow-card:    0 18px 48px -20px rgba(26,31,54,.28), 0 2px 6px rgba(26,31,54,.05);
+}
+
+/* ---- 斜切渐变横幅：斜边 + 多层渐变，缺一不可 ---- */
+.band {
+  position: relative; padding: 52px 28px 96px; color: #fff; overflow: hidden;
+  background: var(--grad-amber), var(--grad-pink), var(--grad-core);
+  clip-path: polygon(0 0, 100% 0, 100% 78%, 0 100%);   /* 斜切底边是招牌 */
+}
+.band .inner { max-width: var(--maxw); margin: 0 auto; }
+
+/* ---- 悬浮卡片：负 margin 上提，压在 band 的斜边上 ---- */
+.card-float {
+  position: relative; z-index: 2;
+  max-width: 460px; margin: -72px auto 0;
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card); padding: 32px 32px 30px;
+}
+
+/* ---- 元件 ---- */
+.sr-input {
+  width: 100%; font: 15px/1.4 var(--font-sans); color: var(--ink); background: #fff;
+  border: 1px solid var(--line); border-radius: var(--radius-input); padding: 12px 13px;
+  transition: border-color .15s, box-shadow .15s;
+}
+.sr-input::placeholder { color: var(--placeholder); }
+.sr-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,91,255,.18); }
+
+.btn-accent {
+  width: 100%; font: 600 15px/1 var(--font-sans); color: #fff; background: var(--accent);
+  border: 0; border-radius: var(--radius-input); padding: 14px; cursor: pointer;
+  transition: background .15s, transform .05s;
+}
+.btn-accent:hover  { background: var(--accent-d); }
+.btn-accent:active { transform: translateY(1px); }
+
+/* 三等分特性栏：细线分隔，不用卡片 */
+.ribbon { max-width: var(--maxw); margin: 66px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); }
+.ribbon .cell { padding: 0 28px; border-left: 1px solid var(--line); }
+.ribbon .cell:first-child { border-left: 0; padding-left: 0; }

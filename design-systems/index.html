@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Design Systems — 个人风格库</title>
+<style>
+  :root{
+    --bg:#0E0E11; --surface:#16161A; --line:rgba(255,255,255,.10);
+    --ink:#F0F0F2; --muted:#8A8A93; --accent:#7C5CFF;
+    --sans:system-ui,-apple-system,"Segoe UI","Noto Sans SC",Roboto,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 var(--sans);
+       -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1240px;margin:0 auto;padding:56px 32px 88px}
+  header{border-bottom:1px solid var(--line);padding-bottom:28px;margin-bottom:44px}
+  h1{font-size:30px;font-weight:650;letter-spacing:-.02em;margin:0 0 10px}
+  .sub{color:var(--muted);margin:0;max-width:72ch}
+  .meta{font:12px/1 var(--mono);color:var(--muted);margin-top:18px;letter-spacing:.06em;text-transform:uppercase}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:26px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+        display:flex;flex-direction:column;transition:border-color .2s, transform .2s}
+  .card:hover{border-color:rgba(255,255,255,.22);transform:translateY(-2px)}
+  .shot{display:block;position:relative;background:#000;aspect-ratio:16/10;overflow:hidden}
+  .shot img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+  .body{padding:20px 22px 22px;display:flex;flex-direction:column;flex:1}
+  .name{font-size:17px;font-weight:600;margin:0 0 2px;letter-spacing:-.01em}
+  .slug{font:12px/1 var(--mono);color:var(--muted);margin:0 0 12px}
+  .pitch{margin:0 0 14px;color:#C9C9D2;font-size:14px}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+  .tag{font:11px/1 var(--mono);color:var(--muted);border:1px solid var(--line);
+       border-radius:999px;padding:5px 9px}
+  .src{font:11px/1 var(--mono);color:#6E6E78;margin-bottom:16px}
+  .links{display:flex;gap:14px;margin-top:auto;font-size:13.5px}
+  .links a{color:var(--accent);text-decoration:none}
+  .links a:hover{text-decoration:underline}
+  footer{margin-top:56px;padding-top:28px;border-top:1px solid var(--line);
+         color:var(--muted);font-size:13.5px}
+  footer code{font:12px/1 var(--mono);background:rgba(255,255,255,.06);padding:3px 6px;border-radius:5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Design Systems · 个人风格库</h1>
+    <p class="sub">六套可复用的视觉风格。每套含完整 token、风格定义（含设计决策与反面清单）、可运行预览页。首次选中后写回项目，之后任何设计任务都能直接沿用。</p>
+    <p class="meta">opencode-dotfiles / design-systems / 6 styles</p>
+  </header>
+
+  <div class="grid">
+
+    <article class="card">
+      <a class="shot" href="aurora-glass/preview.html"><img src="aurora-glass/preview.png" alt="Aurora Glass 预览" loading="lazy" /></a>
+      <div class="body">
+        <h2 class="name">极光玻璃</h2>
+        <p class="slug">aurora-glass</p>
+        <p class="pitch">紫青光晕在近黑底上缓慢漂移，内容坐在一块羽化融入的玻璃板上。</p>
+        <div class="tags"><span class="tag">暗色</span><span class="tag">玻璃拟态</span><span class="tag">SaaS</span></div>
+        <p class="src">来源：无 skill baseline</p>
+        <div class="links"><a href="aurora-glass/preview.html">预览</a><a href="aurora-glass/SKILL.md">风格定义</a><a href="aurora-glass/tokens/colors_and_type.css">tokens</a></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <a class="shot" href="soft-clay/preview.html"><img src="soft-clay/preview.png" alt="Soft Clay 预览" loading="lazy" /></a>
+      <div class="body">
+        <h2 class="name">软陶新拟态</h2>
+        <p class="slug">soft-clay</p>
+        <p class="pitch">同色材质被推起或压凹，暖橘只出现在三处——留白靠构图撑开。</p>
+        <div class="tags"><span class="tag">浅色</span><span class="tag">新拟态</span><span class="tag">移动优先</span></div>
+        <p class="src">来源：无 skill baseline</p>
+        <div class="links"><a href="soft-clay/preview.html">预览</a><a href="soft-clay/SKILL.md">风格定义</a><a href="soft-clay/tokens/colors_and_type.css">tokens</a></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <a class="shot" href="swiss-editorial/preview.html"><img src="swiss-editorial/preview.png" alt="Swiss Editorial 预览" loading="lazy" /></a>
+      <div class="body">
+        <h2 class="name">瑞士编辑</h2>
+        <p class="slug">swiss-editorial</p>
+        <p class="pitch">黑白纸面 + 强网格 + 单点信号橙。自带 900px 断点，移动端隐藏叙事栏。</p>
+        <div class="tags"><span class="tag">黑白</span><span class="tag">编辑排版</span><span class="tag">金融数据</span></div>
+        <p class="src">来源：无 skill baseline</p>
+        <div class="links"><a href="swiss-editorial/preview.html">预览</a><a href="swiss-editorial/SKILL.md">风格定义</a><a href="swiss-editorial/tokens/colors_and_type.css">tokens</a></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <a class="shot" href="cinematic-dark/preview.html"><img src="cinematic-dark/preview.png" alt="Cinematic Dark 预览" loading="lazy" /></a>
+      <div class="body">
+        <h2 class="name">电影暗场</h2>
+        <p class="slug">cinematic-dark</p>
+        <p class="pitch">近黑舞台 + 单一暖琥珀光源 + 超大字重。对抗冷蓝霓虹 slop 的答案。</p>
+        <div class="tags"><span class="tag">暗色</span><span class="tag">戏剧打光</span><span class="tag">发布页</span></div>
+        <p class="src">来源：huashu-design 逻辑 C（最佳设计师）</p>
+        <div class="links"><a href="cinematic-dark/preview.html">预览</a><a href="cinematic-dark/SKILL.md">风格定义</a><a href="cinematic-dark/tokens/colors_and_type.css">tokens</a></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <a class="shot" href="functional-brutalism/preview.html"><img src="functional-brutalism/preview.png" alt="Functional Brutalism 预览" loading="lazy" /></a>
+      <div class="body">
+        <h2 class="name">功能主义粗野</h2>
+        <p class="slug">functional-brutalism</p>
+        <p class="pitch">纸白文档网格 + 系统字体 + 发丝线。页面读起来像规格表，不像营销材料。</p>
+        <div class="tags"><span class="tag">浅色</span><span class="tag">文档网格</span><span class="tag">开发者工具</span></div>
+        <p class="src">来源：huashu-design 逻辑 A（秒数轮盘 #17）</p>
+        <div class="links"><a href="functional-brutalism/preview.html">预览</a><a href="functional-brutalism/SKILL.md">风格定义</a><a href="functional-brutalism/tokens/colors_and_type.css">tokens</a></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <a class="shot" href="stripe-referenced/preview.html"><img src="stripe-referenced/preview.png" alt="Stripe Referenced 预览" loading="lazy" /></a>
+      <div class="body">
+        <h2 class="name">干净工具风</h2>
+        <p class="slug">stripe-referenced</p>
+        <p class="pitch">白底 + 靛蓝 + 斜切彩色横幅。渐变被框在 band 里，这是 craft 与 slop 的分界。</p>
+        <div class="tags"><span class="tag">浅色</span><span class="tag">SaaS</span><span class="tag">标杆迁移</span></div>
+        <p class="src">来源：huashu-design 逻辑 B（现实参照）</p>
+        <div class="links"><a href="stripe-referenced/preview.html">预览</a><a href="stripe-referenced/SKILL.md">风格定义</a><a href="stripe-referenced/tokens/colors_and_type.css">tokens</a></div>
+      </div>
+    </article>
+
+  </div>
+
+  <footer>
+    <p>用法：设计任务开工时 <code>opendesign</code> 会同时扫描项目内 <code>./opendesign/design-systems/</code> 与全局 <code>design-systems/</code>，同名以项目内为准。也可直接 <code>@import</code> 任一 <code>tokens/colors_and_type.css</code>。</p>
+    <p>跨风格通用陷阱见 <a href="README.md" style="color:var(--accent)">README.md</a>。</p>
+  </footer>
+</div>
+</body>
+</html>
