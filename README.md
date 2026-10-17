@@ -279,6 +279,22 @@ python ~/opencode-dotfiles/scripts/sync-skills-links.py --strict   # 有缺失/�
 ```
 
 脚本自带保护：遇到真实目录先**备份**（`~/.skills-link-backups/`）、遇到“客户端独有 skill”默认**跳过**。
+### 仓库边界：只跟踪自己维护的 skill
+
+`skills/` 目录里可能有外部来源的 skill（上游开源、WorkBuddy 市场、其他客户端安装）。**它们可以留在本机供所有客户端共用，但不进本仓版本控制。**
+
+| 类型 | 仓库策略 | 例子 |
+|---|---|---|
+| 自己维护 | 正常跟踪、审查、提交 | `find-skills`、`debug-and-refactor`、`text-summary` |
+| 上游开源件 | `.gitignore` 排除，索引标「外部 / 本地依赖」 | HyperFrames 10 个（`heygen-com/hyperframes`） |
+| 市场安装件 | `.gitignore` 排除，记录来源和重建方式 | `delivery-no-pseudoblock` |
+
+维护规则：
+
+- 新增外部 skill 时，在 `skills/INDEX.md` 的「外部…（本地依赖，不随仓库跟踪）」段落登记，不要放进活跃表格。
+- 外部件缺失**不算仓库故障**：`python scripts/audit-skills.py --strict` 会跳过这些登记项。
+- 不要直接改外部件的 `SKILL.md`；需要定制就复制成自有 skill、改名后单独登记，避免下次升级被覆盖。
+- 判断依据是**维护权**，不是安装渠道：自己发布的也可以算自有；别人发布的即使装在本机也不算。
 
 > ⚠️ **同一个客户端不要扫两个 skills 路径**，否则它的技能索引会翻倍（每轮白付一倍 token）。
 > 已知 ZCode 会同时扫 `~/.zcode/skills` 与 `~/.agents/skills`，所以 `~/.zcode/skills` 被刻意**不建**链接

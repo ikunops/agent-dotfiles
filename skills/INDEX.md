@@ -23,7 +23,6 @@
 | `debug-and-refactor` | 调试与重构 | 修 bug、行为不对 |
 | `find-skills` | 任务路由器：L0 项目记忆直达 → L1 路由表组链 → L2 外部生态 → L3 条件沉淀 | 每个任务开工时；"有没有 skill 能做 X" |
 | `handoff-to-claude-code` | 交接给 Claude Code | 跨工具交接 |
-| `delivery-no-pseudoblock` | 交付前伪阻断闸门（D1–D12 逐项快照） | 任何一次交付结果前（写总结/下结论/状态汇报/提问）强制终检 |
 
 ## ③ 前端工艺
 
@@ -73,9 +72,10 @@
 
 > 未收编（skillhub 同源重复，备份保留在 WorkBuddy）：agent-browser-core · agent-team-orchestration__skillhub。存疑未动：frontend-dev · university-applications（名实不符，待用户处置）。路由见 find-skills I 组。
 
-### ⑨b HyperFrames 视频族（2026-10-17 入库，源 = WorkBuddy 装）
+### ⑨b 外部 HyperFrames 视频族（本地依赖，不随仓库跟踪）
 
-> 用 HTML 渲染视频的框架：10 个 skill 协作，总入口必读。日常不手动调，由作品流程自动加载。
+> **归属：上游开源件，不是本仓自有 skill。** 源 = [heygen-com/hyperframes](https://github.com/heygen-com/hyperframes)（Apache-2.0）；本机通过 WorkBuddy 安装。10 个 skill 协作，总入口必读。
+> **约束：** 本目录被 `.gitignore` 排除，不提交、不改写；新机器需要时按上游方式安装，缺失不会导致仓库审计失败。
 
 | skill | 一句话 | 什么时候用 |
 |---|---|---|
@@ -91,6 +91,15 @@
 | `media-use` | 媒体 OS：BGM/SFX/图标/配音/调色 LUT 解析与生成 | 素材就位 |
 
 > 与 ⑧ 设计线的通用动画纪律互补：那条是跨框架纪律，这组是 HyperFrames 框架专用。
+> 重建：用 WorkBuddy 重新安装 HyperFrames 插件/技能组；本仓不保存副本。
+
+### ⑨c 外部交付自检 skill（本地依赖，不随仓库跟踪）
+
+| skill | 来源 | 说明 |
+|---|---|---|
+| `delivery-no-pseudoblock` | WorkBuddy 市场（`source=others`，`skillId=skill_2095070772061040640`） | 交付前 D1–D12 自检闸门。本机已安装，但**不是本仓自有**；`.gitignore` 排除，不进版本库。缺失不影响仓库审计。 |
+
+> 重建：在 WorkBuddy 市场重新安装该 skill。若本仓需要自有交付门禁，应在本地自建并独立登记，不要直接改市场件。
 
 ## ⑩ 未归类（待归位）
 

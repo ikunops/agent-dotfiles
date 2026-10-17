@@ -142,15 +142,21 @@ def expand_shorthand(tok: str):
 
 
 def index_layers():
-    """解析 INDEX.md -> (active_names, library_names)"""
+    """解析 INDEX.md -> (active_names, library_names, external_names)
+
+    external = INDEX 中明确标注为「外部 / 本地依赖 / 不随仓库跟踪」的段落。
+    这些 skill 允许只存在于本机，不参与「登记了但磁盘没有」的报错。
+    """
     txt = read_text(INDEX)
-    active, library = set(), set()
+    active, library, external = set(), set(), set()
     bucket = None
     for line in txt.split("\n"):
         s = line.strip()
         if s.startswith("##") or s.startswith("###"):
             head = s.lstrip("#").strip()
-            if "库层" in head or "镜像" in head:
+            if "外部" in head or "本地依赖" in head or "不随仓库跟踪" in head:
+                bucket = "external"
+            elif "库层" in head or "镜像" in head:
                 bucket = "library"
             elif CIRCLED.match(head):
                 bucket = "active"
@@ -164,8 +170,8 @@ def index_layers():
             stripped = re.sub(r"[（(][^）)]*[）)]", "", line)
             for tok in re.findall(r"`([A-Za-z0-9][A-Za-z0-9._/-]*)`", stripped):
                 for nm in expand_shorthand(tok):
-                    (active if bucket == "active" else library).add(nm)
-    return active, library
+                    {"active": active, "library": library, "external": external}[bucket].add(nm)
+    return active, library, external
 
 
 def main() -> int:
@@ -180,7 +186,7 @@ def main() -> int:
     active = [d for d in rest if d.parent == SKILLS]
     library = [d for d in rest if d.parent != SKILLS]
 
-    idx_active, idx_library = index_layers()
+    idx_active, idx_library, idx_external = index_layers()
     findings = {"shell": [], "fm": [], "fm_info": [], "dup": [], "nested": [], "lang": [], "index": []}
 
     # ---------- A 空壳 ----------
@@ -289,7 +295,7 @@ def main() -> int:
     disk = {d.name for d in rest}
     for n in sorted((idx_active | idx_library) - disk):
         findings["index"].append({"path": n, "why": "INDEX 登记了但磁盘没有"})
-    for n in sorted({d.name for d in active} - idx_active - idx_library):
+    for n in sorted({d.name for d in active} - idx_active - idx_library - idx_external):
         findings["index"].append({"path": n, "why": "活跃层存在但 INDEX 未登记"})
 
     total = sum(len(v) for k, v in findings.items() if k != "fm_info")
@@ -308,6 +314,7 @@ def main() -> int:
     print("  活跃层（顶层平铺，自动触发）  %d" % len(active))
     print("  库存层（分类目录，按需取用）  %d" % len(library))
     print("  .system（客户端官方件）      %d" % len(meta))
+    print("  外部本地依赖（不随仓库跟踪）  %d" % len(idx_external))
     print("  合计                        %d" % (len(active) + len(library) + len(meta)))
 
     def sec(title, key, render):
