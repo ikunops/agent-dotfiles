@@ -62,13 +62,18 @@ AGENTS.md 缺失/为空但工作区有代码 → **不直接开工**，先建最
 
 ## 精确路由表（任务自然语言 → skill）
 
-### A. 代码与交付（高频三件套置顶）
+### A. 代码与交付（高频场景置顶）
 
 | 触发关键词（中 / 英） | skill | 适用边界（一句话） |
 |---|---|---|
 | 修 bug / 没反应 / 删不掉 / 不生效 / 改了没生效 / 数据重复 / 作用错对象 / 样式改动（尺寸·间距·行高·颜色·图标）/ 重构 · debug / fix / not working / refactor | `debug-and-refactor` | 先核查前提再归因代码；**样式改动必做同类项完整性核查**——横向枚举同布局全部同类项一起改，收尾交清单 |
+| 严格系统化排查 / 先定位再修 / 不能猜着改 / 复现不稳定 bug / 修了又坏 · root cause / systematic debugging / isolate / bisect | `systematic-debugging`（下沉：function-specific/misc/superpowers/） | 四阶段硬纪律：先稳定复现 → 分层隔离（CI/build/signing、API/service/DB）→ 证据定位 → 最小修复；**不得先猜原因**。常规小 bug 走 `debug-and-refactor`，这个用于复杂/反复/多组件场景 |
+| TDD / 测试驱动 / 先写测试 / 红绿重构 · TDD / red-green-refactor / write test first | `test-driven-development`（下沉：function-specific/misc/superpowers/） | RED-GREEN-REFACTOR 硬纪律：先写**失败**测试 → 最小实现通过 → 再重构；对“就这次跳过 TDD”有专门阻拦清单 |
 | 写代码 / 加功能 / 新需求 / 嫌臃肿 / 太绕 / 过度设计 / boilerplate · write code / add feature / over-engineering / bloat / be lazy / simplest | `ponytail` | 常驻人格，lite/full/ultra 三档（小改/默认/大砍）；功能存在性归用户拍板，实现经济学归它走七级阶梯 |
 | diff 里找可删的 · review diff | `ponytail-review` | 只审 diff、一行一条发现；全库级审计用 `ponytail-audit`，捷径补录 `ponytail-debt`，成效展示 `ponytail-gain`，速查 `ponytail-help` |
+| 做新功能前先挖意图 / 需求不清 / 先头脑风暴 / 方案比较 · brainstorming / explore requirements / design options | `brainstorming`（下沉：function-specific/misc/superpowers/） | 创造性工作**动手前**先澄清意图/需求/设计；与 `huashu-design`/`opendesign` 的 intake 不冲突——后者管设计产物，这个管开发需求 |
+| 多步任务先出计划 / 写实现计划 / 计划文档 · writing plans / implementation plan / break down task | `writing-plans`（下沉：function-specific/misc/superpowers/） | 动手前先写可审阅计划，固定产出 `docs/superpowers/plans/YYYY-MM-DD-<feature>.md`；执行阶段接 `executing-plans` |
+| 收到 code review 意见 / 评审反馈怎么接 / review 说得不对 · receiving code review / review feedback | `receiving-code-review`（下沉：function-specific/misc/superpowers/） | 要求**逐条技术性验证**，不得表演式接受；对不清楚或技术上可疑的建议必须反查而非照单全收 |
 | 端到端做成一件事 / 倒模 / 仿照某项目做个 X / 完整交付 / 走流水线 / 多 skill 协同 · end-to-end / full delivery / pipeline | `delivery-pipeline` | 跨测绘→开发→测试→审查三个以上阶段才进（P1 倒模/P2 全新/P3 修复/P4 增量）；单点小修直接 debug-and-refactor；**CI/CD 基础设施问题不归它**（见 D 组） |
 | 项目收尾 / 交付前全面体检 / 检查项目完整性 / 给项目做体检 · final checkup / project review | `project-cartographer`（体检模式）+ `frontend-review-squad` + `ui-acceptance` | 三层各管一段按需取：cartographer 出前后端缺口清单（🕳️ 后端有前端没接 / 🪝 前端调了后端没有，按修补成本排序）、review-squad 查前端工艺九维、ui-acceptance 页面验收收口；不是每次全挂，按改动面选层 |
 | 会话交接 / 交给别人接手 / 交给 Claude Code / handoff | `handoff-to-claude-code` | 产出自足交接包（spec README + zip）；跨工具/跨人交接用，普通会话总结不用 |
