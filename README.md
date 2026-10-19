@@ -160,9 +160,29 @@ skills/function-specific/development-workflow/ai-safety-sop/hooks/
 
 | 平台 | Shell | 说明 |
 |------|-------|------|
-| Windows | `powershell` | 完整支持 |
+| Windows | `pwsh`（5.1 用 `powershell.exe`） | 完整支持 |
 | Linux | `bash` | 完整支持 |
 | macOS | `bash` | 完整支持 |
+
+### Windows Shell 固定规则
+
+`AGENTS.md` 已固定 Windows / PowerShell 执行规则，重点解决模型在 PowerShell、cmd、Git Bash 之间混用语法导致的失败：
+
+- 先判定 shell，再生成命令；同一命令块只允许一种主 shell。
+- PowerShell 7 用 `pwsh`，Windows PowerShell 5.1 用 `powershell.exe`，版本不混用。
+- 路径使用 `-LiteralPath`；中文/空格/方括号路径必须加引号。
+- 不混用 Bash 的 `&&`、heredoc、`/c/...` 路径和 PowerShell 语法。
+- 跨 PowerShell 进程传命令时外层用单引号，避免 `$LASTEXITCODE`、`$env:...` 先被当前会话展开。
+- 外部命令检查 `$LASTEXITCODE`，中文统一 UTF-8 无 BOM、LF。
+- 复杂命令落临时 `.ps1`/`.cmd` 脚本，不写超长一行。
+
+校验命令：
+
+```powershell
+python scripts/validate-shell-rules.py
+```
+
+该检查已接入 `scripts/hooks/pre-push`，规则缺失、编码错误或关键约束被删都会阻止推送。
 
 ## 使用方式
 
@@ -431,7 +451,7 @@ cd /tmp/ecc && opencode
 ### Shell 配置错误
 
 脚本会自动检测平台，如果手动修改，请确保：
-- Windows 使用 `powershell`
+- Windows 优先 `pwsh`；兼容 Windows PowerShell 5.1 时用 `powershell.exe`
 - Linux/macOS 使用 `bash`
 
 ## Skill 市场和资源

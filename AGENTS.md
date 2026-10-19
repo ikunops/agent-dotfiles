@@ -27,6 +27,66 @@
 - **跨运行时迁移**：containerd(K8s 托管)拉不动时常见解法=docker pull→docker save→tar→scp→ctr -n k8s.io images import，属高频运维操作。
 - 执行前可先问用户"目标机/环境具体是什么形态？"；已确认硬件/静态信息不用重复确认。
 
+## Shell 执行规则（Windows / PowerShell 优先）
+
+本机存在 `pwsh`（PowerShell 7）、`powershell`（Windows PowerShell 5.1）、`cmd`，并可能有 Git Bash。**生成命令前先判定当前 shell，禁止跨方言拼接。**
+
+### 1. 先判定 shell，后生成命令
+
+- 工具调用带 `shell: "powershell"` → 只写 PowerShell 语法，禁止 `bash` 的 `$VAR` 展开习惯、`&&`、heredoc、`/c/...` 路径、`sed/awk/grep` 作为主逻辑。
+- 明确要 Git Bash → 单独用 `bash -lc` 调用，并把整个脚本作为一个字符串传入；不要从 PowerShell 里直接拼 Bash 路径参数。
+- `cmd` 只在确有必要时使用；`mklink`、`reg`、部分系统工具优先通过 `cmd /c` 或原生 PowerShell cmdlet。
+- 同一个命令块只允许一种主 shell；需要跨 shell 时，拆成两步，前一步把结果写入文件，后一步读取文件。
+
+### 2. PowerShell 7 与 Windows PowerShell 5.1 不混用
+
+- 默认优先 `pwsh`（PowerShell 7）。脚本若依赖 `ForEach-Object -Parallel`、`??`、`?:`、`$PSVersionTable` 新语义，必须显式调用 `pwsh`。
+- 需要 Windows PowerShell 5.1 兼容时，显式用 `powershell.exe`，并避免 PowerShell 7 专有语法。
+- 调用脚本时写明解释器：PowerShell 脚本用 `pwsh -NoProfile -File <x.ps1>` 或 `powershell.exe -NoProfile -ExecutionPolicy Bypass -File <x.ps1>`；Python 脚本必须先调 `python <x.py>`。禁止把 `.py` 交给 `-File`，也禁止依赖当前会话自动继承。
+
+### 3. 路径与参数
+
+- 原生 PowerShell 使用 `-LiteralPath` 处理用户路径；含空格/方括号/中文的路径一律加引号。
+- 不要生成 `/c/Users/...` 这种 MSYS 路径给 PowerShell；PowerShell 用 `C:\Users\...` 或 `C:/Users/...`。
+- 调外部 exe 时的参数数组用 PowerShell 数组展开，不要把整个命令行拼成一个字符串再交给 `Invoke-Expression`。
+- 需要传给 `cmd` 的路径不要包含未转义的 `&`、`|`、`^`；复杂参数写成临时 `.ps1` 或 `.cmd` 文件再执行。
+
+### 4. 引号、管道与退出码
+
+- PowerShell 单引号是字面量，双引号才展开变量；含 `$` 的字面量默认用单引号。
+- 跨 PowerShell 进程传命令时，外层命令用单引号包裹，避免当前会话先展开 `$LASTEXITCODE`、`$env:...` 或 `$_`。
+- 不使用 Bash heredoc（`<<EOF`）。多行文本用 here-string（`@' ... '@` 或 `@" ... "@`），结束标记必须顶格。
+- 管道后不能只看控制台有无输出判断成功；必须检查 `$LASTEXITCODE`（外部 exe）或 `$?`（PowerShell cmdlet）。
+- 外部命令失败时不要继续执行后续破坏性步骤；先 `if ($LASTEXITCODE -ne 0) { throw ... }`。
+
+### 5. 中文与编码（Windows 必守）
+
+- 所有 `.md`、`.json`、`.ps1`、`.py` 源文件统一 UTF-8 无 BOM、LF。
+- 需要中文输出时，先设置 `$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::new($false)`；不要把 GBK 输出直接当 UTF-8 读。
+- Python 子进程显式 `encoding="utf-8", errors="replace"`；读文件显式 `encoding="utf-8"`，禁止依赖系统默认编码。
+- 终端出现乱码时，先判断是“源文件编码”还是“控制台代码页”，不要靠肉眼猜；用 `Format-Hex` 或字节检查确认。
+
+### 6. 复杂操作落脚本
+
+满足任一条件时，不写超长一行命令，改为生成临时脚本并执行：
+
+- 超过 3 个管道或 2 层引号嵌套
+- 需要循环、条件、错误处理
+- 需要跨 shell
+- 命令中包含中文路径或大量参数
+
+临时脚本执行完即删；删除前确认路径位于 `$env:TEMP` 或当前工作区，禁止对计算出的未知路径做递归删除。
+
+### 7. 失败后的固定恢复顺序
+
+1. 停止重复同一条失败命令。
+2. 打印并确认：当前 shell、解释器版本、工作目录、目标路径是否存在。
+3. 用最小命令复现（只保留出错的那一段）。
+4. 改为原生 PowerShell 写法，或拆成“写文件 → 读文件”的两步。
+5. 修复后在规则/脚本中补一条回归检查，避免下次再犯。
+
+**🔴 CHECKPOINT · Shell 变更前**：任何会改配置、删文件、改系统状态或跨盘移动的命令，必须先确认 shell、解释器和目标绝对路径；三项没说清，不准执行。
+
 ## 安全红线
 - 禁止在未明确指定环境的情况下修改系统目录（C:\Windows\System32、Program Files、~/.ssh/）
 - 禁止自动执行数据库 DELETE / DROP（必须人工确认）

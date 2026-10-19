@@ -1,9 +1,15 @@
 #!/bin/sh
-# push 前跑 skills 库体检；有发现就拦下。
+# push 前跑 skills 库体检与全局 Shell 规则校验；有发现就拦下。
 # 绕过：git push --no-verify
 root=$(git rev-parse --show-toplevel)
 python "$root/scripts/audit-skills.py" --strict || {
   printf '\n'
   printf 'skills 体检未通过 —— 修好再推，或用 git push --no-verify 强行跳过。\n'
+  exit 1
+}
+
+python "$root/scripts/validate-shell-rules.py" || {
+  printf '\n'
+  printf 'Shell 执行规则校验未通过 —— 修好再推，或用 git push --no-verify 强行跳过。\n'
   exit 1
 }
