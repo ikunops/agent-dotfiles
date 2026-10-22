@@ -16,7 +16,9 @@ const serve = (dir) => new Promise((res) => {
 });
 const wait = (ms) => new Promise(r => setTimeout(r, ms));
 
-const FILMS = { Theseus: 720, Cave: 720, Zeno: 720, Trolley: 1080 };
+// 片表与画布从 tools/overlap/films.json 读，换项目时不用改脚本。
+const CFG = JSON.parse(fs.readFileSync(path.resolve("tools/overlap/films.json"), "utf8"));
+const FILMS = CFG.films;
 const STEP = Number(process.argv[2] || 10);
 
 const overlap = (a, b) => {
@@ -32,7 +34,7 @@ const overlap = (a, b) => {
   const browser = await openBrowser("chrome");
   const page = await browser.newPage({context: null, logLevel: "error", indent: false, pageIndex: 0, onBrowserLog: () => undefined, onLog: () => undefined});
   page.setBrowserSourceMapGetter(() => null);
-  await page.setViewport({width: 1920, height: 1080, deviceScaleFactor: 1});
+  await page.setViewport({width: CFG.width, height: CFG.height, deviceScaleFactor: 1});
   const report = {};
   for (const [id, dur] of Object.entries(FILMS)) {
     await page.goto({url: "http://127.0.0.1:" + port + "/index.html?id=" + id, timeout: 40000});

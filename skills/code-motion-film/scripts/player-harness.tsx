@@ -4,7 +4,8 @@ import { Player } from "@remotion/player";
 import { FILMS } from "../../src/films";
 
 const params = new URLSearchParams(location.search);
-const id = params.get("id") || "Zeno";
+// 默认取第一支片；也可用 ?id=<filmId> 指定
+const id = params.get("id") || FILMS[0].id;
 const film = FILMS.find((f) => f.id === id);
 if (!film) throw new Error("unknown film " + id);
 
@@ -38,6 +39,46 @@ const w = window as unknown as {
   __ready: () => boolean;
   __film: unknown;
   __measure: () => unknown;
+  __sweep: () => unknown;
+};
+
+// 扫描：每帧把所有绘制元素的真实矩形报上来，用于「轨迹扫描体」与「底部空白带」分析
+w.__sweep = () => {
+  const W = 1920, H = 1080;
+  const svg = document.querySelector("#harness-root svg") as SVGSVGElement | null;
+  if (!svg) return { els: [], W, H };
+  const rb = svg.getBoundingClientRect();
+  const kx = W / (rb.width || W), ky = H / (rb.height || H);
+  const effOp = (el: Element): number => {
+    let o = 1, n: Element | null = el;
+    while (n && n !== svg) {
+      const st = getComputedStyle(n as Element);
+      if (st.display === "none" || st.visibility === "hidden") return 0;
+      o *= parseFloat(st.opacity || "1");
+      n = n.parentElement;
+    }
+    return o;
+  };
+  const out: { kind: string; s: string; x: number; y: number; w: number; h: number }[] = [];
+  const nodes = svg.querySelectorAll("text, rect, line, circle, ellipse, path, polyline, polygon");
+  for (const el of Array.from(nodes)) {
+    const op = effOp(el);
+    if (op <= 0.03) continue;
+    const r = el.getBoundingClientRect();
+    if (r.width <= 0 || r.height <= 0) continue;
+    const tag = el.tagName.toLowerCase();
+    const isText = tag === "text";
+    const kind = isText
+      ? (el.closest("[data-cap]") ? "cap" : "text")
+      : (el.closest("[data-fig]") ? "fig" : "art");
+    const s = isText ? (el.textContent || "").trim() : tag;
+    out.push({
+      kind, s,
+      x: (r.left - rb.left) * kx, y: (r.top - rb.top) * ky,
+      w: r.width * kx, h: r.height * ky,
+    });
+  }
+  return { els: out, W, H };
 };
 
 w.__seek = (f) => player?.seekTo(f);
