@@ -11,13 +11,13 @@
 ## 安装到项目
 
 1. 建 `tools/overlap/`，放入：
-   - `player-harness.tsx`（改里面的 `FILMS` 导入路径）
-   - `overlap-check.cjs`、`trajectory.cjs`（改里面的 `entry.tsx` 路径）
+   - `player-harness.tsx`（按项目调整 `../../src/films` 的导入路径）
+   - `overlap-check.cjs`、`trajectory.cjs`（按项目调整 `entryPoint` 路径）
 2. 建 `tools/overlap/films.json`，片表与画布均从这里读：
    ```json
    {"width": 1920, "height": 1080, "films": {"<filmId>": 720}}
    ```
-   `films` 的值是该片总帧数。脚本不再写死任何片名或分辨率。
+   `width` / `height` 是唯一画布来源；`films` 的值是该片总帧数。检查器把它们作为查询参数传给 harness，不要再改 harness 里的尺寸常量。
 3. 给要检查的**主体图形**加标记，例如：
    ```tsx
    <g data-fig="主体图形"><Figure ... /></g>
@@ -34,12 +34,16 @@ node tools/overlap/trajectory.cjs 4 <id>  # 只扫一支片
 
 输出 JSON 到 stdout，同时写 `out/trajectory-report.json`。空数组 = 该片无重叠。
 
-## 两个脚本的分工（重要）
+## 脚本分工（重要）
 
-| 脚本 | 查什么 | 何时用 |
+| 脚本 | 作用 | 何时用 |
 |---|---|---|
-| `overlap-check.cjs` | 抽查帧的静态重叠 | 快速回归 |
-| `trajectory.cjs` | **整条时间线的轨迹 × 时间线碰撞** | 交付前必跑 |
+| `player-harness.tsx` | 在无头浏览器中挂载 Remotion Player，暴露 `__seek` / `__measure` / `__sweep` | 两个重叠检查器的运行时底座 |
+| `overlap-check.cjs` | 按步长抽查静态重叠、越界与文字被主体压住 | 快速回归 |
+| `trajectory.cjs` | 逐帧扫描整条时间线的轨迹碰撞，报告帧区间 | **交付前必跑** |
+| `transition-continuity.cjs` | 抓黑屏/闪白后换场、静帧直切等转场断点 | 每个转场交接点 |
+| `readability.cjs` | 按字数和停留时间检查字幕可读性 | 字幕定稿后、出片前 |
+| `camera-projection.cjs` | 相机投影参考实现与假运镜自测 | 有环绕/升降/推拉镜头时 |
 
 **为什么必须跑 trajectory**：静止帧没撞不代表后面不撞。移动的主体、滑块、光标、扫描线、
 运镜会在时间线上"扫过"大片区域——一个静止的标签可能正好落在它的扫掠路径里。
@@ -70,7 +74,8 @@ trajectory 逐帧 seek，用**真实像素命中**（`elementFromPoint`）+ **�
 ## 注意
 
 - `page.setBrowserSourceMapGetter(() => null)` 必须调用，否则 console 事件会崩。
-- 画布尺寸变了要同步改 harness 里的 `compositionWidth/Height` 与 `W/H` 常量。
+- 画布尺寸只改 `tools/overlap/films.json` 的 `width` / `height`；harness 会从 URL 参数读取，改完重跑检查器即可。
+- harness 如果收到缺失或非法的 `width` / `height` 会直接报错，不会静默回退到某个默认分辨率。
 ---
 
 ## transition-continuity.cjs — 转场连续性检查

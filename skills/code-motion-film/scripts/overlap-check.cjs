@@ -37,7 +37,7 @@ const overlap = (a, b) => {
   await page.setViewport({width: CFG.width, height: CFG.height, deviceScaleFactor: 1});
   const report = {};
   for (const [id, dur] of Object.entries(FILMS)) {
-    await page.goto({url: "http://127.0.0.1:" + port + "/index.html?id=" + id, timeout: 40000});
+    await page.goto({url: "http://127.0.0.1:" + port + "/index.html?id=" + id + "&width=" + CFG.width + "&height=" + CFG.height, timeout: 40000});
     await wait(3500);
     const issues = [];
     for (let f = 0; f <= dur; f += STEP) {

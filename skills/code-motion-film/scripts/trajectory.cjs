@@ -46,7 +46,7 @@ const contains = (a, b) =>
   const report = {};
   const films = ONLY ? {[ONLY]: FILMS[ONLY]} : FILMS;
   for (const [id, dur] of Object.entries(films)) {
-    await page.goto({url: "http://127.0.0.1:" + port + "/index.html?id=" + id, timeout: 60000});
+    await page.goto({url: "http://127.0.0.1:" + port + "/index.html?id=" + id + "&width=" + W + "&height=" + H, timeout: 60000});
     await wait(4000);
 
     // 逐帧采集：文字盒 + 所有图形盒 + 像素命中率

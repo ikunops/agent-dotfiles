@@ -9,6 +9,16 @@ const id = params.get("id") || FILMS[0].id;
 const film = FILMS.find((f) => f.id === id);
 if (!film) throw new Error("unknown film " + id);
 
+// 画布尺寸由 tools/overlap/films.json 通过查询参数传入，harness 不维护第二份尺寸常量。
+const canvasWidth = Number(params.get("width"));
+const canvasHeight = Number(params.get("height"));
+if (!Number.isFinite(canvasWidth) || canvasWidth <= 0) {
+  throw new Error("missing or invalid ?width= (expected from tools/overlap/films.json)");
+}
+if (!Number.isFinite(canvasHeight) || canvasHeight <= 0) {
+  throw new Error("missing or invalid ?height= (expected from tools/overlap/films.json)");
+}
+
 let player: { seekTo: (f: number) => void } | null = null;
 
 const App: React.FC = () => (
@@ -18,10 +28,10 @@ const App: React.FC = () => (
     }}
     component={film.component}
     durationInFrames={film.frames}
-    compositionWidth={1920}
-    compositionHeight={1080}
+    compositionWidth={canvasWidth}
+    compositionHeight={canvasHeight}
     fps={30}
-    style={{ width: 1920, height: 1080 }}
+    style={{ width: canvasWidth, height: canvasHeight }}
     controls={false}
     autoPlay={false}
     acknowledgeRemotionLicense
@@ -44,7 +54,7 @@ const w = window as unknown as {
 
 // 扫描：每帧把所有绘制元素的真实矩形报上来，用于「轨迹扫描体」与「底部空白带」分析
 w.__sweep = () => {
-  const W = 1920, H = 1080;
+  const W = canvasWidth, H = canvasHeight;
   const svg = document.querySelector("#harness-root svg") as SVGSVGElement | null;
   if (!svg) return { els: [], W, H };
   const rb = svg.getBoundingClientRect();
@@ -83,11 +93,11 @@ w.__sweep = () => {
 
 w.__seek = (f) => player?.seekTo(f);
 w.__ready = () => !!document.querySelector("#harness-root svg");
-w.__film = { id: film.id, frames: film.frames };
+w.__film = { id: film.id, frames: film.frames, width: canvasWidth, height: canvasHeight };
 
 // 量测：文字用包围盒；主体重叠用「真实像素命中测试」（非包围盒）
 w.__measure = () => {
-  const W = 1920, H = 1080;
+  const W = canvasWidth, H = canvasHeight;
   const svg = document.querySelector("#harness-root svg") as SVGSVGElement | null;
   if (!svg) return { texts: [], figs: [], W, H };
   const rb = svg.getBoundingClientRect();
