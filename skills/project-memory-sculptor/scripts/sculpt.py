@@ -180,12 +180,17 @@ def _trim_edges(lines: list) -> list:
 
 
 def _append_block(blocks, line, block_name):
-    """向指定区块追加一行；区块不存在时补齐标准结构。"""
+    """向指定区块追加一行；区块不存在时补齐标准结构。
+
+    [待确认] 中原有的“- 暂无。”只是占位符；第一次追加真实提案时必须移除，
+    否则 review 会把它当成一条待审查提案，且后续区块缺空行。
+    """
     new_blocks = []
     appended = False
     for name, body in blocks:
         if name == block_name and not appended:
-            body = _trim_edges(body) + [line]
+            body = [ln for ln in _trim_edges(body) if ln.strip() != "- 暂无。"]
+            body = body + [line]
             appended = True
         new_blocks.append((name, body))
     if not appended:

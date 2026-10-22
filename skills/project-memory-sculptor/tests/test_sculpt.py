@@ -61,3 +61,16 @@ def test_reject(tmp_path):
     r = run("reject", "1", "--path", str(tmp_path))
     assert r.returncode == 0
     assert "坏提案" not in agents.read_text(encoding="utf-8")
+
+def test_propose_removes_placeholder(tmp_path):
+    """第一次追加真实提案时，占位符 - 暂无。 必须被移除。"""
+    agents = tmp_path / "AGENTS.md"
+    agents.write_text(
+        "## [已生效]\n\n- 暂空\n\n## [待确认]\n\n- 暂无。\n",
+        encoding="utf-8",
+    )
+    r = run("propose", "--path", str(tmp_path), "-c", "经验", "-r", "真实规则", "-e", "测试证据", "-s", "测试条件", "--write")
+    assert r.returncode == 0, r.stdout + r.stderr
+    content = agents.read_text(encoding="utf-8")
+    assert "- 暂无。" not in content
+    assert "真实规则" in content
