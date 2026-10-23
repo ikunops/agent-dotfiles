@@ -52,20 +52,78 @@ const normalizePath = (p, homeDir) => {
 // every agent step.  See #1202 for the full analysis.
 let _bootstrapCache = undefined; // undefined = not yet loaded, null = file missing
 
+// Resolve the skills directory without guessing relative paths.
+//
+// History: this used to be `path.resolve(__dirname, '../../skills')`, which for
+// a plugin at `~/.config/opencode/plugin/` resolves to `~/.config/skills` --
+// a directory that normally does not exist. The existsSync() check below then
+// failed every time and the bootstrap was silently never injected, so the model
+// was never told that a skill router existed.
+//
+// Skills are shared across clients via junctions: one physical copy under the
+// dotfiles repo, linked into `~/.claude/skills`, `~/.codex/skills`,
+// `~/.config/opencode/skills`, and so on. So there is no single guaranteed
+// location -- we probe, in order of confidence:
+//
+//   1. OPENCODE_SKILLS_DIR          explicit override (multi-repo / CI)
+//   2. <configDir>/skills           the client's own skills dir, junction or not
+//   3. ~/.agents/skills             the shared location most clients scan
+//   4. <repo>/skills                when the plugin runs from the repo itself
+//
+// The router skill itself may live either at the top level or in the library
+// layer (`function-specific/misc/superpowers/`), so each candidate is probed
+// against both shapes before moving on.
+const ROUTER_REL_PATHS = [
+  ['using-superpowers', 'SKILL.md'],
+  ['function-specific', 'misc', 'superpowers', 'using-superpowers', 'SKILL.md'],
+];
+
+const findSkillsDir = (configDir, homeDir) => {
+  const candidates = [];
+
+  const fromEnv = normalizePath(process.env.OPENCODE_SKILLS_DIR, homeDir);
+  if (fromEnv) candidates.push(fromEnv);
+
+  candidates.push(path.join(configDir, 'skills'));
+  candidates.push(path.join(homeDir, '.agents', 'skills'));
+  candidates.push(path.resolve(__dirname, '../skills'));
+  candidates.push(path.resolve(__dirname, '../../skills'));
+
+  for (const dir of candidates) {
+    for (const rel of ROUTER_REL_PATHS) {
+      try {
+        if (fs.existsSync(path.join(dir, ...rel))) {
+          return { dir, rel: path.join(...rel) };
+        }
+      } catch (_) {
+        // unreadable candidate -- keep looking
+      }
+    }
+  }
+  // Nothing found: return the most likely location so error messages name it.
+  return { dir: candidates[0], rel: null };
+};
+
 export const SuperpowersPlugin = async ({ client, directory }) => {
   const homeDir = os.homedir();
-  const superpowersSkillsDir = path.resolve(__dirname, '../../skills');
   const envConfigDir = normalizePath(process.env.OPENCODE_CONFIG_DIR, homeDir);
   const configDir = envConfigDir || path.join(homeDir, '.config/opencode');
+  const resolved = findSkillsDir(configDir, homeDir);
+  const superpowersSkillsDir = resolved.dir;
 
   // Helper to generate bootstrap content (cached after first call)
   const getBootstrapContent = () => {
     // Return cached result on subsequent calls
     if (_bootstrapCache !== undefined) return _bootstrapCache;
 
-    // Try to load using-superpowers skill
-    const skillPath = path.join(superpowersSkillsDir, 'using-superpowers', 'SKILL.md');
-    if (!fs.existsSync(skillPath)) {
+    // Load the router skill. It may sit at the top level or in the library
+    // layer; findSkillsDir already told us which relative path exists.
+    let skillPath = null;
+    for (const rel of ROUTER_REL_PATHS) {
+      const p = path.join(resolved.dir, ...rel);
+      if (fs.existsSync(p)) { skillPath = p; break; }
+    }
+    if (!skillPath) {
       _bootstrapCache = null;
       return null;
     }
