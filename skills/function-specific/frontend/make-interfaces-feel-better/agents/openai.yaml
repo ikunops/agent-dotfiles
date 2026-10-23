@@ -3,4 +3,4 @@ interface:
   short_description: "Apply concrete design-engineering details that make interface..."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

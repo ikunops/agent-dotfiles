@@ -3,4 +3,4 @@ interface:
   short_description: "Accessibility patterns for React and Next.js — semantic HTML,..."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

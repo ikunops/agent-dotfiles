@@ -3,4 +3,4 @@ interface:
   short_description: "You MUST use this before any creative work - creating feature..."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

@@ -3,4 +3,4 @@ interface:
   short_description: "Frontend development patterns for React, Next.js, state manag..."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

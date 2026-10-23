@@ -3,4 +3,4 @@ interface:
   short_description: "Produce thoughtful, high-fidelity design artifacts in HTML —..."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

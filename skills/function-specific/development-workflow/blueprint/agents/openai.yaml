@@ -3,4 +3,4 @@ interface:
   short_description: "Turn a one-line objective into a step-by-step construction pl..."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

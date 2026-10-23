@@ -95,18 +95,35 @@
 
 ## Skills 调用规范
 **任务第一步＝先路由（铁律）**：开始任何任务前，先扫 skill 清单找匹配当前任务类型的 skill / 部门，命中就整套加载再用——不要靠临场判断猜测，不要跳过侦查。布局/等高/塌缩相关一律先走 `layout-guardrails` 几何核验。
+
+**看不到 ≠ 不存在（必读）**：常驻清单只列出约 109 个技能，另有约 180 个为省 token 被显式关闭了隐式调用（`allow_implicit_invocation: false`）。它们已安装、可用，只是不在你眼前。所以"我没找到对应的 skill"不能作为自己动手的理由。按顺序做：
+
+1. 调 `find-skills` —— 它带全量路由表（含隐藏技能），告诉你该加载哪个
+2. 若 `find-skills` 也不可达，直接读 `skills/INDEX.md`（按领域分组的全量登记）
+3. 两条都空，才自己写；且要在回复里说明"查过 find-skills / INDEX，无匹配"
+
+**这一步要在写方案之前做，不是做到一半再补。** 中途才发现已有技能覆盖，等于方案作废。
+
 遇到对应场景时必须加载对应 skill，不要手写：
 - 前端设计/视觉优化 → `frontend-design` / `make-interfaces-feel-better`
 - 前端布局/层级防穿模 → `layout-guardrails` (z-index / stacking-context / overflow-clip / portal restack)
+- 前端细节质感/反 AI 味 → `design-taste-frontend` / `hallmark`
+- UI 验收/改动声称完成前 → `ui-acceptance` / `verification-loop`
+- 写测试/端到端 → `e2e-testing` / `test-driven-development`
+- 代码审查 → `requesting-code-review` / `receiving-code-review`
 - 线框/原型 → `wireframe` / `interactive-prototype`
 - 设计系统 → `create-design-system` / `opendesign`
 - 图标查找 → `icon-finder`
 - 演示文稿 → `make-a-deck`
+- 动画/讲解片/逐帧渲染 → `code-motion-film`
+- 数据流/拓扑/神经网络可视化 → `photon-flow-viz`
+- 架构图/时序图 → `archify`
 - 浏览器自动化 → `agent-browser` / `browser-use`
 - 网页搜索/抓取 → `firecrawl`
 - 视觉/图像 → `vision-eyes` / `vision-tools`
-- K8s/运维 → `k8s-knowledge`
-- 排障/复用 → `debug-and-refactor`
+- K8s/运维 → `find-skills` 查 `function-specific/devops/`（该层为库层，不常驻）
+- 排障/复用 → `debug-and-refactor` / `systematic-debugging`
+- SQL/数据库 → `sql-review`
 - 技能发现 → `find-skills`
 - 项目测绘/结构探索 → `project-cartographer`（用户说"倒模""参考某项目来规划""帮我看看项目结构""有没有缺口/功能不全会用；含测绘、梳理前后端、检查前后端闭环）
 - 项目记忆沉淀/经验固化 → `project-memory-sculptor`

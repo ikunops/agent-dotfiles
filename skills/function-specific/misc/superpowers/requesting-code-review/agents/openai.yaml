@@ -3,4 +3,4 @@ interface:
   short_description: "Use when completing tasks, implementing major features, or be..."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

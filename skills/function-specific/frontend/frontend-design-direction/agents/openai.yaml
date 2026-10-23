@@ -3,4 +3,4 @@ interface:
   short_description: "Set an ECC-specific frontend design direction for production..."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

@@ -3,4 +3,4 @@ interface:
   short_description: "Use when implementing any feature or bugfix, before writing i..."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

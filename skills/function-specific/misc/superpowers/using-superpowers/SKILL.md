@@ -23,6 +23,36 @@ This is not negotiable. You cannot rationalize your way out of this.
 
 Then announce "Using [skill] to [purpose]" and follow the skill exactly. If it has a checklist, create a todo per item.
 
+## When the skill you need is not in the visible list
+
+Only part of the library is advertised to you. Roughly 180 skills are deliberately
+kept out of the always-on index to save context (`allow_implicit_invocation: false`).
+They are still installed and still usable — you simply cannot see them until you ask.
+
+So "I don't see a skill for this" is **not** evidence that none exists. It means you
+have to go look:
+
+1. Invoke the `find-skills` skill. It carries a full routing table over every skill
+   in the library, including the hidden ones, and tells you which to load.
+2. If `find-skills` isn't reachable either, read `skills/INDEX.md` directly — a plain
+   registry of all skills grouped by domain.
+3. Only after both come up empty should you solve it from scratch.
+
+**Do this before writing a plan, not after.** Discovering halfway through that a
+skill already covers the problem means throwing the plan away.
+
+Signals that you should go look, even though nothing in the visible list matched:
+
+| You are about to… | Look for |
+|---|---|
+| design a UI, or fix one that "feels cheap" | `design-taste-frontend`, `make-interfaces-feel-better`, `layout-guardrails` |
+| verify a UI change actually works | `ui-acceptance`, `verification-loop`, `e2e-testing` |
+| debug something that "didn't take effect" | `systematic-debugging`, `debug-and-refactor` |
+| review code you or someone else just wrote | `requesting-code-review`, `receiving-code-review` |
+| handle SQL, schema, migrations | `sql-review`, and the database category |
+| build anything visual from scratch — animation, diagram, chart, video | `code-motion-film`, `photon-flow-viz`, `archify` |
+| work in a stack you rarely touch (React, Vue, FastAPI, Vite…) | `framework-specific/*` |
+
 ## Skill Priority
 
 When multiple skills apply, process skills come first — they set the approach, then implementation skills (frontend-design, etc.) carry it out. Brainstorming and systematic-debugging are Superpowers' most common process skills, but the rule holds for any of them.

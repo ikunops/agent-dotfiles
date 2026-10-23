@@ -3,4 +3,4 @@ interface:
   short_description: "Apply interaction design (IxD) principles and frameworks to p..."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

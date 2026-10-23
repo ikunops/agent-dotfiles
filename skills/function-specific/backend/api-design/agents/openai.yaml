@@ -3,4 +3,4 @@ interface:
   short_description: "REST API design patterns including resource naming, status co..."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true
