@@ -43,7 +43,7 @@ description: 前端审查小分队：九个 skill 组成的设计审查编队，
 **定位三律**：
 1. **只用裸名字在顶层找 = 假阴性**。真实事故（2026-09-18）：一轮盲测因为"顶层没有 `hallmark/`"就判定 7 个成员全缺、整步跳过——它们其实一直躺在 `function-specific/frontend/` 下。
 2. 正确做法：`find skills -iname "*<成员名>*" -name SKILL.md`（**递归**）；找不到再换关键词。
-3. 取用前先查 **`find-skills` 的路由表**——它已用「**下沉：<路径>**」标注了这类 skill；`skills/INDEX.md` 也按层登记。
+3. 取用前先查 **`find-skills` 的路由表**——它已用「**下沉：<路径>**」标注了这类 skill；根入口 `skills/INDEX.md` 指向按层登记的中间页。
 
 机械统计是 Step 2 的地基，用脚本扫全文件而不是逐文件读：**重复选择器数、字号/圆角/间距档位分布、z-index 散布、rgba 白硬编码、U+FFFD 乱码、magic calc、!important 数**。这些数字是最快暴露"样式堆叠失控"的证据。
 

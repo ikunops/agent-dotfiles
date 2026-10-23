@@ -55,6 +55,27 @@ Use `--input-image` parameter with the path to the image. The prompt should cont
 **For generation:** Pass user's image description as-is to `--prompt`.
 **For editing:** Pass editing instructions in `--prompt`.
 
+## Character and avatar consistency
+
+When generating the same character or a family of avatars across runs, keep a
+short visual anchor beside the prompt:
+
+- subject and silhouette;
+- expression and pose;
+- framing and camera angle;
+- lighting and palette;
+- material and rendering style;
+- background treatment;
+- one signature prop or identifying detail.
+
+Change only the variables the user asked to vary; repeat every other anchor
+verbatim. Use a new filename for each variant so comparisons stay possible.
+Start at 1K, iterate on the prompt, and reserve 4K for the locked direction.
+
+Use an original character or a clearly authorized reference. Do not invent a
+real person's likeness or imply that a real person endorses the result. Avoid
+reproducing a protected character design merely because it is recognizable.
+
 ## Output
 
 - Saves PNG to current directory

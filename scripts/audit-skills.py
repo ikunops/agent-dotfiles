@@ -17,7 +17,7 @@ skills 库体检 —— 把账一次算清。
                  并按 INDEX.md 的登记层给出「正身应该在哪」
   D 嵌套         skill 内部又套了 skill（vendor 目录夹带的 .claude/skills 等）
   E 语言         正文以中文为主、description 却纯英文（风格割裂）
-  F 登记         INDEX.md 与磁盘双向核对（登记未落盘 / 落盘未登记）
+  F 登记         三层索引（INDEX.md + indexes/*.md）与磁盘双向核对
 
 设计原则：**只读**。本脚本永不修改、删除、移动任何文件 —— 修不修由人决定。
 
@@ -50,6 +50,13 @@ for _stream in (sys.stdout, sys.stderr):
 ROOT = Path(__file__).resolve().parent.parent
 SKILLS = ROOT / "skills"
 INDEX = SKILLS / "INDEX.md"
+INDEXES = SKILLS / "indexes"
+INDEX_PAGES = {
+    "active": INDEXES / "active.md",
+    "library": INDEXES / "library.md",
+    "external": INDEXES / "external.md",
+}
+ARCHIVE_LIST = ROOT / "skills-archive" / "_archived_list.json"
 
 CONTAINERS = {"function-specific", "framework-specific", "platform-specific"}
 META = ".system"
@@ -141,37 +148,102 @@ def expand_shorthand(tok: str):
     return out
 
 
-def index_layers():
-    """解析 INDEX.md -> (active_names, library_names, external_names)
+def parse_library_sections(path: Path):
+    """Parse ``**<container>/<group>**（N）`` sections and their leaf names.
 
-    external = INDEX 中明确标注为「外部 / 本地依赖 / 不随仓库跟踪」的段落。
-    这些 skill 允许只存在于本机，不参与「登记了但磁盘没有」的报错。
+    Returns ``(sections, errors)`` where sections maps the repository-relative
+    group path to ``{"declared": N, "names": [...], "line": M}``. This keeps
+    the middle node honest: a table entry must live under its declared group,
+    and the declared count must match the entries actually listed.
     """
-    txt = read_text(INDEX)
-    active, library, external = set(), set(), set()
-    bucket = None
-    for line in txt.split("\n"):
-        s = line.strip()
-        if s.startswith("##") or s.startswith("###"):
-            head = s.lstrip("#").strip()
-            if "外部" in head or "本地依赖" in head or "不随仓库跟踪" in head:
-                bucket = "external"
-            elif "库层" in head or "镜像" in head:
-                bucket = "library"
-            elif CIRCLED.match(head):
-                bucket = "active"
-            else:
-                bucket = None
+    sections = {}
+    errors = []
+    current = None
+    header_re = re.compile(r"^\*\*((?:framework|function|platform)-specific/[^*]+)\*\*（(\d+)）$")
+    for lineno, line in enumerate(read_text(path).split("\n"), 1):
+        m = header_re.match(line.strip())
+        if m:
+            current = m.group(1)
+            if current in sections:
+                errors.append("库层分组重复：%s（第 %d 行）" % (current, lineno))
+            sections[current] = {"declared": int(m.group(2)), "names": [], "line": lineno}
             continue
-        if bucket and "`" in line:
-            # 先剥掉括号内的说明（交叉引用都写在括号里，如 ⑦b 的
-            # "（通用; OpenCode 专属流程仍走 `opencode-skill-creator`）"），
-            # 再把 `diagnosing-skills/-commands/-hooks` 这类省略前缀写法展开。
-            stripped = re.sub(r"[（(][^）)]*[）)]", "", line)
-            for tok in re.findall(r"`([A-Za-z0-9][A-Za-z0-9._/-]*)`", stripped):
-                for nm in expand_shorthand(tok):
-                    {"active": active, "library": library, "external": external}[bucket].add(nm)
-    return active, library, external
+        if current and re.match(r"^\*\*", line.strip()):
+            current = None
+        if current and line.lstrip().startswith(("- `", "| `")):
+            names = page_entries_from_line(line)
+            if names:
+                sections[current]["names"].extend(names)
+    for group, row in sections.items():
+        actual = len(row["names"])
+        if row["declared"] != actual:
+            errors.append("库层分组 %s 声明 %d 个，实际登记 %d 个（第 %d 行）"
+                          % (group, row["declared"], actual, row["line"]))
+    return sections, errors
+
+
+def page_entries_from_line(line: str):
+    stripped = re.sub(r"[（(][^）)]*[）)]", "", line)
+    names = []
+    for tok in re.findall(r"`([a-z0-9][a-z0-9._/-]*)`", stripped):
+        if tok.endswith((".md", ".py", ".json", ".yaml", ".yml")):
+            continue
+        names.extend(expand_shorthand(tok))
+    return names
+
+
+def page_entries(path: Path):
+    """Return declared skill names from one index page, preserving duplicates."""
+    names = []
+    for line in read_text(path).split("\n"):
+        names.extend(page_entries_from_line(line))
+    return names
+
+
+def index_layers():
+    """Parse the root and three internal pages.
+
+    Returns ``(active, library, external, duplicates, tree_errors,
+    library_sections)``. A skill is allowed to be listed only once across
+    active/library pages. External skills are allowed to overlap neither page
+    because they are not repository-owned; their presence is still checked
+    separately when present.
+    """
+    layers = {key: set() for key in INDEX_PAGES}
+    duplicates = []
+    tree_errors = []
+    library_sections = {}
+
+    if not INDEX.exists():
+        tree_errors.append({"path": "skills/INDEX.md", "why": "缺少根索引"})
+    root_text = read_text(INDEX)
+    for key, rel in (("active", "indexes/active.md"), ("library", "indexes/library.md"),
+                     ("external", "indexes/external.md")):
+        if rel not in root_text.replace("\\", "/"):
+            tree_errors.append({"path": "skills/INDEX.md", "why": "根索引未链接 %s" % rel})
+
+    for layer, path in INDEX_PAGES.items():
+        if not path.exists():
+            tree_errors.append({"path": str(path.relative_to(SKILLS)), "why": "缺少中间索引"})
+            continue
+        seen = set()
+        for name in page_entries(path):
+            if name in seen:
+                duplicates.append({"name": name, "layer": layer,
+                                   "path": str(path.relative_to(SKILLS))})
+            seen.add(name)
+            layers[layer].add(name)
+        if layer == "library":
+            library_sections, errors = parse_library_sections(path)
+            tree_errors.extend({"path": str(path.relative_to(SKILLS)), "why": msg} for msg in errors)
+
+    overlap = (layers["active"] & layers["library"])
+    for name in sorted(overlap):
+        duplicates.append({"name": name, "layer": "active+library",
+                           "path": "indexes/active.md + indexes/library.md"})
+
+    return (layers["active"], layers["library"], layers["external"],
+            duplicates, tree_errors, library_sections)
 
 
 def main() -> int:
@@ -186,8 +258,14 @@ def main() -> int:
     active = [d for d in rest if d.parent == SKILLS]
     library = [d for d in rest if d.parent != SKILLS]
 
-    idx_active, idx_library, idx_external = index_layers()
-    findings = {"shell": [], "fm": [], "fm_info": [], "dup": [], "nested": [], "lang": [], "index": []}
+    (idx_active, idx_library, idx_external, idx_duplicates,
+     page_errors, library_sections) = index_layers()
+    findings = {"shell": [], "fm": [], "fm_info": [], "dup": [], "nested": [],
+                "lang": [], "index": [], "tree": list(page_errors)}
+    findings["tree"].extend(
+        {"path": r["path"], "why": "%s 重复登记（%s）" % (r["name"], r["layer"])}
+        for r in idx_duplicates
+    )
 
     # ---------- A 空壳 ----------
     for d in all_skills:
@@ -199,7 +277,7 @@ def main() -> int:
             pass
     for name in sorted(os.listdir(SKILLS)):
         p = SKILLS / name
-        if not p.is_dir() or name in CONTAINERS or name == META:
+        if not p.is_dir() or name in CONTAINERS or name in {META, "indexes"}:
             continue
         if not (p / "SKILL.md").exists():
             deep = [x for x in all_skills if p in x.parents]
@@ -293,10 +371,54 @@ def main() -> int:
 
     # ---------- F INDEX 登记 ----------
     disk = {d.name for d in rest}
+    disk_active = {d.name for d in active}
+    disk_library = {d.name for d in library}
+
     for n in sorted((idx_active | idx_library) - disk):
-        findings["index"].append({"path": n, "why": "INDEX 登记了但磁盘没有"})
-    for n in sorted({d.name for d in active} - idx_active - idx_library - idx_external):
-        findings["index"].append({"path": n, "why": "活跃层存在但 INDEX 未登记"})
+        findings["index"].append({"path": n, "why": "索引登记了但磁盘没有"})
+    for n in sorted(disk_active - idx_active - idx_external):
+        findings["index"].append({"path": n, "why": "活跃层存在但 indexes/active.md 未登记"})
+    for n in sorted(disk_library - idx_library - idx_external):
+        findings["index"].append({"path": n, "why": "库层存在但 indexes/library.md 未登记"})
+    for n in sorted(idx_active - disk_active):
+        findings["index"].append({"path": n, "why": "active 索引登记了但顶层没有"})
+    for n in sorted(idx_library - disk_library):
+        findings["index"].append({"path": n, "why": "library 索引登记了但分类目录没有"})
+
+    # 叶子路径校验：中间页的 group 必须真的包含对应目录。只比目录名会漏掉
+    # “登记在 A 组、实际在 B 组”，这正是平铺索引轻易掩盖的结构漂移。
+    actual_library_groups = {}
+    for d in library:
+        group = str(d.parent.relative_to(SKILLS)).replace("\\", "/")
+        actual_library_groups.setdefault(group, set()).add(d.name)
+    for group, row in library_sections.items():
+        group_names = actual_library_groups.get(group, set())
+        for name in row["names"]:
+            if name in disk_library and name not in group_names:
+                findings["tree"].append({
+                    "path": "%s/%s" % (group, name),
+                    "why": "索引位置与磁盘叶子不一致",
+                })
+
+    # 归档账本也是结构的一部分：JSON 损坏或顺序漂移会让恢复路径静默失效。
+    try:
+        archived = json.loads(ARCHIVE_LIST.read_text(encoding="utf-8"))
+        if not isinstance(archived, list) or not all(isinstance(x, str) for x in archived):
+            findings["tree"].append({"path": "skills-archive/_archived_list.json",
+                                     "why": "归档清单必须是字符串数组"})
+        else:
+            if len(archived) != len(set(archived)):
+                findings["tree"].append({"path": "skills-archive/_archived_list.json",
+                                         "why": "归档清单存在重复项"})
+            if archived != sorted(archived):
+                findings["tree"].append({"path": "skills-archive/_archived_list.json",
+                                         "why": "归档清单未按字典序排列"})
+    except FileNotFoundError:
+        findings["tree"].append({"path": "skills-archive/_archived_list.json",
+                                 "why": "缺少归档清单"})
+    except (OSError, ValueError) as exc:
+        findings["tree"].append({"path": "skills-archive/_archived_list.json",
+                                 "why": "无法解析：%s" % exc})
 
     total = sum(len(v) for k, v in findings.items() if k != "fm_info")
 
@@ -315,6 +437,7 @@ def main() -> int:
     print("  库存层（分类目录，按需取用）  %d" % len(library))
     print("  .system（客户端官方件）      %d" % len(meta))
     print("  外部本地依赖（不随仓库跟踪）  %d" % len(idx_external))
+    print("  三层索引中间页               %d" % len(INDEX_PAGES))
     print("  合计                        %d" % (len(active) + len(library) + len(meta)))
 
     def sec(title, key, render):
@@ -341,7 +464,8 @@ def main() -> int:
 
     sec("D 嵌套", "nested", lambda r: "X  %-50s 套在 %s 里" % (r["path"], r["inside"]))
     sec("E 语言割裂", "lang", lambda r: "X  %-50s 正文中文占比 %.0f%%" % (r["path"], r["body_cjk"] * 100))
-    sec("F INDEX 登记", "index", lambda r: "X  %-50s %s" % (r["path"], r["why"]))
+    sec("F 三层索引", "index", lambda r: "X  %-50s %s" % (r["path"], r["why"]))
+    sec("G 树结构", "tree", lambda r: "X  %-50s %s" % (r["path"], r["why"]))
 
     print("\n" + "=" * W)
     print("共 %d 处发现。本脚本只读，未改动任何文件。" % total)

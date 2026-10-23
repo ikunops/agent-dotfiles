@@ -99,7 +99,8 @@
 **看不到 ≠ 不存在（必读）**：常驻清单只列出约 109 个技能，另有约 180 个为省 token 被显式关闭了隐式调用（`allow_implicit_invocation: false`）。它们已安装、可用，只是不在你眼前。所以"我没找到对应的 skill"不能作为自己动手的理由。按顺序做：
 
 1. 调 `find-skills` —— 它带全量路由表（含隐藏技能），告诉你该加载哪个
-2. 若 `find-skills` 也不可达，直接读 `skills/INDEX.md`（按领域分组的全量登记）
+2. 若 `find-skills` 也不可达，先读 `skills/INDEX.md` 根索引，再按领域进入
+   `skills/indexes/{active,library,external}.md`（三层路由，不读整份全量清单）
 3. 两条都空，才自己写；且要在回复里说明"查过 find-skills / INDEX，无匹配"
 
 **这一步要在写方案之前做，不是做到一半再补。** 中途才发现已有技能覆盖，等于方案作废。

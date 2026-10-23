@@ -311,7 +311,7 @@ python ~/opencode-dotfiles/scripts/sync-skills-links.py --strict   # 有缺失/�
 
 维护规则：
 
-- 新增外部 skill 时，在 `skills/INDEX.md` 的「外部…（本地依赖，不随仓库跟踪）」段落登记，不要放进活跃表格。
+- 新增外部 skill 时，在 `skills/indexes/external.md` 登记，不要放进活跃表格。
 - 外部件缺失**不算仓库故障**：`python scripts/audit-skills.py --strict` 会跳过这些登记项。
 - 不要直接改外部件的 `SKILL.md`；需要定制就复制成自有 skill、改名后单独登记，避免下次升级被覆盖。
 - 判断依据是**维护权**，不是安装渠道：自己发布的也可以算自有；别人发布的即使装在本机也不算。
@@ -327,7 +327,7 @@ python ~/opencode-dotfiles/scripts/sync-skills-links.py --strict   # 有缺失/�
 归档不参与技能索引，所以能直接降低每轮请求的 token。完整清单见 `skills-archive/_archived_list.json`。
 
 ```bash
-# 恢复某个 skill：移回原位并在 skills/INDEX.md 重新登记
+# 恢复某个 skill：移回原位，并在 skills/INDEX.md 指向的 active/library 中间页重新登记
 mv ~/opencode-dotfiles/skills-archive/<名字> ~/opencode-dotfiles/skills/
 python ~/opencode-dotfiles/scripts/audit-skills.py --strict   # 校验登记一致性
 ```

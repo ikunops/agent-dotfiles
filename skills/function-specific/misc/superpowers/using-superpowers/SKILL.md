@@ -34,8 +34,8 @@ have to go look:
 
 1. Invoke the `find-skills` skill. It carries a full routing table over every skill
    in the library, including the hidden ones, and tells you which to load.
-2. If `find-skills` isn't reachable either, read `skills/INDEX.md` directly — a plain
-   registry of all skills grouped by domain.
+2. If `find-skills` isn't reachable either, read the small `skills/INDEX.md` root,
+   then enter the relevant page under `skills/indexes/` before opening a leaf.
 3. Only after both come up empty should you solve it from scratch.
 
 **Do this before writing a plan, not after.** Discovering halfway through that a

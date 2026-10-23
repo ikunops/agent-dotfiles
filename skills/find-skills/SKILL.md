@@ -172,8 +172,9 @@ AGENTS.md 缺失/为空但工作区有代码 → **不直接开工**，先建最
 
 ## 本地检索（路由表没覆盖时的兜底）
 
-**库层 208 个已退出常驻索引**（`agents/openai.yaml` 的 `policy.allow_implicit_invocation: false`），
-路由表 + 下面的检索是找到它们的通道。全量清单见 `skills/INDEX.md` 的「库层全量清单」一节。
+**库层 207 个已退出常驻索引**（`agents/openai.yaml` 的 `policy.allow_implicit_invocation: false`），
+路由表 + 下面的检索是找到它们的通道。先读 `skills/INDEX.md` 根索引，再进入
+`skills/indexes/library.md` 的分类清单；命中后直接读叶子的 `SKILL.md`。
 
 ```bash
 # dotfiles 仓库根：按本机实际情况取，别硬编码用户名

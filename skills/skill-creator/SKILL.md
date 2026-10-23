@@ -102,6 +102,13 @@ Then run them: load the draft skill, hand the model the test prompt, and inspect
 
 ---
 
+
+## Designing an agent persona (optional)
+
+When a skill needs a stable role, voice, or behavioral identity, read
+`references/agent-persona.md` before drafting. Keep that persona separate from
+the task workflow, and load it only when identity is part of the deliverable.
+
 ## Reviewing the draft
 
 For each test prompt:
