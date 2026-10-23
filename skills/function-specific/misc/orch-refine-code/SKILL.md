@@ -1,6 +1,8 @@
 ---
 name: orch-refine-code
-description: Orchestrate a behavior-preserving refactor — confirm tests are green, restructure without changing behavior, keep tests green, review, and gated commit. Use when the structure should improve but behavior must not change.
+description: >
+  行为保持型重构（orch-refine-code）。用于结构需要改善但外部行为必须完全不变的情况，例如拆分模块、消除重复、删除死代码、降低嵌套层级或为提升可读性重命名。执行前先确认相关测试通过，再小步重构并持续保持测试为绿，最后审查并在人工确认后提交。
+  触发词：行为保持型重构、代码重构、拆分模块、消除重复、删除死代码、降低嵌套、refactor、refine code、behavior-preserving refactor。
 metadata:
   origin: ECC
 ---

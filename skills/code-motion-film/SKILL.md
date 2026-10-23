@@ -1,6 +1,8 @@
 ---
 name: code-motion-film
-description: 用代码（Remotion / SVG / Canvas / CSS / GSAP）生成叙事动画、讲解片、分镜视频时的通用纪律与运动语法。当任务是用代码做动画、讲故事的视频、动效演示、逐帧生长、转场、运镜、粒子效果时使用。核心目标：让观众看得懂——每样东西能被认出、每个变化能被读出、文字永不添乱。
+description: >
+  用代码（Three.js / Remotion / SVG / Canvas / CSS / GSAP）生成叙事动画、讲解片、分镜视频的通用纪律与运动语法。用于代码动画、故事视频、动效演示、逐帧生长、转场、运镜、粒子效果和 MV。
+  核心目标：让观众看得懂——每样东西能被认出、每个变化能被读出、文字永不添乱。触发词：代码动画、视频生成、Three.js、Remotion、SVG animation、motion graphics、分镜。
 ---
 
 # 代码叙事动画纪律

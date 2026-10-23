@@ -1,6 +1,8 @@
 ---
 name: ui-acceptance
-description: UI 分层验收方法论。当用户要求"验收 / 验一下 / 检查页面 / 交付前检查"，或任何前端改动声称"完成/做好了/改完了"之前使用。四层验收（源码静态扫→交互层真点击断言→渲染层量矩形→视觉层看截图）+ 确定性硬阈值 + 同类项众数一致性 + 页面覆盖对账 + 失败二分 + 汇报三件套。Use when user says 验收/验一下/检查页面, or before claiming a frontend change is done (acceptance / verify UI / before claiming done).
+description: >
+  UI 分层验收方法论。用于“验收 / 验一下 / 检查页面 / 交付前检查”，以及任何前端改动声称“完成 / 做好了 / 改完了”之前。按源码、交互、渲染、视觉四层验收，要求真点击、量矩形、看截图并附证据。
+  触发词：UI 验收、页面检查、前端验收、acceptance、verify UI、before done。
 ---
 
 # UI 验收（分层 + 确定性 + 汇报纪律）

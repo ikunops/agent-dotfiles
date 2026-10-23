@@ -1,6 +1,6 @@
 interface:
-  display_name: "Orch Pipeline"
-  short_description: "Shared orchestration engine for the orch-* skill family."
+  display_name: "编排流水线 · Orch Pipeline"
+  short_description: "orch-* 技能族的共享编排引擎，定义调研、规划、TDD、审查、提交流程及两次人工确认门。"
 
 policy:
   allow_implicit_invocation: false

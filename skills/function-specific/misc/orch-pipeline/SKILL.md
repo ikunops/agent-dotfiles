@@ -1,6 +1,8 @@
 ---
 name: orch-pipeline
-description: Shared orchestration engine for the orch-* skill family. Defines the gated Research-Plan-TDD-Review-Commit pipeline, the size classifier, the agent map, and the two human gates that the orch-* operation skills delegate to. Not usually invoked directly.
+description: >
+  编排流水线（orch-* 技能族的共享引擎）。定义“调研 → 规划 → TDD 实现 → 审查 → 提交”的受控流程、任务规模分级、Agent 映射，以及规划和提交前两次人工确认门。通常由 orch-add-feature、orch-change-feature、orch-fix-defect、orch-refine-code、orch-build-mvp 间接调用，不建议直接触发。
+  触发词：编排流水线、受控流程、任务分级、人工确认门、orch pipeline、orchestration engine。
 metadata:
   origin: ECC
 ---
