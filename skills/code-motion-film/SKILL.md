@@ -62,7 +62,10 @@ description: 用代码（Remotion / SVG / Canvas / CSS / GSAP）生成叙事动�
 | `references/preflight.md` | 交付前逐条对账 |
 | `references/reference-replication.md` | 有参考图/参考片要复刻 |
 | `references/transition-continuity.md` | 设计转场、验收转场、判断是否像 PPT 时 |
+| `references/image-backed-composition.md` | 主画面是 AI 静帧、照片或其它栅格素材，由代码负责时间线与合成时 |
 | `scripts/` | 几何重叠、轨迹扫描、可读时长、相机投影、转场连续性 |
+
+**边界**：当主画面来自 AI 静帧、照片或其它栅格素材，而代码只负责时间线、叠加、文字与合成时，读 `references/image-backed-composition.md`；图片生成本身不属于本 skill 的核心范围。
 
 ---
 
