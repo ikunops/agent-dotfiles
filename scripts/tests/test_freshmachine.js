@@ -112,4 +112,9 @@ const visible = fs.readdirSync(clientSkills, { withFileTypes: true })
   .filter(e => e.isDirectory() && !e.name.startsWith(".")).length;
 console.log("\n6. skills visible to the new client:", visible);
 
-process.exit(ok && fs.existsSync(probeRouter) ? 0 : 1);
+const pass = ok && fs.existsSync(probeRouter);
+console.log();
+console.log(pass
+  ? "RESULT: PASS - repo works from a brand-new path and username"
+  : "RESULT: FAIL - fresh-machine resolution broken");
+process.exit(pass ? 0 : 1);
