@@ -1,4 +1,4 @@
-﻿---
+---
 name: troubleshoot
 description: 分析服务器日志与故障描述，定位根因，输出结构化排查报告与修复建议。
 ---

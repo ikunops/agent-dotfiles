@@ -1,4 +1,4 @@
-﻿---
+---
 name: ansible
 description: 根据需求生成 Ansible Playbook，说明每个 task 作用、需修改的变量及执行命令。
 ---

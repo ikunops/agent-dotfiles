@@ -1,4 +1,4 @@
-﻿---
+---
 name: sql-review
 description: 审核 SQL 语句，检查全表扫描风险、索引使用、SQL 注入与大事务风险，并输出优化建议。
 ---
