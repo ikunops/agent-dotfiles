@@ -117,17 +117,48 @@ KNOWN_CLIENTS = [
 MUST_NOT_LINK = [".zcode/skills"]
 
 
+FILE_ATTRIBUTE_REPARSE_POINT = 0x400
+
+
 def is_link(p: Path) -> bool:
+    """是否为链接：符号链接 **或 Windows junction**。
+
+    Windows 上 `Path.is_symlink()` 对目录联接（junction）**返回 False** ——
+    这是本脚本最容易踩的坑：
+      · junction 是本脚本自己在 Windows 上建的（mklink /J，免提权）
+      · 但 is_link() 认不出它，于是"已链接"被当成"未链接"，
+        "指向权威副本"被当成"有独有 skill"
+    实测：~/.codex/skills/dotfiles 是指向仓库的 junction，
+    is_symlink()=False，而 st_file_attributes 带 0x400（reparse point）。
+
+    POSIX 上仍以 is_symlink() 为准。
+    """
     try:
-        return p.is_symlink()
+        if p.is_symlink():
+            return True
     except OSError:
-        return False
+        pass
+    # Windows junction = 目录形式的 reparse point
+    try:
+        st = os.stat(str(p), follow_symlinks=False)
+        attrs = int(getattr(st, "st_file_attributes", 0) or 0)
+        if attrs & FILE_ATTRIBUTE_REPARSE_POINT:
+            return True
+    except OSError:
+        pass
+    return False
 
 
 def link_target(p: Path) -> str | None:
     """返回链接/junction 的指向；不是链接则 None。（跨平台）"""
     if is_link(p):
-        t = os.readlink(str(p))
+        try:
+            t = os.readlink(str(p))
+        except OSError:
+            return None
+        # Windows junction 的 readlink 返回 \\?\C:\... 形式，去掉前缀
+        if t.startswith("\\\\?\\"):
+            t = t[4:]
         # MSYS 风格 /c/Users/... → C:/Users/... （Windows + Git Bash 场景）
         if os.name == "nt" and t.startswith("/") and len(t) > 2 and t[2] == "/":
             t = t[1] + ":" + t[2:]
@@ -135,9 +166,7 @@ def link_target(p: Path) -> str | None:
         if not os.path.isabs(t):
             t = os.path.join(os.path.dirname(str(p)), t)
         return os.path.normpath(t)
-    # Windows junction 在 Python 里 is_symlink() 可能为 False；用 realpath 判定：
-    # 若解析结果与自身不同，说明它是个重定向点（junction 或其他 reparse point）。
-    # Linux 上没有 junction，这段自然不触发。
+    # 其它 reparse point（is_link 未覆盖的情形）：用 realpath 兜底
     if os.name == "nt" and os.path.exists(str(p)):
         try:
             rp = os.path.realpath(str(p))
@@ -182,11 +211,28 @@ def fmt_time(ts: int | None) -> str:
 
 
 def skill_names(d: Path) -> set[str]:
+    """技能名集合 = d 下的「真实子目录」名，排除点目录与链接。
+
+    为什么必须排除链接：
+    ~/.codex/skills/ 的实际布局是
+
+        .system/          Codex 自带的系统技能（imagegen / openai-docs ...）
+        dotfiles -> ~/opencode-dotfiles/skills      <- junction
+
+    即：客户端这一层目录本身可能就是链接，而不是把各个 skill 逐个链接进来。
+    旧实现把 `dotfiles` 也算成一个 skill 名，于是
+        own = skill_names(~/.codex/skills) - auth_names
+    得到 {"dotfiles"}，误报「有 1 个独有 skill：dotfiles」，
+    把一个本来完全正常的客户端判成「跳过」——真需要修时也被这条假告警糊住。
+
+    链接不是"这里装了一个同名技能"，它指向别处，内容由目标决定，
+    因此不参与「独有 skill」比较。
+    """
     if not d.exists():
         return set()
     try:
         return {p.name for p in d.iterdir()
-                if not p.name.startswith(".") and (p.is_dir() or is_link(p))}
+                if not p.name.startswith(".") and p.is_dir() and not is_link(p)}
     except Exception:
         return set()
 
@@ -218,6 +264,35 @@ def find_client_skills(home: Path) -> dict[Path, str | None]:
             if p.is_dir() or is_link(p):
                 found[p] = link_target(p)
     return dict(sorted(found.items(), key=lambda kv: str(kv[0])))
+
+
+def system_dirs(p: Path) -> list[str]:
+    """客户端 skills 目录下的「系统技能目录」名单（以 . 开头、且有实质内容）。
+
+    为什么需要它：
+    `skill_names()` 会排除点目录（它们不是用户技能），于是像
+    `~/.codex/skills/.system/`（含 imagegen、openai-docs、skill-creator、
+    skill-installer、review-agent）这种客户端自带内容**不会出现在 own 里**，
+    整目录看起来"可以安全地换成链接"。
+
+    但把它换掉 = 删掉客户端的原生能力。这类客户端只能逐条链接，
+    不能整目录重定向。返回的是有内容的点目录名，供调用方告警并跳过。
+    """
+    out: list[str] = []
+    try:
+        for c in p.iterdir():
+            if not c.name.startswith("."):
+                continue
+            if not c.is_dir():
+                continue          # 迁移用的 .json 之类的标记文件，无所谓
+            try:
+                if any(True for _ in c.iterdir()):
+                    out.append(c.name)
+            except OSError:
+                out.append(c.name)
+    except OSError:
+        return []
+    return sorted(out)
 
 
 def find_missing_clients(home: Path, found: dict[Path, str | None]) -> list[Path]:
@@ -436,6 +511,20 @@ def main() -> int:
                 print("         → 跳过（如需丢弃这些独有 skill，加 --force）")
                 continue
             print("         → --force：将被移入备份，不会真丢")
+
+        # 系统目录保护：客户端可能在 skills/ 里放自己的系统技能（如 Codex 的
+        # .system/，含 imagegen / openai-docs / skill-creator）。
+        # 这些目录以 "." 开头，被 skill_names() 排除，所以 own 为空、看起来
+        # "可以安全整目录换成链接" —— 但换掉就等于删掉客户端的原生能力。
+        # 这类客户端必须**逐条链接**，不能整目录重定向。
+        sysdirs = system_dirs(p)
+        if sysdirs:
+            print("   🛑  %-44s 含客户端系统目录 %s"
+                  % (pp, ", ".join(sysdirs)))
+            print("         → 跳过整目录重定向：替换会删掉客户端原生技能")
+            print("         → 该客户端应改为在 skills/ 内逐条链接（见 README）")
+            continue
+
         print("   🔁 %-44s → 指向权威副本" % pp)
         todo.append(pp)
         if tgt:

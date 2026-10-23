@@ -7,6 +7,7 @@
 node scripts/tests/test_bootstrap.js      # bootstrap 是否真的注入
 node scripts/tests/test_portability.js    # 4 种目录布局是否都能解析
 node scripts/tests/test_freshmachine.js   # 新机器模拟（复制到全新路径）
+node scripts/tests/test_sync_classify.js  # 链接/系统目录分类（sync 脚本）
 ```
 
 ## 为什么需要这些测试
