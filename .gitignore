@@ -50,3 +50,6 @@ skills/hyperframes-studio/
 skills/media-use/
 # WorkBuddy 市场件（source=others，skillId=skill_2095070772061040640）
 skills/delivery-no-pseudoblock/
+
+# 本地技能使用统计缓存（机器生成，可随时重建）
+.skill-usage/
