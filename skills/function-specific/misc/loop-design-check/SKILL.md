@@ -1,6 +1,6 @@
 ---
 name: loop-design-check
-description: "Design a goal-oriented agent loop, and review it for the ways loops go wrong — spinning and burning tokens, Goodhart-gaming the verifier, or running a wrong answer to completion. Two actions: (1) WRITE a loop — gate whether to build it, define a machine-decidable goal, pick the loop type, pick a skeleton; (2) REVIEW a loop — run it past five failure modes plus decidability, boundaries, fallback, judge independence, and keep-judgment-with-the-human red lines. Use when designing an autonomous agent loop, or when you already have one and worry it will spin, cheat, or run a wrong answer to the end. Complements the mechanism-layer loop skills (autonomous-loops, continuous-agent-loop) by covering the judgment layer they don't. 中文触发：写 loop、设计 loop、做一个 loop、检查 loop 对不对、loop 体检、loop 会不会跑飞、可判定目标、五个崩法、plan build judge。English triggers: design an agent loop, write a loop, check a loop, loop review, prevent a runaway loop, goal-oriented loop, decidable goal, plan/build/judge."
+description: "Design a goal-oriented agent loop, and review it for the ways loops go wrong — spinning and burning tokens, Goodhart-gaming the verifier, or running a wrong answer to completion. Two actions: (1) WRITE a loop — gate whether to build it, define a machine-decidable goal, pick the loop type, pick a skeleton; (2) REVIEW a loop — run it past five failure modes plus decidability, boundaries, fallback, judge independence, and keep-judgment-with-the-human red lines. Use when designing an autonomous agent loop, or when you already have one and worry it will spin, cheat, or run a wrong answer to the end. Complements the mechanism-layer loop skill (continuous-agent-loop) by covering the judgment layer it doesn't. 中文触发：写 loop、设计 loop、做一个 loop、检查 loop 对不对、loop 体检、loop 会不会跑飞、可判定目标、五个崩法、plan build judge。English triggers: design an agent loop, write a loop, check a loop, loop review, prevent a runaway loop, goal-oriented loop, decidable goal, plan/build/judge."
 metadata:
   origin: ECC
 ---
@@ -18,7 +18,7 @@ metadata:
 **Don't use it for:**
 - A one-off task → just do it; don't wrap a loop around it.
 - A plain timer / poll → use `/loop`; no design needed.
-- *How to wire the loop architecture* (pipelines → DAGs, long-run recovery) → that's the mechanism layer; see `autonomous-loops` / `continuous-agent-loop`. **This skill only covers "is the goal right, and will it run away" — it does not re-explain mechanism.**
+- *How to wire the loop architecture* (pipelines → DAGs, long-run recovery) → that's the mechanism layer; see `continuous-agent-loop`. **This skill only covers "is the goal right, and will it run away" — it does not re-explain mechanism.**
 
 ## Red-line premise: two levels of feedback
 
@@ -140,4 +140,4 @@ The naive loop and the reviewed loop differ by four lines of constraint — and 
 ---
 
 > Lineage: Wiener's two-level feedback (*The Human Use of Human Beings*, 1950) for the judgment/execution split and red lines; the plan/build/judge pattern from Anatoli's *Loops explained* and Addy's *Loop Engineering*.
-> Mechanism layer (how to wire the loop architecture): see `autonomous-loops` / `continuous-agent-loop`. This skill does not re-implement mechanism; it covers goal definition and runaway prevention only.
+> Mechanism layer (how to wire the loop architecture): see `continuous-agent-loop`. This skill does not re-implement mechanism; it covers goal definition and runaway prevention only.

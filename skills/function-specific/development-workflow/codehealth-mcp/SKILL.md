@@ -7,7 +7,7 @@ metadata:
 
 # Code Health MCP (CodeScene)
 
-Structural maintainability feedback for AI-assisted coding. Complements style/lint skills (`coding-standards`, `plankton-code-quality`) with **design-level** health scores and regression gates.
+Structural maintainability feedback for AI-assisted coding. Complements the style skill (`coding-standards`) with **design-level** health scores and regression gates.
 
 **Upstream:** [codescene-oss/codescene-mcp-server](https://github.com/codescene-oss/codescene-mcp-server)
 **Package:** `@codescene/codehealth-mcp` (stdio via npx)
@@ -150,7 +150,7 @@ Drive-by cleanup across the module
 | ECC skill / flow | Code Health MCP role |
 |------------------|----------------------|
 | `coding-standards` | Style/naming; Code Health = structure/complexity |
-| `plankton-code-quality` | Write-time lint/format; Code Health = pre/post edit structural gate |
+| `verification-loop` | Build/test/lint gate; Code Health = pre/post edit structural gate |
 | `verification-loop` / `/quality-gate` | Add structural regression check before "done" |
 | `security-review` | Security vs maintainability — use both when relevant |
 | `tdd-workflow` | Tests pass ≠ healthy design — check score after refactors |
@@ -160,7 +160,7 @@ Drive-by cleanup across the module
 ## Related Skills
 
 - `coding-standards` — baseline conventions
-- `plankton-code-quality` — write-time lint/format hooks
+- `verification-loop` — build/test/lint gate
 - `verification-loop` — build/test/lint gate
 - `tdd-workflow` — test-first development
 - `security-review` — security checklist

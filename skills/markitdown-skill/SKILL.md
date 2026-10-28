@@ -6,17 +6,6 @@ description_en: "Convert documents to Markdown (PDF, Word, PPT, images, audio, U
 version: 1.0.1
 homepage: https://github.com/microsoft/markitdown
 allowed-tools: Read,Write,Bash,Glob
-metadata:
-  clawdbot:
-    emoji: "\U0001F4C4"
-    requires:
-      bins:
-        - python3
-        - pip
-        - markitdown
-    install:
-      - package-manager: pip
-        command: "pip install 'markitdown[all]'"
 display_name: "markitdown-skill"
 display_name_en: "markitdown-skill"
 visibility: "public"
@@ -90,7 +79,7 @@ markitdown document.pdf -o document.md
 ### Batch Convert
 ```bash
 # Using included script
-python ~/.openclaw/skills/markitdown/scripts/batch_convert.py docs/*.pdf -o markdown/ -v
+python skills/markitdown-skill/scripts/batch_convert.py docs/*.pdf -o markdown/ -v
 
 # Or shell loop
 for file in docs/*.pdf; do

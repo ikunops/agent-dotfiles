@@ -1,7 +1,6 @@
 ---
 name: k8s-pitfalls
 description: Avoid common Kubernetes mistakes — resource limits, probe configuration, selector mismatches, and RBAC pitfalls.
-metadata: {"clawdbot":{"emoji":"☸️","requires":{"bins":["kubectl"]},"os":["linux","darwin","win32"]}}
 ---
 
 ## Resource Management
