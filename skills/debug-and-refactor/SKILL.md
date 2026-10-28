@@ -568,3 +568,18 @@ git config maintenance.auto false && git config gc.auto 0 && git config maintena
 - 用户报症状类 bug → Part D 快筛后按 Part A 快速判断；复杂/多次失败 → Part C 交付 `systematic-debugging` 闭环。
 - 改动 / 新增代码 → 按 Part B 主动识别重复并复用。
 - 收尾前跑一遍"快速检查清单"。
+## Part G —— 黑盒客户端 / 私有协议排障
+
+触发：普通请求打不通，但官方客户端正常；出现 `405 unusual activity`、`request illegal`、`request has been blocked`、`403`、`3012`、设备指纹、签名参数、会话 ID 等。
+
+排查顺序：
+
+1. **先判断是不是标准 API**：官方客户端正常而普通请求稳定失败，优先怀疑“客户端协议”而不是“接口参数”。
+2. **建立能 vs 不能的最小对照**：同一账号、同一操作、同一时间，官方客户端成功、当前请求失败。
+3. **先查多发了什么**：agent / 浏览器 / SDK 自动带上的 header、query、body 字段，可能正是上游拒绝的原因。
+4. **再查少发了什么**：设备 ID、会话 ID、metadata、system block、日期上下文、nonce、签名。
+5. **查身份是否稳定**：每轮随机 UUID、会话 ID 与 metadata 不一致、设备 ID 丢失，都可能导致风控或缓存失效。
+6. **错误码分类后再决定动作**：不要把 401、403、405、429、5xx 一律重试。认证失败换登录，风控停止，额度耗尽换号，临时故障才有限重试。
+7. **连续两次同类假设失败就换证据源**：停止继续加 header / 换 endpoint，转去抓官方客户端真实请求、读本地配置、看日志、做差异对照。
+
+完整方法转 `black-box-protocol-compatibility`。

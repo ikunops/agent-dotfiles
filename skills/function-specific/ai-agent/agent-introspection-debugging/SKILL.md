@@ -154,3 +154,17 @@ Always provide:
 - the root-cause hypothesis
 - the recovery action
 - the evidence that the situation is now better or still blocked
+## Evidence-Source Circuit Breaker
+
+When two consecutive attempts based on the same hypothesis fail, stop varying parameters inside that hypothesis. The next action must be a new evidence source, not another retry.
+
+Examples of switching evidence sources:
+
+- stop changing headers and capture the official client's real request
+- stop trying endpoints and inspect the client bundle / local config / logs
+- stop asking the same API and compare a known-good client-side operation
+- stop reading generated docs and read the installed artifact
+
+This matters because local optimization inside a wrong hypothesis feels like progress while burning tokens. A second failure is evidence that the model of the problem is wrong, not that the third parameter is missing.
+
+For black-box client protocol work, hand off to `black-box-protocol-compatibility`.

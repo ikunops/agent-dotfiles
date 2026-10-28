@@ -15,6 +15,7 @@
 | `archify` | 架构/时序/数据流图 → 交互 HTML（带验收） | 测绘收尾的摘要图、文档配图、美化 Mermaid |
 | `project-memory-sculptor` | 项目记忆塑形 | 沉淀项目长期记忆；bootstrap 初始化接手无记忆项目 |
 | `web-app-capability-mining` | Web 产品能力面挖掘（读 i18n 语言包 + 前端 chunk 名当权威词汇表） | 摸清某工具到底有哪些功能、竞品能力对比、避免只读文档导致大面积遗漏 |
+| `black-box-protocol-compatibility` | 黑盒客户端协议兼容工程（官方客户端请求矩阵 / 身份模型 / 错误码 / 契约测试） | 反代、私有 API、请求被拦截、设备指纹、会话 ID、签名参数、任意客户端协议复刻 |
 
 ## ② 任务路由与交付
 

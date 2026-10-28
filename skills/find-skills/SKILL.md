@@ -70,6 +70,7 @@ AGENTS.md 缺失/为空但工作区有代码 → **不直接开工**，先建最
 | 触发关键词（中 / 英） | skill | 适用边界（一句话） |
 |---|---|---|
 | 修 bug / 没反应 / 删不掉 / 不生效 / 改了没生效 / 数据重复 / 作用错对象 / 样式改动（尺寸·间距·行高·颜色·图标）/ 重构 · debug / fix / not working / refactor | `debug-and-refactor` | 先核查前提再归因代码；**样式改动必做同类项完整性核查**——横向枚举同布局全部同类项一起改，收尾交清单 |
+| 黑盒客户端协议 / 反代 / 私有 API / 官方客户端正常但普通请求被拦截 / 405 unusual activity / request illegal / 设备指纹 / 会话 ID / 签名参数 / Start Plan · black-box protocol / reverse proxy / client compatibility | `black-box-protocol-compatibility` | 先抓官方客户端真实请求，建立协议矩阵、身份模型、错误码表和契约测试；连续两次同类猜测失败必须换证据源 |
 | 严格系统化排查 / 先定位再修 / 不能猜着改 / 复现不稳定 bug / 修了又坏 · root cause / systematic debugging / isolate / bisect | `systematic-debugging`（下沉：function-specific/misc/superpowers/） | 四阶段硬纪律：先稳定复现 → 分层隔离（CI/build/signing、API/service/DB）→ 证据定位 → 最小修复；**不得先猜原因**。常规小 bug 走 `debug-and-refactor`，这个用于复杂/反复/多组件场景 |
 | TDD / 测试驱动 / 先写测试 / 红绿重构 · TDD / red-green-refactor / write test first | `test-driven-development`（下沉：function-specific/misc/superpowers/） | RED-GREEN-REFACTOR 硬纪律：先写**失败**测试 → 最小实现通过 → 再重构；对“就这次跳过 TDD”有专门阻拦清单 |
 | 写代码 / 加功能 / 新需求 / 嫌臃肿 / 太绕 / 过度设计 / boilerplate · write code / add feature / over-engineering / bloat / be lazy / simplest | `ponytail` | 常驻人格，lite/full/ultra 三档（小改/默认/大砍）；功能存在性归用户拍板，实现经济学归它走七级阶梯 |
