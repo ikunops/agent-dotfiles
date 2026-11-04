@@ -28,7 +28,7 @@
 
 ## ③ 前端工艺
 
-`frontend-review-squad` · `frontend-design` · `shadcn` · `wireframe` · `interactive-prototype` · `create-design-system` · `icon-finder` · `no-emoji-ui` · `make-a-deck` · `huashu-design` · `make-tweakable` · `code-motion-film` · `web-perf` · `vercel-react-best-practices`  · `ui-acceptance` · `frontend-ui-consistency` · `admin-console-design` · `photon-flow-viz`
+`frontend-review-squad` · `frontend-design` · `shadcn` · `wireframe` · `interactive-prototype` · `create-design-system` · `icon-finder` · `no-emoji-ui` · `make-a-deck` · `huashu-design` · `make-tweakable` · `code-motion-film` · `web-perf` · `vercel-react-best-practices`  · `ui-acceptance` · `frontend-ui-consistency` · `admin-console-design` · `photon-flow-viz` · `live-ticker-motion`
 
 ## ④ 工程哲学（常驻人格）
 
