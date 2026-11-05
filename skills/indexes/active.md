@@ -28,7 +28,7 @@
 
 ## ③ 前端工艺
 
-`frontend-review-squad` · `frontend-design` · `shadcn` · `wireframe` · `interactive-prototype` · `create-design-system` · `icon-finder` · `no-emoji-ui` · `make-a-deck` · `huashu-design` · `make-tweakable` · `code-motion-film` · `web-perf` · `vercel-react-best-practices`  · `ui-acceptance` · `frontend-ui-consistency` · `admin-console-design` · `photon-flow-viz` · `live-ticker-motion`
+`frontend-review-squad` · `frontend-design` · `shadcn` · `wireframe` · `interactive-prototype` · `create-design-system` · `icon-finder` · `no-emoji-ui` · `make-a-deck` · `huashu-design` · `make-tweakable` · `code-motion-film` · `web-perf` · `vercel-react-best-practices`  · `ui-acceptance` · `frontend-ui-consistency` · `admin-console-design` · `photon-flow-viz` · `live-ticker-motion` · `unslop`
 
 ## ④ 工程哲学（常驻人格）
 
@@ -68,4 +68,5 @@
 | skill | 一句话 | 什么时候用 |
 |---|---|---|
 | `pan-share-screenshots` | 网盘分享页分层截图流水线（目录树采集→严格匹配→点击链截图→平铺滚动→挂库） | 补真实网盘截图、鉴别空壳目录、要合规脱敏 |
+| `quark-drive-ops` | 夸克网盘全操作（转存/批量改名与撤销/上传下载/建分享/搜索/移动，含 KM1 双账号与环境坑） | 把分享存到自己网盘、去掉文件名推广标记、把课分享出去、网盘里找文件 |
 | `mysql-to-sqlite-migration` | MySQL(+Redis)→SQLite 完整迁移方法论 | 单机/低并发、单文件独立版、迁移与验证 |
