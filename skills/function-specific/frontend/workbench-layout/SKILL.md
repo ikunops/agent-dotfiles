@@ -1,24 +1,25 @@
 ---
 name: workbench-layout
 description: "Layout & interaction rules for workbench/opscopt-lite style UIs — sidebar/main, sticky tables, context menus, split views, terminal/embedded editors. Covers z-index budgets, scroll isolation, and overflow-safe positioning that generic design skills skip."
-tags: [frontend, workbench, layout, z-index, table, sidebar, context-menu, split-view, terminal]
-triggers:
-  primary:
-    - workbench layout
-    - sidebar layout
-    - sticky table
-    - context menu overflow
-  secondary:
-    - split view
-    - terminal ui
-    - monaco editor
-    - frozen column
-  context:
-    - dashboard
-    - cluster management tools
-  anti:
-    - "random z-index"
-    - "overflow visible on root"
+metadata:
+  tags: [frontend, workbench, layout, z-index, table, sidebar, context-menu, split-view, terminal]
+  triggers:
+    primary:
+      - workbench layout
+      - sidebar layout
+      - sticky table
+      - context menu overflow
+    secondary:
+      - split view
+      - terminal ui
+      - monaco editor
+      - frozen column
+    context:
+      - dashboard
+      - cluster management tools
+    anti:
+      - "random z-index"
+      - "overflow visible on root"
 ---
 
 # Workbench Layout
@@ -88,6 +89,27 @@ const { refs, context } = useFloating({
 - monaco/xterm: `flex:1 1 auto; min-height:0` (critical: prevents flex overflow).
 - theme inheritance: parent bg color → `--vscode-editor-background`.
 - keyboard shortcuts: stopPropagation on arrows / ctrl/cmd combos to prevent scroll hijacking.
+
+## 6. Z-Axis Budget and Local Coordinate Systems
+
+Workbench layouts are layered surfaces, not a single flat page. Each container has its own local axes: X for width and columns, Y for height and row rhythm, Z for stacking, and S for the state profile of a layer.
+
+**Z layer budget (closed set, one owner per layer):**
+
+| Layer | Typical content | Rule |
+|---|---|---|
+| 0 | page content, cards, tables | no z-index needed; document flow owns it |
+| 10 | sticky headers, sticky toolbars, fixed side rails | must not overlap main content outside its own scroll container |
+| 100 | dropdowns, popovers, context menus | portal to the app root; never inside an overflow-hidden ancestor |
+| 200 | modals, drawers, command palettes | must trap focus and restore it on close |
+| 300 | toasts, global alerts | never block the only escape path |
+
+Rules:
+
+- A floating surface inherits the **nearest positioned ancestor's** coordinate system unless portaled; do not assume viewport coordinates from inside a scrolled panel.
+- Every z value must come from the named budget above. `9999` or ad-hoc values are a defect, not a fix.
+- When a surface is opened, its owning layer must be recorded in the component's state matrix (S axis): default / hover / focus / selected / disabled / expanded.
+- A sticky element and a modal cannot share a layer; if they visually collide, fix the layer assignment rather than adding more z-index.
 
 ## Quick Check
 - [ ] sidebar z == 10; every higher z (tooltip, menu) ≥ 150?

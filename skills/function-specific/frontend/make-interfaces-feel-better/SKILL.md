@@ -35,9 +35,28 @@ math. The point is optical coherence, not formula worship.
 
 ### Optical Alignment
 
-Geometric centering is not always visual centering. Icon buttons, play
-triangles, arrows, stars, and asymmetric icons often need a small offset. Fix the
-SVG when possible; otherwise adjust with a pixel-level margin or padding change.
+Geometric centering is not visual centering. Measured starting points, not guesses:
+
+| Shape | Perceived size | Correction |
+|---|---|---|
+| Circle vs. square of equal bounding box | Circle reads ~5-8% smaller | Overshoot the circle by 2-4% of its size |
+| Triangle / play glyph | Reads small and low | Nudge up 1-2px, widen 2-4% |
+| Star, arrow, asymmetric icon | Visual mass sits off-centre | Offset 1-2px toward the lighter side |
+| Text set beside an icon | Icon appears low | Align the icon to cap height, not to the box |
+
+Fix the SVG path when possible; only fall back to a pixel-level margin when the
+source cannot change. Round shapes in a row of icons need overshoot or they look
+shrunk next to their square neighbours - this is the single most visible symptom.
+
+### Proportions: What Actually Holds
+
+Golden ratio and Fibonacci get cited far more than they get used. Their boundary:
+
+- **Golden ratio (1.618)** is a tie-breaker, not a generator. Use it when a two-column split needs a starting point; do not use it to build a type scale. 14px -> 22.6px -> 36.6px leaves no room for intermediate sizes, which is why real scales use 1.125 / 1.2 / 1.25 / 1.333 / 1.5.
+- **Fibonacci spacing** looks elegant but fails in practice: 1/2/3 are visually identical, 34 -> 55 skips a usable step, and 13 is not divisible by 4 so it breaks grid alignment. An 8-point grid (4/8/16/24/32/48/64) wins because every step stays on-pixel and adjacent values are far enough apart to read as different.
+- **Do not retro-fit the math.** Overlaying a golden spiral on a screenshot proves nothing; a coincidence is not a rationale.
+
+What does hold, and is cheap to apply: an 8-point spacing grid, a geometric type scale chosen by information density, concentric radius, optical overshoot, and spacing (not rules) as the grouping signal.
 
 ### Shadows And Borders
 
@@ -86,6 +105,43 @@ img {
 
 Use neutral black or white alpha outlines. Do not tint image outlines with the
 brand palette.
+
+### Easing Curves
+
+Duration and curve are one decision, not two. The same 200ms feels crisp with
+`ease-out` and mechanical with `linear`.
+
+| Intent | Curve | Duration |
+|---|---|---|
+| Enter (appear) | `cubic-bezier(0, 0, 0.2, 1)` | 200-300ms |
+| Exit (disappear) | `cubic-bezier(0.4, 0, 1, 1)` | 120-180ms |
+| State change | `cubic-bezier(0.4, 0, 0.2, 1)` | 150-200ms |
+| Emphasis / overshoot | `cubic-bezier(0.34, 1.56, 0.64, 1)` | 250-400ms |
+| Large surface move | `cubic-bezier(0.2, 0, 0, 1)` | 300-500ms |
+
+Rules that matter more than the exact numbers:
+
+- **Exit is faster than enter.** Leaving should feel like it got out of the way.
+- **Distance changes duration, not curve.** A 4px fade and a full-screen sheet can share a curve; the sheet just takes longer.
+- **Never animate `all`.** See Transition Scope below.
+- **Respect `prefers-reduced-motion`.** Collapse to a near-instant opacity change, do not simply shorten the same transform.
+
+### Corners: Arc, Bezier, Superellipse
+
+`border-radius` is **not** a bezier curve - it is one or two arcs. That is why a
+CSS radius and a designed radius do not look the same: the arc meets the straight
+edge with a curvature jump, which reads as a visible corner.
+
+| Shape | Math | Result |
+|---|---|---|
+| CSS `border-radius` | Circular / elliptical arc | Visible transition where arc meets edge |
+| Bezier corner smoothing | Cubic bezier approximating constant curvature | Softer, but still an approximation |
+| Superellipse (squircle) | \|x/a\|^n + \|y/b\|^n = 1, n ~ 4-5 | Most even, no dip at the join |
+
+Superellipse is a different family from bezier, not a tweak of it. In CSS the
+closest cheap approximation is a large radius plus generous padding; where the
+shape is critical (app icon, large hero card) it is worth drawing the path instead
+of approximating with `border-radius`.
 
 ### Motion
 
@@ -140,6 +196,10 @@ Omit principles that you checked but did not change.
 ## Checklist
 
 - Nested rounded elements are optically coherent.
+- Icons are visually centered; round icons in an icon row have overshoot.
+- Easing curves are chosen per intent, not one `ease` everywhere.
+- Exit motion is shorter than enter motion.
+- Corner treatment matches the surface size (arc for small, squircle for hero shapes).
 - Icons are visually centered.
 - Buttons, cards, and popovers use borders or shadows for the right reason.
 - Headings and short text avoid awkward wrapping.

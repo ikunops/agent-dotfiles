@@ -13,8 +13,9 @@ description: >
   over-engineering, bloat, boilerplate, or unnecessary dependencies. Do NOT
   use for non-coding requests (general knowledge, prose, translation,
   summaries, recipes).
-argument-hint: "[lite|full|ultra]"
 license: MIT
+metadata:
+  argument-hint: "[lite|full|ultra]"
 ---
 
 # Ponytail
@@ -89,6 +90,26 @@ Example: "Add a cache for these API responses."
 - full: "`@lru_cache(maxsize=1000)` on the fetch function. Skipped custom cache class, add when lru_cache measurably falls short."
 - ultra: "No cache until a profiler says so. When it does: `@lru_cache`. A hand-rolled TTL cache class is a bug farm with a hit rate."
 
+## What laziness must not delete
+
+The ladder shortens the implementation. It must not remove the parts that make the result checkable or reclaimable. These look like ceremony while writing, and are missed exactly once - afterwards, when someone cannot verify or cannot stop it.
+
+- **One observable state per interaction.** The smallest implementation still needs something a checker can read to prove it worked: a state class, a `data-*` attribute, a rendered node, a request actually issued. "It rendered and nothing threw" is not evidence. One attribute is a cheaper way to make behaviour provable than a debugging pass is to reconstruct it.
+- **One stable hook per drivable element.** `data-testid` / `data-role` on anything that must be clicked or measured. Relying on styling classes or DOM position is what makes a later test silently wrong rather than loudly failing.
+- **A stop path for every long-lived resource.** Every timer, listener, subscription, socket, or observer gets the place that cancels it. Dropping teardown is not minimalism, it is borrowing against a future debugging session: a process that never exits, a port still held after "restart", duplicated work after remount. One paired cleanup line is the lazy version.
+
+Conversely, do not invent verification scaffolding nobody asked for: no test framework, no fixtures, no per-function suites. The check stays the single smallest thing that fails if the logic breaks.
+
+The rule of thumb: **shrink the code, never the hooks that let someone else prove the code works.**
+
+### Pin down the cheap decisions now
+
+Laziness is about not writing code, not about deferring decisions. A decision that is nearly free to make now and repeatedly annoying if discovered mid-flight should be settled before building, not explored at random.
+
+Typical shape: naming, module boundaries, the shape of a shared value, whether a piece of state is local or shared, whether a config key exists. None of these take long to decide. All of them become expensive after three features have grown around a different guess, and expensive decisions discovered late are exactly what turns a build into repeated trial-and-error.
+
+The test is not "is this important" but **"is the cost of deciding now lower than the cost of discovering later"**. If yes, decide now - even though it is not code, and even though it feels like ceremony.
+
 ## When NOT to be lazy
 
 Never simplify away: input validation at trust boundaries, error handling
@@ -112,6 +133,24 @@ smallest thing that fails if the logic breaks: an `assert`-based
 `demo()`/`__main__` self-check or one small `test_*.py`. No frameworks, no
 fixtures, no per-function suites unless asked. Trivial one-liners need no
 test, YAGNI applies to tests too.
+
+## Fixed values: laziness has a boundary
+
+"No config for a value that never changes" is right, but it is easy to apply to the wrong value. Before writing a literal, classify it. Laziness means choosing the smallest correct handling, not skipping the classification.
+
+| Class | Test | Lazy-but-correct handling |
+|---|---|---|
+| Protocol constant / product constraint | Same on every machine; defined by an external contract | One named constant. No config, no abstraction. |
+| Environment / instance value | Host, port, path, account, tenant, model name | Externalize with a documented default. Hardcoding this is not lazy, it is a latent incident. |
+| Machine capability | Screen size, CPU count, memory, DPI | Probe at runtime, clamp, keep a fallback. A config key is the wrong shape - users will not configure their own screen. |
+| One-off static content | A single fixed string that never varies | Literal. Abstraction here is the over-engineering the ladder exists to prevent. |
+
+The lazy answer is not always "hardcode it". For an environment value, the shortest *correct* path is one config read with a default - not zero config and a broken deploy.
+
+Two further rules:
+
+- **Distance to the deployment boundary sets priority.** A literal in a test is free; the same literal as a default host or port is an incident. Spend the effort where the code leaves your machine.
+- **Probe beats configure for machine capabilities.** Adding a setting pushes a machine fact onto the user. `probe -> clamp -> fallback` is both shorter to use and correct across machines.
 
 ## Boundaries
 

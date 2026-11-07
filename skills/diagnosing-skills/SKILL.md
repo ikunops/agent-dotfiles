@@ -50,6 +50,18 @@ A skill is a directory containing a `SKILL.md`. Frontmatter is a `---`-delimited
 11. **Path-versus-name confusion** — a skill is invoked by `name` or `plugin:skill`, not by file path and not with a leading `/`. → Reference the exact name.
 12. **The whole skill subsystem is off** — no skills appear and the skill tool reports it is not configured. The skill feature or `skills.enabled` is false. → Set both to `true` (both default to true).
 
+## 4a. Same physical directory exposed through multiple roots
+
+Two displayed skill paths can be the same physical directory through a junction, symlink, or bind mount. Do not conclude that there are two independent skill libraries from the path strings alone.
+
+Check the resolved target before changing either path:
+
+- Windows: use `Get-Item -LiteralPath <path> | Select-Object FullName, LinkType, Target` and resolve a child item to its canonical path.
+- Compare canonical resolved paths, not only the visible root names.
+- If both roots resolve to the same directory and the client scans both, the index can list the same skills twice even though only one copy exists on disk.
+
+Repair principle: keep one discoverable entry for each physical skill directory per client. Remove only the redundant junction or symlink, never the target directory. Back up the link definition or record the exact recreation command before removal. Verify after a fresh session that each skill appears once and that the remaining path resolves to the intended target.
+
 ## 5. Localization workflow (in order; stop when the cause is found)
 
 1. **Is the subsystem on?** In `~/.zcode/cli/config.json` (and the workspace file) confirm the skill feature and `skills.enabled`; either being false disables discovery — pitfall 12.
@@ -59,3 +71,4 @@ A skill is a directory containing a `SKILL.md`. Frontmatter is a `---`-delimited
 5. **Is it disabled?** Look in both configuration files for the skill's absolute path with `enable: false`.
 6. **A plugin skill?** If the name is `plugin:skill`, confirm the plugin is enabled and not suppressed.
 7. **Discovered but will not trigger?** Inspect the `description`/`when_to_use`; empty or overly long/truncated → pitfall 3.
+8. **Same skills appear twice?** Resolve the real target of each root (pitfall 4a). If two roots point to one physical directory, keep one client-visible entry and re-check in a fresh session.

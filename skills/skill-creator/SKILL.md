@@ -144,6 +144,43 @@ Then loop:
 
 ---
 
+## Documentation-code contract
+
+Any concrete claim in a skill must be traceable to a file, command, configuration, or runtime behavior. This matters most for scripts, data sources, dimensions, file names, counts, and setup steps: those facts drift silently when only the prose is updated.
+
+Before calling a skill done:
+
+1. List every factual claim that could become stale (number of scripts, entry point, data source, canvas size, command name, supported runtime, output path).
+2. Verify each claim against the repository or a real command. Prefer generating the statement from the same source of truth instead of maintaining a second hand-written copy.
+3. If a README describes a workflow, make sure every script and entry point named there exists and every existing entry point is either described or intentionally internal.
+4. Re-run the documented command once when practical; a command that has never been executed is a hypothesis, not documentation.
+5. When behavior changes, update the code, the documentation, and the examples in the same change.
+
+Do not use a skill to claim capabilities it does not have. If a section is only a planned feature, label it as planned rather than presenting it as working behavior.
+
+## Executable gates and failure branches
+
+High-risk workflows need explicit checkpoints, stop conditions, or a blacklist so that a plausible-looking intermediate result cannot be mistaken for a finished deliverable. Use gates when continuing would create irreversible work, consume significant compute or money, change external state, or make later stages depend on an unverified decision. Ordinary low-risk skills should stay lean; do not add ceremonial gates to every paragraph.
+
+A useful gate states:
+
+```text
+condition that must be true
+→ evidence required
+→ what happens if it is false
+→ whether the user must confirm
+```
+
+## Retiring or merging a skill
+
+When a skill is obsolete, duplicated, or superseded:
+
+1. Extract the still-useful rules, references, scripts, and assets into the surviving skill first.
+2. Check that the surviving skill does not merely copy a project-specific story; retain the underlying principle and its boundary.
+3. Search for links, trigger names, index entries, and cross-references that point to the old skill.
+4. Remove the compatibility shell only after the content is reachable from its new owner.
+5. Validate the index and run the repository audit after removal. A backup is optional; a working, searchable replacement is mandatory.
+
 ## Updating an existing skill
 
 If the user wants to update an existing installed skill rather than create one:

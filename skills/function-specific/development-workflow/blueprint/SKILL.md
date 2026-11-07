@@ -39,6 +39,104 @@ Blueprint runs a 5-phase pipeline:
 
 Blueprint detects git/gh availability automatically. With git + GitHub CLI, it generates full branch/PR/CI workflow plans. Without them, it switches to direct mode (edit-in-place, no branches).
 
+## Runtime Contract (settle it in Design, not in CI)
+
+A plan that only works on the author's machine is not a plan. Any blueprint that touches a runtime, a build, or a deployment must settle the **runtime contract** before the first implementation step. This is a design input, not a delivery checklist.
+
+### Three judgements
+
+**1. Reproducible build vs. accidentally working build.**
+
+"Works locally" proves nothing. The only evidence of portability is a build from a clean clone in a clean environment. Every plan must be able to say which of these is true: the build is reproducible from a clean clone, or the build depends on untracked local files and that dependency is written down as a known gap.
+
+The failure mode to design against is a file that exists in the working tree but was never committed - a `go:embed` target swallowed by `.gitignore`, a template, a migration, a generated asset. Locally everything compiles; any fresh checkout fails. If a step introduces a resource the build consumes, that step must also state how the resource is tracked.
+
+**2. Hardcoding is three different things, not one.**
+
+Do not write a blanket rule like "never hardcode". Classify each fixed value and handle it by class:
+
+| Class | Test | Handling |
+|---|---|---|
+| Protocol constant / product constraint | Defined by an external protocol or product decision; identical on every machine | Keep it, but collapse it into one named constant with the source cited |
+| Environment / instance value | Host, port, path, account, tenant, model name - varies by deployment | Externalize to config or environment, with a documented default |
+| Machine capability | Screen size, CPU count, memory, DPI | Probe at runtime, clamp to a safe range, keep a fallback |
+| One-off static content | A single fixed string that never varies | Leave it literal; abstraction here is over-engineering |
+
+The most-missed class is **machine capability**. It looks like a configuration problem but is not: users will not configure their own screen resolution. The correct shape is `probe -> clamp -> fallback`, not "add another config key".
+
+**3. Distance from the deployment boundary decides severity.**
+
+The same hardcoded value is harmless in a test and an incident in a default config. When judging a fixed value, ask how close it sits to the boundary where the code leaves the author's machine. The closer to that boundary, the higher the priority - and the earlier in the plan it must be addressed.
+
+### What every affected step must state
+
+For any step that introduces a runtime dependency, a build artifact, or a deployable configuration, the step's context brief must include:
+
+- **Runtime**: language/toolchain version and where it is declared (`go.mod`, `engines`, `python_requires`, `.nvmrc`, `.tool-versions`)
+- **Target**: OS, architecture, and ABI assumptions (glibc vs musl, amd64 vs arm64)
+- **Inputs**: every file the build reads, and confirmation that it is tracked
+- **Configuration**: which values are externalized, which are constants, which are probed
+- **Failure mode**: what happens when a prerequisite is missing - an explicit error, never a silent fallback to a plausible default
+
+A step that cannot fill these in is not ready to be planned.
+
+### Anti-patterns
+
+- Planning a feature without naming the runtime version it targets.
+- Adding a build input without checking whether it is tracked.
+- Treating a machine capability as a user-configurable setting.
+- Discovering the portability contract for the first time in CI.
+- Writing "works on my machine" into the exit criteria.
+
+## Verification Contract (what the checker can see is decided here)
+
+An acceptance skill can only assert against what the implementation exposed. Techniques like "open every modal and check overlap" or "assert an observable state change" are not a substitute for building the hook - they work around its absence. Settle the verification contract in Design, alongside the runtime contract.
+
+### The gate: three dimensions, not one
+
+"Can this be detected afterwards?" is only one of the questions, and on its own it gives the wrong answer. Detectability is a *capability*, not a guarantee that anyone will run the check. Two independent dimensions decide where the work belongs:
+
+| Dimension | Question | What it decides |
+|---|---|---|
+| **Verifiability** | If nobody handles this while coding, can it still be discovered reliably later? | Whether a hook must be built now, or a check can be added afterwards |
+| **Rework cost** | If this turns out wrong mid-flight, how much has to be undone? | Whether it is worth pinning down up front |
+| **Determinacy** | Is there one correct answer, or does it need exploration? | Whether to fix it now or leave it open |
+
+Combined:
+
+- **Uncertain + high rework** -> settle the contract before building. Guessing here means redoing whole steps.
+- **Certain + high rework** -> decide it up front; it is cheap to state and expensive to retrofit.
+- **Uncertain + low rework** -> decide while building; exploring is the cheapest way to find out.
+- **Certain + low rework** -> do not pre-design it, **but it must still enter the verification list**. Skipping the design work is fine; skipping the check is not.
+
+The critical correction: **"detectable later" means "can move to the acceptance list", never "can be dropped".** What gets saved is the up-front design effort, not the inspection.
+
+Two consequences that follow:
+
+- Anything moved to acceptance must be **written into the verification list with its check method**. An unlisted check is a check that will be skipped.
+- Low rework cost is not a licence to ignore a problem - it only means the ordering can be later. Small inconsistencies found mid-flight are exactly the ones that cause repeated trial-and-error; if a small decision is cheap to fix *now* and repeatedly annoying *later*, pin it down now.
+
+The tell-tale sign of an under-specified design: the checking step has to *invent* something - a selector, a way to trigger a surface, a guess at how many dialogs exist.
+
+### What every affected step must specify
+
+1. **Observable states.** For each interaction, name the state a checker can read to prove it worked: a data attribute, a class, a rendered node, a request issued, a value changed. "No console error" is not a state. An interaction with no observable consequence is a design defect, not a testing inconvenience.
+
+2. **Stable selectors.** Anything that must be driven or measured gets a purpose-built hook (`data-testid` / `data-role`), independent of styling classes and of DOM position. A selector that relies on sibling-vs-child nesting is a trap the checker falls into later.
+
+3. **Surface inventory.** Enumerate every independently observable surface the feature touches: route/page, modal, drawer, dropdown, popover, plus empty / loading / error / permission states. Each is its own implementation and verification unit. A page-level pass does not cover the inside of a dialog, and "tested the main view" does not mean the feature is done.
+
+4. **Teardown for anything long-lived.** Every timer, subscription, listener, socket, or observer created by the step names where it gets cancelled. Unspecified async lifetime is what later shows up as "the process never exits", "the port is still held", and duplicated execution after remount.
+
+5. **How to reach each surface.** A surface that needs an unusual path to appear (edge state, permission, error branch) records that path in the step. Otherwise the checker has to reverse-engineer it, and usually skips it.
+
+### Anti-patterns
+
+- Deferring "how will this be verified" to the acceptance phase, then finding there is nothing to assert against.
+- Letting the checker invent selectors, trigger paths, or surface counts.
+- Treating a modal or an error state as a detail of the main view instead of its own unit.
+- Starting a repeating timer with no owner that stops it.
+- Reporting coverage as "pages tested" when the inventory was dialogs.
 ## Examples
 
 ### Basic usage

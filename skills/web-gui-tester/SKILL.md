@@ -40,6 +40,8 @@ Choose the appropriate strategy based on the completeness of the information pro
    - **P1 Interaction feedback**: Whether feedback after an action works correctly, including loading states, success/failure messages, disabled states, and navigation.
    - **P2 Input boundaries**: Empty input, excessively long input, special characters, duplicate submissions, and similar cases.
    - **P3 Layout and styling**: Element overlap, text overflow, alignment consistency, visual quality, and similar issues.
+     - **Modals are their own test surface**: enumerate every dialog (button-triggered, post-submit, edge-state) and open each one individually — page-level passes do not cover modal interiors. Check: close button vs. first-row text overlap, avatar/badge spacing, concentric ring geometry (outer ring must be square, w === h). Overlap is only real when **rendered text ranges** (Range rects) intersect — block containers spanning full width are normal.
+     - Read-only geometry measurement (getBoundingClientRect / Range rects) complies with the black-box rule: it observes, it does not modify.
 4. **Present the plan and begin immediately**: Show the test plan to the user, then start with P0 without waiting for confirmation. The user may interrupt or adjust the plan at any time. Exception: If the page requires login credentials or testing involves writing real data, such as placing an order, making a payment, or deleting data, stop and ask the user for confirmation before continuing.
 
 ---

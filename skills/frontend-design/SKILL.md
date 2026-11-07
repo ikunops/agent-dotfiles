@@ -9,6 +9,12 @@ Loaded when designing without an existing brand system. Push for a committed, di
 
 Write all output files to `./opendesign/mockups/<task-slug>/`. Derive the slug from the page or feature name (e.g. `landing-page`, `pricing-redesign`).
 
+## Reference before invention
+
+Before choosing an original direction, inspect any reference the user supplied: screenshots, current product UI, brand assets, prior artifacts, visual systems, and real product imagery. Treat a reference as evidence of structure — rhythm, hierarchy, proportions, motion logic, information order — not as a surface to copy. State which structural parts are being followed.
+
+If no reference exists, say so explicitly. A small set of deliberately different directions is better than presenting a generic default as if it were grounded.
+
 ## Pre-build thinking
 
 Before touching HTML, answer three questions in your plan:
