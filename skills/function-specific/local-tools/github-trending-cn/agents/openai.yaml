@@ -1,0 +1,5 @@
+interface:
+  display_name: "GitHub Trending"
+  short_description: "Fetch GitHub trending repositories"
+policy:
+  allow_implicit_invocation: false

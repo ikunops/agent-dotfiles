@@ -1,0 +1,5 @@
+interface:
+  display_name: "K8s pitfalls"
+  short_description: "Avoid common Kubernetes mistakes"
+policy:
+  allow_implicit_invocation: false

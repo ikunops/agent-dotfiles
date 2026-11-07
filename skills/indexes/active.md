@@ -59,7 +59,9 @@
 
 ## ⑨ WorkBuddy skillhub 收编（2026-09-18，源 = ~/.workbuddy/skills 独有）
 
-`github`（gh CLI）· `github-trending-cn`（trending 监控）· `markitdown-skill`（文档转 MD）· `mcporter`（MCP 管理）· `nano-banana-pro`（Gemini 3 Pro 图像）· `excalidraw-diagram`（Excalidraw 图表，.venv 已剔除）· `browser-profile-diag`（浏览器登录态诊断）· `html-dashboard-regression`（单文件 dashboard 回归）· `minimax-pdf`（设计感 PDF）· `k8s-pitfalls`（K8s 避坑，原 k8s__skillhub 改名归一）
+`github`（gh CLI）· `markitdown-skill`（文档转 MD）· `nano-banana-pro`（Gemini 3 Pro 图像）· `excalidraw-diagram`（Excalidraw 图表，.venv 已剔除）· `browser-profile-diag`（浏览器登录态诊断）· `html-dashboard-regression`（单文件 dashboard 回归）· `minimax-pdf`（设计感 PDF）
+
+> **已下沉库层（2026-11-08）**：GitHub trending 监控、MCP 管理、K8s 避坑三项已下沉到库层，索引见 library.md 的 local-tools 分组。需要时按页内说明显式调用。
 
 > 未收编（skillhub 同源重复，备份保留在 WorkBuddy）：agent-browser-core · agent-team-orchestration__skillhub。存疑未动：frontend-dev · university-applications（名实不符，待用户处置）。路由见 find-skills I 组。
 

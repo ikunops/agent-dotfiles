@@ -1,13 +1,14 @@
 ---
 name: github-trending-cn
 description: "GitHub Trending Monitor. Fetch GitHub trending repos by daily/weekly/monthly period using real GitHub Search API. Runs scripts/github_trending.py (no pip deps, stdlib only). Use when user asks for 今日热门, 本周热门, 本月热门, GitHub trending, 开源动态, or popular repos. Supports language filter (python/javascript/go/rust etc.) and GITHUB_TOKEN for higher rate limits. 触发词：GitHub、trending、开源、热门项目."
-description_zh: "获取 GitHub 今日/本周/本月热门项目，支持语言过滤"
-description_en: "Fetch GitHub trending repos (daily/weekly/monthly) with language filter"
-version: 2.0.0
 allowed-tools: Bash,Read
-display_name: "github-trending-cn"
-display_name_en: "github-trending-cn"
-visibility: "public"
+metadata:
+  description_zh: "获取 GitHub 今日/本周/本月热门项目，支持语言过滤"
+  description_en: "Fetch GitHub trending repos (daily/weekly/monthly) with language filter"
+  version: 2.0.0
+  display_name: "github-trending-cn"
+  display_name_en: "github-trending-cn"
+  visibility: "public"
 ---
 
 # GitHub Trending CN

@@ -3,6 +3,12 @@ name: darwin-skill
 description: "Darwin Skill 2.0 (达尔文.skill 2.0): autonomous skill optimizer, v2.0 integrates Microsoft Research SkillLens (arXiv 2605.23899) 9-dim rubric + SkillOpt (arXiv 2605.23904) validation-gated design + human-in-the-loop checkpoints. Evaluates SKILL.md files using a 9-dimension rubric (structure + effectiveness + meta-skill blacklists), runs hill-climbing with git version control, spawns independent judge agents for blind evaluation, validates improvements through test prompts with auto-break on diminishing returns, and generates visual result cards. Use when user mentions \"优化skill\", \"skill评分\", \"自动优化\", \"auto optimize\", \"skill质量检查\", \"达尔文\", \"darwin\", \"帮我改改skill\", \"skill怎么样\", \"提升skill质量\", \"skill review\", \"skill打分\"."
 ---
 
+> **职责边界（单一归属）**
+>
+> 本 skill 是**skill 质量评估与迭代优化的主归属**：9 维评分、独立评委、validation-gated 棘轮、人在回路、成果卡片。
+>
+> 造新 skill 的通用规范以 `skill-creator` 为准；OpenCode 专属 eval 工具以 `opencode-skill-creator` 为准。本 skill 只回答「这个已有的 skill 好到什么程度、怎么改得更好」。
+
 # Darwin Skill 2.0
 
 > **v2.1 · 2026-06-10** — keep/revert 棘轮从「绝对分数 delta」改为「**paired 同-judge 比较 + 奇数 N 多数决**」（绝对分数 ±8 judge 噪音淹没保守编辑的真实增益、是 false-revert 源；within-judge 比较消除换尺污染）。绝对分数降级为 triage-only。

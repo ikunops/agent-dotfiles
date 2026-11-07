@@ -3,6 +3,15 @@ name: skill-creator
 description: Create new skills, edit existing skills, and iterate wording. Use when writing SKILL.md from scratch, improving existing skills, turning repeated workflows into reusable skills, or refining skill descriptions to improve trigger reliability.
 ---
 
+> **职责边界（单一归属）**
+>
+> 本 skill 是**造 skill 的通用主归属**：目录规范、frontmatter、渐进披露、写作风格、测试 prompt、废弃与合并、文档—代码契约。
+>
+> - 需要 OpenCode 生态专属工具（`skill_validate` / `skill_eval` / blind comparison / eval viewer）→ 用 `opencode-skill-creator`
+> - 需要系统化评分、棘轮优化、独立评委、成果卡片 → 用 `darwin-skill`
+>
+> 三者不重复造轮子：通用规范在这里，生态工具在 opencode 版，评分与迭代在 darwin。
+
 # Skill Creator
 
 A skill for authoring and iteratively improving local ZCode skills.

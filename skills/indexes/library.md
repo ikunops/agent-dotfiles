@@ -6,7 +6,7 @@
 > 本页按真实目录分组；分组里的数量必须与磁盘保持一致。新增库层件时同时更新
 > 分组数量与根索引摘要。`scripts/audit-skills.py --strict` 会核对双向登记。
 
-## 库层分类清单（207 个，gate 后不进常驻索引，按需取用）
+## 库层分类清单（210 个，gate 后不进常驻索引，按需取用）
 
 > 2026-09-30：以下技能已通过 agents/openai.yaml 的 policy.allow_implicit_invocation: false
 > 退出常驻索引（实测省 77% 索引 token）。用法：用 $技能名 显式调用，
@@ -33,6 +33,14 @@
 **framework-specific/vue**（1）
 
 - `vue-patterns` — Vue.js 3 Composition API patterns, component architecture, reactivi...
+
+**function-specific/local-tools**（3）
+
+- `github-trending-cn` — 调 GitHub Search API 取当日/本周/本月热门仓，支持语言过滤；通用型，模型自身可替代大部分用法
+- `mcporter` — MCP 服务器与工具的列举、配置、认证与直接调用；43 行通用说明
+- `k8s-pitfalls` — K8s requests/limits、探针、selector、RBAC 常见坑速查；无项目特异性增量
+
+> 三个均已写 `agents/openai.yaml` 的 `policy.allow_implicit_invocation: false`，不进常驻索引。需要时 `$技能名` 显式调用，或按本页定位后直接读 SKILL.md。
 
 **function-specific/ai-agent**（16）
 

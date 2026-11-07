@@ -1,19 +1,20 @@
 ---
 name: browser-profile-diag
 description: Read-only diagnosis of browser login state — locate which Chrome/Edge user-data-dir & profile still holds a LIVE session for a target site, WITHOUT launching the browser (launching it loses the session). Scans Local State (identity) + Cookies sqlite (credential) via mode=ro.
-description_zh: "浏览器登录态只读诊断：不启动浏览器，定位哪个 profile 还登录着"
-description_en: "Read-only browser login-state diagnosis via Local State + Cookies sqlite"
-version: 1.0.0
 allowed-tools: Bash, Read
-display_name: "浏览器登录态只读诊断"
-tags:
-  - browser
-  - login-state
-  - cookies
-  - cdp
-  - diagnostics
-visibility: "public"
-agent_created: true
+metadata:
+  description_zh: "浏览器登录态只读诊断：不启动浏览器，定位哪个 profile 还登录着"
+  description_en: "Read-only browser login-state diagnosis via Local State + Cookies sqlite"
+  version: 1.0.0
+  display_name: "浏览器登录态只读诊断"
+  visibility: "public"
+  agent_created: true
+  tags:
+    - browser
+    - login-state
+    - cookies
+    - cdp
+    - diagnostics
 ---
 
 # Browser Profile / Login-State Diagnosis (read-only)

@@ -1,0 +1,5 @@
+interface:
+  display_name: "mcporter"
+  short_description: "Manage and call MCP servers"
+policy:
+  allow_implicit_invocation: false

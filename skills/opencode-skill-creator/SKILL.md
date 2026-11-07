@@ -3,6 +3,12 @@ name: opencode-skill-creator
 description: Create, test, evaluate, optimize, and package OpenCode skills with the opencode-skill-creator plugin. Use when users explicitly mention opencode-skill-creator, OpenCode Skill Creator, creating an OpenCode skill, editing an OpenCode SKILL.md, running skill evals, benchmarking skill performance, or optimizing an OpenCode skill description. Do not use for generic Claude Code or Superpowers skill creation unless the user asks to port that workflow to OpenCode.
 ---
 
+> **职责边界（单一归属）**
+>
+> 本 skill 只负责 **OpenCode 生态专属部分**：plugin 工具链（`skill_validate` / `skill_eval` / `skill_optimize_loop` / `skill_serve_review` 等）、blind comparison、eval 视图、OpenCode 安装路径（`.opencode/skills/`、`~/.config/opencode/skills/`）。
+>
+> 通用的 skill 写作规范（frontmatter 规则、渐进披露、写作风格、废弃合并）**不在本 skill 重复**，以 `skill-creator` 为准；需要评分与棘轮优化走 `darwin-skill`。
+
 # OpenCode Skill Creator
 
 A skill for creating new skills and iteratively improving them.

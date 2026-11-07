@@ -1,15 +1,16 @@
 ---
 name: markitdown-skill
 description: "Convert documents to Markdown using Microsoft's MarkItDown CLI (`markitdown`). Supports PDF, Word, PowerPoint, Excel, images (OCR), audio (transcription), HTML, YouTube, and URLs. Use when a user wants to convert a file or URL to Markdown, extract text from PDFs/images, transcribe audio/video, or batch-convert documents."
-description_zh: "文档转 Markdown(PDF/Word/PPT/图片OCR/音频转写/网页)"
-description_en: "Convert documents to Markdown (PDF, Word, PPT, images, audio, URLs)"
-version: 1.0.1
-homepage: https://github.com/microsoft/markitdown
 allowed-tools: Read,Write,Bash,Glob
-display_name: "markitdown-skill"
-display_name_en: "markitdown-skill"
-visibility: "public"
-icon: "https://codebuddy-platform-1258344699.cos.accelerate.myqcloud.com/public/45edac6b-2078-4678-89f3-6f9800cf5e5f/avatar/skill/au_78915a1e-864.png"
+metadata:
+  description_zh: "文档转 Markdown(PDF/Word/PPT/图片OCR/音频转写/网页)"
+  description_en: "Convert documents to Markdown (PDF, Word, PPT, images, audio, URLs)"
+  version: 1.0.1
+  homepage: https://github.com/microsoft/markitdown
+  display_name: "markitdown-skill"
+  display_name_en: "markitdown-skill"
+  visibility: "public"
+  icon: "https://codebuddy-platform-1258344699.cos.accelerate.myqcloud.com/public/45edac6b-2078-4678-89f3-6f9800cf5e5f/avatar/skill/au_78915a1e-864.png"
 ---
 
 # MarkItDown Skill
