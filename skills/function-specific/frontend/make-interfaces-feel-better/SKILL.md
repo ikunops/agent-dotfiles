@@ -126,6 +126,62 @@ Rules that matter more than the exact numbers:
 - **Never animate `all`.** See Transition Scope below.
 - **Respect `prefers-reduced-motion`.** Collapse to a near-instant opacity change, do not simply shorten the same transform.
 
+### Spring vs Bezier
+
+Bezier curves and springs are **two different models**, not two presets of the same thing.
+
+| | Bezier | Spring |
+|---|---|---|
+| Describes | the shape of a path | a physical system (mass, stiffness, damping) |
+| You set | two control points (four numbers) + duration | stiffness / damping / mass; **duration is an outcome** |
+| Interrupt | restarts or retargets a time curve; velocity is implicit and may jump | current velocity is state, so a new target can inherit it |
+| Overshoot | faked by an explicit `cubic-bezier(...,1.56,...)` | falls out of damping ratio < 1 |
+| Stop | stops at the end of the duration even mid-velocity | stops when energy is spent, so the end is always smooth |
+
+The practical difference: **a bezier is time-driven, a spring is state-driven.** Apple's gestures feel attached to the finger because a spring inherits the release velocity; a bezier cannot.
+
+#### Choosing
+
+| Situation | Use | Why |
+|---|---|---|
+| Hover, toggle, small state change | Bezier | short, predictable, no interruption |
+| **Draggable / swipeable surface** | **Spring** | must catch the release velocity |
+| Draggable bottom sheet, drawer, side panel | Spring | physical throw, can be flung |
+| Button-triggered modal, drawer, or panel | Bezier | no gesture velocity to preserve |
+| Non-interactive page / route transition | Bezier | duration must be schedulable |
+| Interactive back-swipe / gesture-driven route transition | Spring | target can change mid-gesture |
+| Loading, looping animation | Bezier or linear | no velocity to inherit |
+
+The one-line test: **does the animation need to catch the user's velocity?** If yes, spring. If no, bezier.
+
+#### Spring parameters, translated
+
+Physics: `m·x'' + c·x' + k·x = 0`, damping ratio `zeta = c / (2·sqrt(k·m))`.
+
+| zeta | Feel | Use for |
+|---|---|---|
+| > 1 | over-damped, slow, no overshoot | large surfaces where bounciness would be wrong |
+| = 1 | critically damped, fastest without overshoot | dialogs, sheets that must feel solid |
+| 0.7 - 0.9 | slight overshoot | commonly used for interactive surfaces |
+| < 0.6 | bouncy | playful, small elements only |
+
+Stiffness controls speed, damping controls how much it bounces, mass controls momentum. In most UI work you tune **stiffness + damping** and leave mass at 1. If the platform exposes Apple-style parameters, `response` maps to the natural period and `dampingFraction` maps to `zeta`.
+
+#### Implementation, by requirement
+
+Do not choose an implementation until you know whether the motion must inherit live velocity:
+
+1. **At-rest entrance only, no interruption** - a generated `linear()` approximation of a spring curve is enough. It is a baked, time-driven curve with zero bundle cost. It cannot catch a release velocity.
+2. **Dragged, flung, or frequently retargeted interaction** - use a real stateful spring that reads current position and velocity. Use an already-installed runtime (`framer-motion`, `motion`, `react-spring`) when available. GSAP's `elastic` ease alone is still a fixed curve, not a stateful spring; use a physics/inertia integration that actually accepts velocity, or a small custom integrator.
+3. **No suitable library, one small surface** - a compact `requestAnimationFrame` spring integrator is preferable to adding a whole animation runtime. Test interruption from mid-gesture, not just the resting entrance.
+4. **Deterministic timeline or video** - use a bezier or a baked spring curve. Never drive frames from a live integrator that depends on wall-clock state.
+
+The cost rule still holds: **do not add an animation library just to get one spring.** The correctness rule matters more: **do not call a baked curve a spring when velocity handoff is the requirement.**
+
+#### Domain boundary
+
+Springs are for **live, interruptible product UI**. They are the wrong tool for **rendered video or deterministic timeline animation**, where every frame must be reproducible on seek - a stateful integrator cannot be scrubbed backwards. In that context use a bezier or a baked spring curve instead.
+
 ### Corners: Arc, Bezier, Superellipse
 
 `border-radius` is **not** a bezier curve - it is one or two arcs. That is why a
@@ -198,6 +254,8 @@ Omit principles that you checked but did not change.
 - Nested rounded elements are optically coherent.
 - Icons are visually centered; round icons in an icon row have overshoot.
 - Easing curves are chosen per intent, not one `ease` everywhere.
+- Draggable or swipeable surfaces use a stateful spring when release velocity must be inherited.
+- A CSS `linear()` approximation is not used where velocity handoff is required; no animation runtime was added without need.
 - Exit motion is shorter than enter motion.
 - Corner treatment matches the surface size (arc for small, squircle for hero shapes).
 - Icons are visually centered.
